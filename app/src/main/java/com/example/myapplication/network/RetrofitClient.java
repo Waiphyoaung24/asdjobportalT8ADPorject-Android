@@ -4,6 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
+
     private static RetrofitClient instance = null;
     private Response response;
 
@@ -25,3 +26,4 @@ public class RetrofitClient {
         return response;
     }
 }
+
