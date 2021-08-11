@@ -9,10 +9,11 @@ import com.example.myapplication.R;
 import com.example.myapplication.fragments.ListJobFragment;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    public void replaceFragment(Fragment fragment){
+
+     public void replaceFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
-        trans.replace(R.id.fl_container,fragment);
+        trans.replace(R.id.fl_container, fragment);
         trans.commit();
     }
 

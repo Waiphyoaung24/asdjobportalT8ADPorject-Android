@@ -3,12 +3,21 @@
 
     <item android:id="@+id/menu_item_job_list"
         android:title="View JobList">
-
     </item>
+
     <item android:id="@+id/menu_item_job_category"
         android:title="View Category">
     </item>
+
     <item android:id="@+id/menu_item_search"
         android:title="Search Job">
     </item>
-    </menu>
+
+    <item android:id="@+id/menu_item_bookmark"
+        android:title="Bookmark">
+    </item>
+
+    <item android:id="@+id/menu_item_viewedjobs"
+        android:title="Viewed Jobs">
+    </item>
+</menu>

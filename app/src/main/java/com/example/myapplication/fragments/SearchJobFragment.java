@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,10 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.JobAdminActivity;
 import com.example.myapplication.adapters.ListJobAdapter;
 import com.example.myapplication.data.JobDTO;
+import com.example.myapplication.delegates.JobListDelegate;
 import com.example.myapplication.network.RetrofitClient;
 
 import java.util.ArrayList;
@@ -27,7 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class SearchJobFragment extends Fragment {
+public class SearchJobFragment extends Fragment implements JobListDelegate {
 
     RecyclerView rvJobList;
     EditText etSearch;
@@ -45,7 +49,7 @@ public class SearchJobFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_search_job, container, false);
-        mAdapter = new ListJobAdapter();
+        mAdapter = new ListJobAdapter(this);
         rvJobList = root.findViewById(R.id.rvList_Jobs);
         etSearch = root.findViewById(R.id.et_search);
         btnSearch = root.findViewById(R.id.btn_search_job_list);
@@ -53,7 +57,14 @@ public class SearchJobFragment extends Fragment {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startLoadingSeachJob();
+                String search = etSearch.getText().toString();
+                if(!search.isEmpty()){
+                    startLoadingSeachJob(search);
+                }
+                else {
+                    Toast.makeText(getActivity(), "Please enter a valid search keyword", Toast.LENGTH_SHORT).show();
+                }
+            
             }
         });
         return root;
@@ -65,8 +76,8 @@ public class SearchJobFragment extends Fragment {
 
     }
 
-    public void startLoadingSeachJob(){
-        Call<List<JobDTO>> call = RetrofitClient.getInstance().getResponse().getJobsByTitleOrDesc(etSearch.getText().toString());
+    public void startLoadingSeachJob(String search){
+        Call<List<JobDTO>> call = RetrofitClient.getInstance().getResponse().getJobsByTitleOrDesc(search);
         call.enqueue(new Callback<List<JobDTO>>() {
             @Override
             public void onResponse(Call<List<JobDTO>> call, Response<List<JobDTO>> response) {
@@ -86,5 +97,12 @@ public class SearchJobFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvJobList.setLayoutManager(linearLayoutManager);
         rvJobList.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onClickJobList(long jobId) {
+        Intent intent = new Intent(getActivity(), JobAdminActivity.class);
+        intent.putExtra("jobId",jobId);
+        startActivity(intent);
     }
 }

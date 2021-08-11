@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.JobAdminActivity;
 import com.example.myapplication.adapters.ListJobAdapter;
 import com.example.myapplication.data.JobDTO;
+import com.example.myapplication.delegates.JobListDelegate;
 import com.example.myapplication.network.RetrofitClient;
 
 import java.util.List;
@@ -25,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ListJobFragment extends Fragment {
+public class ListJobFragment extends Fragment implements JobListDelegate {
 
     RecyclerView rvListJob;
     private ListJobAdapter mAdapter;
@@ -43,7 +46,7 @@ public class ListJobFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_list_job, container, false);
         rvListJob = root.findViewById(R.id.rvList_Jobs);
-        mAdapter = new ListJobAdapter();
+        mAdapter = new ListJobAdapter(this);
 
 
         return root;
@@ -78,4 +81,10 @@ public class ListJobFragment extends Fragment {
         rvListJob.setAdapter(mAdapter);
     }
 
+    @Override
+    public void onClickJobList(long jobId) {
+    Intent intent = new Intent(getActivity(), JobAdminActivity.class);
+    intent.putExtra("jobId",jobId);
+    startActivity(intent);
+    }
 }

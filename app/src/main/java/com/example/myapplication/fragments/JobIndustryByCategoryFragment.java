@@ -2,6 +2,8 @@ package com.example.myapplication.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,6 +19,8 @@ import com.example.myapplication.adapters.CategoryJobAdapter;
 import com.example.myapplication.delegates.CategoryByJobDelegate;
 import com.example.myapplication.network.RetrofitClient;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,30 +33,23 @@ public class JobIndustryByCategoryFragment extends Fragment implements CategoryB
     private CategoryJobAdapter mAdapter;
     List<String>category;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        startLoadingCategory();
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_category_by_job_industry, container, false);
+        View root = inflater.inflate(R.layout.fragment_category_by_job_industry, container, false);
+        rvCategoryJob = root.findViewById(R.id.rv_category_job);
+        mAdapter = new CategoryJobAdapter(this);
+
+        return root;
     }
 
-
-
     @Override
-    public void onStart() {
-        super.onStart();
-        View view = getView();
-        rvCategoryJob = view.findViewById(R.id.rv_category_job);
-
-
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        startLoadingCategory();
     }
 
     private void startLoadingCategory() {
@@ -61,6 +58,7 @@ public class JobIndustryByCategoryFragment extends Fragment implements CategoryB
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 category = response.body();
+                mAdapter.setData(category);
                 bindAndshowCategory();
             }
 
@@ -75,7 +73,7 @@ public class JobIndustryByCategoryFragment extends Fragment implements CategoryB
 
     private void bindAndshowCategory(){
 
-        mAdapter = new CategoryJobAdapter(category,getContext(),this);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rvCategoryJob.setAdapter(mAdapter);
         rvCategoryJob.setLayoutManager(gridLayoutManager);
