@@ -4,4 +4,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+
+    <string name="Bookmark">Bookmark</string>
+    <string name="SeeReviews">Check Reviews</string>
+    <string name="ApplyViaURL">Apply Via Company Link</string>
+    <string name="ApplyViaHrEmail">Apply Via Email</string>
+    <string name="ShareURL">Share Company Link</string>
+
+    <string name="shareurl">Please see the Company URL for your reference : </string>
+    <string name="emailapplication">Dear Hiring manager, I came across a very exciting position on your job portal that I believe fits me perfectly. I am interested in applying for the position of <b>%1$s</b> at <b>%2$s</b>. I would love to talk to you in more detail regarding this amazing opportunity at your company. It would give me great pleasure to hear back from you regarding my application. Thank you ! </string>
+
+
+    <string name="FilterByCompany">Filter by Company</string>
+    <string name="AddingReviewText">Adding review for</string>
 </resources>

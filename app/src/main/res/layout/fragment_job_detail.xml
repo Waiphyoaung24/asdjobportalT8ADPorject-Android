@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical"
+    >
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="100dp"
+        android:text="Job Title"/>
+    <TextView
+        android:id="@+id/job_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:text="Company"/>
+    <TextView
+        android:id="@+id/job_company"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:text="Job Qualification"/>
+    <TextView
+        android:id="@+id/job_qualification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:text="Job Description"/>
+    <TextView
+        android:id="@+id/job_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="15dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Bookmark"
+        android:text="@string/Bookmark"
+        android:textSize="15sp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#C5908E"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/SeeReviews"
+        android:text="@string/SeeReviews"
+        android:textSize="15sp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#C5908E"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ApplyViaURL"
+        android:text="@string/ApplyViaURL"
+        android:textSize="15sp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#C5908E"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="200dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ApplyViaHrEmail"
+        android:text="@string/ApplyViaHrEmail"
+        android:textSize="15sp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#C5908E"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="200dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ShareURL"
+        android:text="@string/ShareURL"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#C5908E"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="200dp"
+        />
+
+
+</LinearLayout>

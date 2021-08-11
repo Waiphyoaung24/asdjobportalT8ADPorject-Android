@@ -11,4 +11,16 @@
     <item android:id="@+id/menu_item_search"
         android:title="Search Job">
     </item>
+    <item android:id="@+id/menu_item_bookmark"
+        android:title="Bookmark">
+    </item>
+    <item android:id="@+id/menu_item_viewedjobs"
+        android:title="Viewed Jobs">
+    </item>
+    <item android:id="@+id/menu_item_review"
+        android:title="Company Review">
+    </item>
+    <item android:id="@+id/menu_item_new_review"
+        android:title="New Review">
+    </item>
     </menu>

@@ -22,9 +22,7 @@ public class CategoryJobAdapter  extends RecyclerView.Adapter<CategoryJobItemVie
 
    private CategoryByJobDelegate mDelegate;
 
-    public CategoryJobAdapter(List<String> mData, Context context,CategoryByJobDelegate mDelegate) {
-        this.mData = mData;
-        this.context = context;
+    public CategoryJobAdapter(CategoryByJobDelegate mDelegate) {
         this.mDelegate = mDelegate;
 
     }
@@ -46,6 +44,10 @@ public class CategoryJobAdapter  extends RecyclerView.Adapter<CategoryJobItemVie
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+    public void setData(List<String> mData){
+        this.mData = mData;
+        notifyDataSetChanged();
     }
 
 }

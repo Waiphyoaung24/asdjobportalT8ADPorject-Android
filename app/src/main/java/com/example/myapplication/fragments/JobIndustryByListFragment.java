@@ -1,8 +1,13 @@
 package com.example.myapplication.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +19,10 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.ListJobAdapter;
 import com.example.myapplication.data.JobDTO;
+import com.example.myapplication.delegates.JobListDelegate;
 import com.example.myapplication.network.RetrofitClient;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -22,17 +30,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class JobIndustryByListFragment extends Fragment {
+public class JobIndustryByListFragment extends Fragment implements JobListDelegate {
 
     TextView tvCategoryTitle;
     String jodIndustry;
     RecyclerView rvListJob;
     private ListJobAdapter mAdapter;
     private List<JobDTO> mData;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,12 +46,17 @@ public class JobIndustryByListFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_category_list_by_job, container, false);
         tvCategoryTitle = root.findViewById(R.id.tv_job_category_title);
         rvListJob = root.findViewById(R.id.rvList_Jobs);
-        mAdapter = new ListJobAdapter();
-        startLoadingCategoryList();
+        mAdapter = new ListJobAdapter(this);
+
 
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        startLoadingCategoryList();
+    }
 
     private void startLoadingCategoryList(){
 
@@ -74,5 +84,15 @@ public class JobIndustryByListFragment extends Fragment {
     }
     public void setJobId(String jodIndustry){
         this.jodIndustry = jodIndustry;
+    }
+
+    @Override
+    public void onClickJobList(long jobId) {
+        JobDetailFragment fragment = new JobDetailFragment();
+        fragment.setJobId(jobId);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fl_container, fragment);
+        trans.commit();
     }
 }

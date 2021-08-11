@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.JobDTO;
+import com.example.myapplication.delegates.CategoryByJobDelegate;
+import com.example.myapplication.delegates.JobListDelegate;
 import com.example.myapplication.viewholders.JobListItemViewHolder;
 
 import java.util.List;
@@ -19,12 +21,18 @@ public class ListJobAdapter extends RecyclerView.Adapter<JobListItemViewHolder> 
 
 
     private List<JobDTO> mData;
+    private JobListDelegate mDelegate;
+
+    public ListJobAdapter(JobListDelegate mDelegate) {
+        this.mDelegate = mDelegate;
+
+    }
     @NonNull
     @Override
     public JobListItemViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_job_list,parent,false);
-        return new JobListItemViewHolder(view);
+        return new JobListItemViewHolder(view,mDelegate);
     }
 
     @Override
