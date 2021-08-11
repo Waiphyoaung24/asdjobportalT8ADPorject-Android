@@ -1,4 +1,3 @@
-/*
 package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,6 +74,152 @@ public class JobAdminActivity extends AppCompatActivity {
         });
     }
 
+    private void saveBookmark(){
+        Call<BookmarkedJobsDTO> call = RetrofitClient.getInstance().getResponse().saveBookmark(id);
+        call.enqueue(new Callback<BookmarkedJobsDTO>() {
+            @Override
+            public void onResponse(Call<BookmarkedJobsDTO> call, Response<BookmarkedJobsDTO> response) {
+                if(response.isSuccessful()){
+                    Log.e("success","success");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<BookmarkedJobsDTO> call, Throwable t) {
+                Log.e("error", t.getMessage());
+            }
+        });
     }
-}*/
+
+    private void ApplyJobUrl(){
+        Call<ResponseMessage> call = RetrofitClient.getInstance().getResponse().ApplyJobUrl(id);
+        call.enqueue(new Callback<ResponseMessage>() {
+            @Override
+            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+                ResponseMessage message = response.body();
+
+                uri = Uri.parse(message.getMessage());
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+
+                //if intent contain something
+                if(intent !=  null){
+                    //to check if the device has an app that can handle the requested implicit intent
+                    if(intent.resolveActivity(getPackageManager())!=null){
+                        //controlling how this intent is handled
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }
+                //String url = response.body();
+                //Log.e("message",url);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseMessage> call, Throwable t) {
+                Log.e("error", t.getMessage());
+            }
+        });
+    }
+
+    private void ShareURL(){
+        Call<JobAdminDTO> call = RetrofitClient.getInstance().getResponse().ShareURL(id);
+        call.enqueue(new Callback<JobAdminDTO>() {
+            @Override
+            public void onResponse(Call<JobAdminDTO> call, Response<JobAdminDTO> response) {
+                JobAdminDTO jobadminDTO = response.body();
+                String string = getString(R.string.shareurl);
+
+                //need to update using session user's email
+                uri = Uri.parse("mailto:john@gmail.com");
+                intent = new Intent(Intent.ACTION_SENDTO, uri);
+                intent.putExtra(Intent.EXTRA_SUBJECT, jobadminDTO.getCompanyname()+" Career Website for application of "+jobadminDTO.getJobTitle());
+                intent.putExtra(Intent.EXTRA_TEXT,  string+jobadminDTO.getJobPositionURL());
+
+                //if intent contain something
+                if(intent !=  null){
+                    //to check if the device has an app that can handle the requested implicit intent
+                    if(intent.resolveActivity(getPackageManager())!=null){
+                        //controlling how this intent is handled
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JobAdminDTO> call, Throwable t) {
+                Log.e("error", t.getMessage());
+            }
+        });
+    }
+
+    private void ApplyViaHrEmail(){
+        Call<JobAdminDTO> call = RetrofitClient.getInstance().getResponse().ApplyJobEmail(id);
+        call.enqueue(new Callback<JobAdminDTO>() {
+            @Override
+            public void onResponse(Call<JobAdminDTO> call, Response<JobAdminDTO> response) {
+                JobAdminDTO jobadminDTO = response.body();
+                String string = getString(R.string.emailapplication, jobadminDTO.getJobTitle(),jobadminDTO.getCompanyname());
+
+                uri = Uri.parse("mailto:"+jobadminDTO.getCompanyemail());
+                //Log.e("message", String.valueOf(uri));
+                intent = new Intent(Intent.ACTION_SENDTO, uri);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Application of position - " + jobadminDTO.getJobTitle());
+                intent.putExtra(Intent.EXTRA_TEXT,  string);
+
+                //if intent contain something
+                if(intent !=  null){
+                    //to check if the device has an app that can handle the requested implicit intent
+                    if(intent.resolveActivity(getPackageManager())!=null){
+                        //controlling how this intent is handled
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JobAdminDTO> call, Throwable t) {
+                Log.e("error", t.getMessage());
+            }
+        });
+    }
+
+    private void getJob() {
+        Call<JobAdminDTO> call = RetrofitClient.getInstance().getResponse().getJob(id);
+        call.enqueue(new Callback<JobAdminDTO>() {
+            @Override
+            public void onResponse(Call<JobAdminDTO> call, Response<JobAdminDTO> response) {
+                JobAdminDTO jobadminDTO = response.body();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView job_title = findViewById(R.id.job_title);
+                        if(job_title != null){
+                            job_title.setText(jobadminDTO.getJobTitle());
+                        }
+                        TextView job_company = findViewById(R.id.job_company);
+                        if(job_company != null){
+                            job_company.setText(jobadminDTO.getCompanyname());
+                        }
+                        TextView job_qualification =  findViewById(R.id.job_qualification);
+                        if(job_qualification != null){
+                            job_qualification.setText(jobadminDTO.getJobqualification());
+                        }
+                        TextView job_description = findViewById(R.id.job_description);
+                        if(job_description != null){
+                            job_description.setText(jobadminDTO.getJobDescription());
+                        }
+                    }
+                }).start();
+
+            }
+
+            @Override
+            public void onFailure(Call<JobAdminDTO> call, Throwable t) {
+                Log.e("error", t.getMessage());
+            }
+        });
+    }
+}

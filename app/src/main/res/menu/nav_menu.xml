@@ -3,11 +3,12 @@
 
     <item android:id="@+id/menu_item_job_list"
         android:title="View JobList">
-
     </item>
+
     <item android:id="@+id/menu_item_job_category"
         android:title="View Category">
     </item>
+
     <item android:id="@+id/menu_item_search"
         android:title="Search Job">
     </item>
@@ -24,3 +25,11 @@
         android:title="New Review">
     </item>
     </menu>
+    <item android:id="@+id/menu_item_login"
+        android:title="Login">
+    </item>
+
+    <item android:id="@+id/menu_item_user"
+        android:title="User Setting">
+    </item>
+</menu>

@@ -1,6 +1,5 @@
 package com.example.myapplication.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,6 @@ import com.example.myapplication.viewholders.BookmarkItemViewHolder;
 import java.util.List;
 
 public class ListBookmarkAdapter extends RecyclerView.Adapter<BookmarkItemViewHolder>{
-
-
-
-
 
     private List<BookmarkedJobsDTO> mData;
 

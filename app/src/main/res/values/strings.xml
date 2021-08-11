@@ -14,7 +14,17 @@
     <string name="shareurl">Please see the Company URL for your reference : </string>
     <string name="emailapplication">Dear Hiring manager, I came across a very exciting position on your job portal that I believe fits me perfectly. I am interested in applying for the position of <b>%1$s</b> at <b>%2$s</b>. I would love to talk to you in more detail regarding this amazing opportunity at your company. It would give me great pleasure to hear back from you regarding my application. Thank you ! </string>
 
+    <string name="login">Login</string>
+    <string name="username">Email Address</string>
+    <string name="password">password</string>
+    <string name="title_activity_login2">LoginActivity2</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
-    <string name="FilterByCompany">Filter by Company</string>
-    <string name="AddingReviewText">Adding review for</string>
 </resources>

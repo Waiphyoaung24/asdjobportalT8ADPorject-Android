@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     NavigationView navView;
     MaterialToolbar toolbar;
+    Token token = new Token();
 
 
     @Override
@@ -53,6 +54,20 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initComponents();
 
+        //drawerlayout toggle state
+        toggle = new ActionBarDrawerToggle(this, findViewById(R.id.drawerlayout), R.string.open, R.string.close);
+        toggle.syncState();
+        initComponents();
+        try {
+            Intent intent = getIntent();
+            token.setUsername(intent.getExtras().getString("username"));
+            token.setAccess_token(intent.getExtras().getString("access_token"));
+            token.setRefresh_token(intent.getExtras().getString("refresh_token"));
+
+            Log.i("token: ", token.toString());
+        } catch(Exception e){
+            Log.e("error: ", e.getMessage());
+        }
         //drawerlayout toggle state
         toggle = new ActionBarDrawerToggle(this, findViewById(R.id.drawerlayout), R.string.open, R.string.close);
         toggle.syncState();
@@ -103,8 +118,19 @@ public class MainActivity extends BaseActivity {
                         NewReviewFragment newReview = new NewReviewFragment();
                         replaceFragment(newReview);
                         break;
-
-
+                    case R.id.menu_item_login:
+                        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        break;
+                    case R.id.menu_item_user:
+                        UserFragment userFragment = new UserFragment();
+                        Bundle bundle = new Bundle();
+                        if(token!=null){
+                            bundle.putSerializable("Token", token);
+                            userFragment.setArguments(bundle);
+                            Log.i("token: ", token.toString());
+                        }
+                        replaceFragment(userFragment);
+                        break;
                 }
                 return false;
             }
@@ -119,8 +145,17 @@ public class MainActivity extends BaseActivity {
         drawerLayout.addDrawerListener(toggle);
         navView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
+        jobs = new ArrayList<JobDTO>();
 
     }
+}
+
+/*    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String result = data.getExtras().getString("result");
+        Log.i(TAG, result);
+    }*/
 }
 
 
