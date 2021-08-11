@@ -20,4 +20,12 @@
     <item android:id="@+id/menu_item_viewedjobs"
         android:title="Viewed Jobs">
     </item>
+
+    <item android:id="@+id/menu_item_login"
+        android:title="Login">
+    </item>
+
+    <item android:id="@+id/menu_item_user"
+        android:title="User Setting">
+    </item>
 </menu>

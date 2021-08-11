@@ -1,23 +1,27 @@
 package com.example.myapplication.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.example.myapplication.R;
 import com.example.myapplication.data.JobDTO;
+import com.example.myapplication.data.Token;
 import com.example.myapplication.fragments.JobIndustryByCategoryFragment;
 import com.example.myapplication.fragments.ListBookmarkFragment;
 import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.fragments.ListViewedJobsFragment;
 import com.example.myapplication.fragments.SearchJobFragment;
+import com.example.myapplication.fragments.UserFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -34,6 +38,7 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     NavigationView navView;
     MaterialToolbar toolbar;
+    Token token = new Token();
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -48,7 +53,16 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initComponents();
+        try {
+            Intent intent = getIntent();
+            token.setUsername(intent.getExtras().getString("username"));
+            token.setAccess_token(intent.getExtras().getString("access_token"));
+            token.setRefresh_token(intent.getExtras().getString("refresh_token"));
 
+            Log.i("token: ", token.toString());
+        } catch(Exception e){
+            Log.e("error: ", e.getMessage());
+        }
         //drawerlayout toggle state
         toggle = new ActionBarDrawerToggle(this, findViewById(R.id.drawerlayout), R.string.open, R.string.close);
         toggle.syncState();
@@ -91,6 +105,19 @@ public class MainActivity extends BaseActivity {
                         ListViewedJobsFragment listviewedjobsFragment = new ListViewedJobsFragment();
                         replaceFragment(listviewedjobsFragment);
                         break;
+                    case R.id.menu_item_login:
+                        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        break;
+                    case R.id.menu_item_user:
+                        UserFragment userFragment = new UserFragment();
+                        Bundle bundle = new Bundle();
+                        if(token!=null){
+                            bundle.putSerializable("Token", token);
+                            userFragment.setArguments(bundle);
+                            Log.i("token: ", token.toString());
+                        }
+                        replaceFragment(userFragment);
+                        break;
                 }
                 return false;
             }
@@ -108,6 +135,13 @@ public class MainActivity extends BaseActivity {
         jobs = new ArrayList<JobDTO>();
 
     }
+
+/*    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String result = data.getExtras().getString("result");
+        Log.i(TAG, result);
+    }*/
 }
 
 

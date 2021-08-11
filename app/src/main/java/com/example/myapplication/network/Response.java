@@ -1,16 +1,24 @@
 package com.example.myapplication.network;
 
 
+import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.data.BookmarkedJobsDTO;
 import com.example.myapplication.data.JobAdminDTO;
 import com.example.myapplication.data.JobDTO;
 import com.example.myapplication.data.ResponseMessage;
+import com.example.myapplication.data.Token;
+import com.example.myapplication.data.UserDTO;
 import com.example.myapplication.data.ViewedJobsDTO;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -60,4 +68,27 @@ public interface Response {
     @GET("jobadmin/details/viewed/list")
     Call<List<ViewedJobsDTO>> ListViewedJobs();
 
+
+    //account related
+    @POST("login")
+    @FormUrlEncoded
+    Call<Token> login(@Field("username") String username, @Field("password") String password);
+
+    @GET("user/list")
+    Call<List<UserDTO>> getUserList();
+
+    @POST("user/admin")
+    Call<ResponseBody> saveAdmin(UserDTO user);
+
+    @POST("user/applicant")
+    Call<ResponseBody> saveApplicant(ApplicantDTO applicant);
+
+    @DELETE("user/Applicant")
+    Call<ResponseBody> deleteApplicant(ApplicantDTO applicant);
+
+    @GET("user/refreshtoken")
+    Call<Token> refreshToken();
+
+    @GET("user/applicant/{username}")
+    Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username")String username);
 }
