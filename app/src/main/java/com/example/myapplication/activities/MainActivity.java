@@ -1,19 +1,21 @@
 package com.example.myapplication.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-
 import com.example.myapplication.R;
 import com.example.myapplication.data.JobDTO;
+import com.example.myapplication.data.Token;
 import com.example.myapplication.fragments.CompanyReviewFragment;
 import com.example.myapplication.fragments.JobIndustryByCategoryFragment;
 import com.example.myapplication.fragments.ListBookmarkFragment;
@@ -21,11 +23,11 @@ import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.fragments.ListViewedJobsFragment;
 import com.example.myapplication.fragments.NewReviewFragment;
 import com.example.myapplication.fragments.SearchJobFragment;
+import com.example.myapplication.fragments.UserFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends BaseActivity {
@@ -148,7 +150,7 @@ public class MainActivity extends BaseActivity {
         jobs = new ArrayList<JobDTO>();
 
     }
-}
+
 
 /*    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
