@@ -37,6 +37,7 @@ public class JobDetailFragment extends Fragment {
     long id;
     Intent intent = null;
     Uri uri;
+    TextView asd_level;
     TextView job_company;
     TextView job_title;
     TextView job_qualification;
@@ -56,7 +57,7 @@ public class JobDetailFragment extends Fragment {
 
         Bookmark = root.findViewById(R.id.Bookmark);
 
-
+        asd_level = root.findViewById(R.id.asd_level);
         ApplyViaURL = root.findViewById(R.id.ApplyViaURL);
          job_title = root.findViewById(R.id.job_title);
          job_company = root.findViewById(R.id.job_company);
@@ -221,6 +222,9 @@ public class JobDetailFragment extends Fragment {
                     @Override
                     public void run() {
 
+                        if(asd_level != null){
+                            asd_level.setText(Integer.toString(jobadminDTO.getAutismLevel()));
+                        }
                         if (job_title != null) {
                             job_title.setText(jobadminDTO.getJobTitle());
                         }

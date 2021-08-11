@@ -7,13 +7,12 @@
     android:orientation="vertical"
     >
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="13sp"
         android:textColor="@color/black"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="0dp"
         android:text="Job Title"/>
     <TextView
         android:id="@+id/job_title"
