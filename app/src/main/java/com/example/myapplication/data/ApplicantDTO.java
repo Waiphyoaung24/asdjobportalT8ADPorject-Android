@@ -1,8 +1,9 @@
 package com.example.myapplication.data;
 
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class ApplicantDTO {
+public class ApplicantDTO implements Serializable{
     private Long id;
     private String username; //the username would be email
     private String password;
