@@ -14,11 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.ListJobAdapter;
 import com.example.myapplication.data.JobDTO;
+import com.example.myapplication.delegates.CategoryByJobDelegate;
 import com.example.myapplication.delegates.JobListDelegate;
 import com.example.myapplication.network.RetrofitClient;
 
@@ -37,6 +40,7 @@ public class JobIndustryByListFragment extends Fragment implements JobListDelega
     RecyclerView rvListJob;
     private ListJobAdapter mAdapter;
     private List<JobDTO> mData;
+    ImageView ivBack;
 
 
     @Override
@@ -46,6 +50,7 @@ public class JobIndustryByListFragment extends Fragment implements JobListDelega
         View root = inflater.inflate(R.layout.fragment_category_list_by_job, container, false);
         tvCategoryTitle = root.findViewById(R.id.tv_job_category_title);
         rvListJob = root.findViewById(R.id.rvList_Jobs);
+        ivBack = root.findViewById(R.id.iv_back);
         mAdapter = new ListJobAdapter(this);
 
 
@@ -56,6 +61,18 @@ public class JobIndustryByListFragment extends Fragment implements JobListDelega
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         startLoadingCategoryList();
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                JobIndustryByCategoryFragment fragment = new JobIndustryByCategoryFragment();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction trans = fm.beginTransaction();
+                trans.replace(R.id.fl_container, fragment);
+                trans.commit();
+            }
+        });
     }
 
     private void startLoadingCategoryList(){
@@ -95,4 +112,8 @@ public class JobIndustryByListFragment extends Fragment implements JobListDelega
         trans.replace(R.id.fl_container, fragment);
         trans.commit();
     }
+
+
+
+
 }

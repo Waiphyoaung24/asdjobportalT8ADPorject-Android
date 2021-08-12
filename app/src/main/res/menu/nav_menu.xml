@@ -2,26 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menu_item_job_list"
-        android:title="View JobList">
+        android:title="Home">
 
     </item>
     <item android:id="@+id/menu_item_job_category"
-        android:title="View Category">
+        android:title="Category">
     </item>
     <item android:id="@+id/menu_item_search"
-        android:title="Search Job">
+        android:title="Search">
     </item>
     <item android:id="@+id/menu_item_bookmark"
         android:title="Bookmark">
     </item>
     <item android:id="@+id/menu_item_viewedjobs"
-        android:title="Viewed Jobs">
+        android:title="Applied Jobs">
     </item>
     <item android:id="@+id/menu_item_review"
         android:title="Company Review">
     </item>
     <item android:id="@+id/menu_item_new_review"
-        android:title="New Review">
+        android:title="Write Review">
     </item>
     <item android:id="@+id/menu_item_login"
         android:title="Login">

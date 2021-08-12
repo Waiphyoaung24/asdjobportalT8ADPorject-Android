@@ -50,25 +50,25 @@ public interface Response {
 
     //job admin
 
-    @GET("jobadmin/details/{id}")
+    @GET("job/details/{id}")
     Call<JobAdminDTO> getJob(@Path("id")Long id);
 
-    @POST("jobadmin/bookmark/{id}")
+    @POST("job/bookmark/{id}")
     Call<BookmarkedJobsDTO> saveBookmark(@Path("id")Long id);
 
-    @POST("jobadmin/applyjoburl/{id}")
+    @POST("job/applyjoburl/{id}")
     Call<ResponseMessage> ApplyJobUrl(@Path("id")Long id);
 
-    @POST("jobadmin/applyjobemail/{id}")
+    @POST("job/applyjobemail/{id}")
     Call<JobAdminDTO> ApplyJobEmail(@Path("id")Long id);
 
-    @POST("jobadmin/shareurl/{id}")
+    @POST("job/shareurl/{id}")
     Call<JobAdminDTO> ShareURL(@Path("id")Long id);
 
-    @GET("jobadmin/details/bookmark/list")
+    @GET("job/details/bookmark/list")
     Call<List<BookmarkedJobsDTO>> listBookmarkJobs();
 
-    @GET("jobadmin/details/viewed/list")
+    @GET("job/details/viewed/list")
     Call<List<ViewedJobsDTO>> ListViewedJobs();
 
 

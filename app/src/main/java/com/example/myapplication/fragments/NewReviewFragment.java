@@ -3,6 +3,8 @@ package com.example.myapplication.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -146,7 +148,13 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
             public void onResponse(Call<ReviewDTO> call1, Response<ReviewDTO> response) {
                 if(response.isSuccessful()){
                     //Log.i(TAG, "post submitted to API." + response.body().toString());
-                    Toast.makeText(getActivity(), "Review Submitted", Toast.LENGTH_LONG).show();
+                    CompanyReviewFragment companyReviewFragment = new CompanyReviewFragment();
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction trans = fm.beginTransaction();
+                    trans.replace(R.id.fl_container, companyReviewFragment);
+                    trans.commit();
+
+
                 }
             }
             @Override

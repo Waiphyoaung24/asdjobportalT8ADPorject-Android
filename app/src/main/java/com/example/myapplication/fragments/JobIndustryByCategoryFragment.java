@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.CategoryJobAdapter;
@@ -35,12 +37,14 @@ public class JobIndustryByCategoryFragment extends Fragment implements CategoryB
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_category_by_job_industry, container, false);
         rvCategoryJob = root.findViewById(R.id.rv_category_job);
+
         mAdapter = new CategoryJobAdapter(this);
 
         return root;
@@ -50,6 +54,7 @@ public class JobIndustryByCategoryFragment extends Fragment implements CategoryB
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         startLoadingCategory();
+
     }
 
     private void startLoadingCategory() {
@@ -89,4 +94,6 @@ public class JobIndustryByCategoryFragment extends Fragment implements CategoryB
         trans.replace(R.id.fl_container,fragment);
         trans.commit();
     }
+
+
 }

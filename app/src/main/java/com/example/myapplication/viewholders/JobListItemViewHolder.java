@@ -9,24 +9,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.data.JobDTO;
 import com.example.myapplication.delegates.JobListDelegate;
+import com.google.android.material.card.MaterialCardView;
 
 public class JobListItemViewHolder extends RecyclerView.ViewHolder {
 
-    TextView tvTitle;
+
     TextView tvJobPosition;
-    TextView tvJobIndustry;
+    TextView tvCompanyName;
+    TextView tvJobLocation;
     TextView tvJobDesc;
     JobDTO data;
+    MaterialCardView cardViewJobList;
     private JobListDelegate mDelegate;
     public JobListItemViewHolder(@NonNull  View itemView, JobListDelegate mDelegate) {
         super(itemView);
         this.mDelegate = mDelegate;
-        tvTitle = itemView.findViewById(R.id.tv_job_title);
-        tvJobPosition = itemView.findViewById(R.id.tv_job_position);
-        tvJobIndustry = itemView.findViewById(R.id.tv_job_industry);
-        tvJobDesc = itemView.findViewById(R.id.tv_job_desc);
 
-        tvTitle.setOnClickListener(new View.OnClickListener() {
+        tvJobPosition = itemView.findViewById(R.id.tv_job_position);
+        tvCompanyName = itemView.findViewById(R.id.tv_company_name);
+        tvJobLocation = itemView.findViewById(R.id.tv_job_location);
+        tvJobDesc = itemView.findViewById(R.id.tv_short_desc);
+        cardViewJobList = itemView.findViewById(R.id.card_job_list);
+
+        cardViewJobList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDelegate.onClickJobList(data.getId());
@@ -36,10 +41,10 @@ public class JobListItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(JobDTO mData){
         data = mData;
-    tvTitle.setText("Title :"+mData.getJobTitle());
-    tvJobPosition.setText("Position : "+mData.getJobPositionURL());
-    tvJobIndustry.setText("Industry :" +mData.getJobIndustry());
-    tvJobDesc.setText("Descrption :" +mData.getJobDescription());
+    tvJobPosition.setText(mData.getJobTitle());
+    tvJobLocation.setText(mData.getJobPositionURL());
+    tvCompanyName.setText(mData.getJobIndustry());
+    tvJobDesc.setText(mData.getJobDescription());
 
     }
 

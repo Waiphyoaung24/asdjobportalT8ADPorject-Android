@@ -78,11 +78,15 @@ public class MainActivity extends BaseActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
 
+        ListJobFragment fragment = new ListJobFragment();
+        replaceFragment(fragment);
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+
+
                 switch (id) {
                     case R.id.menu_item_job_list:
                         ListJobFragment fragment = new ListJobFragment();
@@ -95,21 +99,27 @@ public class MainActivity extends BaseActivity {
                     case R.id.menu_item_search:
                         SearchJobFragment searchJobFragment = new SearchJobFragment();
                         replaceFragment(searchJobFragment);
+
                         break;
                     case R.id.menu_item_bookmark:
                         ListBookmarkFragment bookmarkFragment = new ListBookmarkFragment();
                         replaceFragment(bookmarkFragment);
+
+                        break;
                     case R.id.menu_item_viewedjobs:
                         ListViewedJobsFragment listviewedjobsFragment = new ListViewedJobsFragment();
                         replaceFragment(listviewedjobsFragment);
+
                         break;
                     case R.id.menu_item_review:
                         CompanyReviewFragment companyReviewFragment = new CompanyReviewFragment();
                         replaceFragment(companyReviewFragment);
+
                         break;
                     case R.id.menu_item_new_review:
                         NewReviewFragment newReview = new NewReviewFragment();
                         replaceFragment(newReview);
+
                         break;
                     case R.id.menu_item_login:
                         startActivity(new Intent(MainActivity.this,LoginActivity.class));
@@ -142,6 +152,8 @@ public class MainActivity extends BaseActivity {
         toolbar = findViewById(R.id.toolbar);
 
     }
+
+
 }
 
 

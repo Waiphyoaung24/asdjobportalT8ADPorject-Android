@@ -7,13 +7,18 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.BookmarkedJobsDTO;
@@ -42,6 +47,7 @@ public class JobDetailFragment extends Fragment {
     TextView job_title;
     TextView job_qualification;
     TextView job_description;
+    ImageView ivBack;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +71,8 @@ public class JobDetailFragment extends Fragment {
          job_qualification = root.findViewById(R.id.job_qualification);
          job_description = root.findViewById(R.id.job_description);
         ShareURL = root.findViewById(R.id.ShareURL);
+        ivBack = root.findViewById(R.id.iv_back_detail);
+        SeeReviews = root.findViewById(R.id.SeeReviews);
 
 
         return root;
@@ -98,7 +106,21 @@ public class JobDetailFragment extends Fragment {
                 ShareURL();
             }
         });
+
+        SeeReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seeReviewForAParticularCompany();
+            }
+        });
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                }
+        });
     }
+
 
     private void saveBookmark() {
         Call<BookmarkedJobsDTO> call = RetrofitClient.getInstance().getResponse().saveBookmark(id);
@@ -112,9 +134,10 @@ public class JobDetailFragment extends Fragment {
 
             @Override
             public void onFailure(Call<BookmarkedJobsDTO> call, Throwable t) {
-                Log.e("error", t.getMessage());
+              
             }
         });
+        Toast.makeText(getActivity().getApplicationContext(), "Bookmark this job", Toast.LENGTH_SHORT).show();
     }
 
     private void ApplyJobUrl() {
@@ -250,6 +273,17 @@ public class JobDetailFragment extends Fragment {
                 Log.e("error", t.getMessage());
             }
         });
+    }
+    public void seeReviewForAParticularCompany(){
+        Bundle arguments = new Bundle();
+        arguments.putString("CompanyName",job_company.getText().toString());
+        ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
+        fragment.setArguments(arguments);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fl_container,fragment,"tag");
+        trans.addToBackStack("tag");
+        trans.commit();
     }
 
     public void setJobId(Long jobId) {

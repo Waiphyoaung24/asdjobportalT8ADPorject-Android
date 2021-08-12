@@ -13,7 +13,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      public void replaceFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
-        trans.replace(R.id.fl_container, fragment);
+        trans.replace(R.id.fl_container, fragment).addToBackStack("tag");
         trans.commit();
     }
 

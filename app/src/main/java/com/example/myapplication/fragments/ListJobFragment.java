@@ -151,4 +151,10 @@ public class ListJobFragment extends Fragment implements JobListDelegate {
         super.onDestroyView();
         ivFilter.setVisibility(View.GONE);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ivFilter.setVisibility(View.VISIBLE);
+    }
 }
