@@ -50,13 +50,13 @@ public class UserFragment extends Fragment {
         }
 
         loadUserProfile();
-/*        username = view.findViewById(R.id.et_username);
+        username = view.findViewById(R.id.et_username);
         firsName = view.findViewById(R.id.et_firstName);
         lastName = view.findViewById(R.id.et_lastName);
         Log.i("username",applicant.getUsername());
         username.setText(applicant.getUsername());
         firsName.setText(applicant.getFirstName());
-        lastName.setText(applicant.getLastName());*/
+        lastName.setText(applicant.getLastName());
         return view;
     }
     public void loadUserProfile(){
