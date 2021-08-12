@@ -22,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 public class UserFragment extends Fragment {
 
-    private ApplicantDTO applicant = new ApplicantDTO();
+    private ApplicantDTO applicant;
     private Token token = new Token();
     private TextView username, firsName, lastName;
 
@@ -50,13 +50,9 @@ public class UserFragment extends Fragment {
         }
 
         loadUserProfile();
-        username = view.findViewById(R.id.et_username);
+        username = view.findViewById(R.id.et_userName);
         firsName = view.findViewById(R.id.et_firstName);
         lastName = view.findViewById(R.id.et_lastName);
-        Log.i("username",applicant.getUsername());
-        username.setText(applicant.getUsername());
-        firsName.setText(applicant.getFirstName());
-        lastName.setText(applicant.getLastName());
         return view;
     }
     public void loadUserProfile(){
@@ -76,6 +72,8 @@ public class UserFragment extends Fragment {
                     }
                     applicant = response.body();
                     Log.i("applicant",applicant.toString());
+                    firsName.setText(applicant.getFirstName());
+                    lastName.setText(applicant.getLastName());
                 }
                 @Override
                 public void onFailure(Call<ApplicantDTO> call, Throwable t) {
