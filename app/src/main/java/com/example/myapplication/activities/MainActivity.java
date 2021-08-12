@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
@@ -103,6 +104,19 @@ public class MainActivity extends BaseActivity {
                         NewReviewFragment newReview = new NewReviewFragment();
                         replaceFragment(newReview);
                         break;
+                    case R.id.menu_item_login:
+                        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        break;
+ /*                   case R.id.menu_item_user:
+                        UserFragment userFragment = new UserFragment();
+                        Bundle bundle = new Bundle();
+                        if(token!=null){
+                            bundle.putSerializable("Token", token);
+                            userFragment.setArguments(bundle);
+                            Log.i("token: ", token.toString());
+                        }
+                        replaceFragment(userFragment);
+                        break;*/
 
 
                 }
