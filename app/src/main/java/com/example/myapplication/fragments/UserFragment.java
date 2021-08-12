@@ -5,10 +5,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStructure;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
@@ -22,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 public class UserFragment extends Fragment {
 
-    private ApplicantDTO applicant = new ApplicantDTO();
+    private ApplicantDTO applicant;
     private Token token = new Token();
     private TextView username, firsName, lastName;
 
@@ -41,6 +43,7 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
         View view = inflater.inflate(R.layout.fragment_user, container, false);
+
         try {
             token = (Token) bundle.getSerializable("Token");
             Log.i("get in fragment", token.toString());
@@ -50,15 +53,14 @@ public class UserFragment extends Fragment {
         }
 
         loadUserProfile();
-/*        username = view.findViewById(R.id.et_username);
+        username = view.findViewById(R.id.et_username);
         firsName = view.findViewById(R.id.et_firstName);
         lastName = view.findViewById(R.id.et_lastName);
-        Log.i("username",applicant.getUsername());
-        username.setText(applicant.getUsername());
-        firsName.setText(applicant.getFirstName());
-        lastName.setText(applicant.getLastName());*/
+        //Log.i("username",applicant.getUsername());
         return view;
     }
+
+
     public void loadUserProfile(){
         //check token
         if(token.getUsername()!=null){
@@ -66,6 +68,7 @@ public class UserFragment extends Fragment {
             String authorization = "Bearer "+token.getAccess_token();
             Log.i("request input", username);
             Log.i("authorization", authorization);
+
             Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().getApplicant(authorization, username);
             call.enqueue(new Callback<ApplicantDTO>() {
                 @Override
@@ -75,7 +78,10 @@ public class UserFragment extends Fragment {
                         Log.i("success","success");
                     }
                     applicant = response.body();
-                    Log.i("applicant",applicant.toString());
+
+                    //username.setText(applicant.getUsername());
+                    firsName.setText(applicant.getFirstName());
+                    lastName.setText(applicant.getLastName());
                 }
                 @Override
                 public void onFailure(Call<ApplicantDTO> call, Throwable t) {
@@ -85,5 +91,8 @@ public class UserFragment extends Fragment {
         } else {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
+
+
+
     }
 }
