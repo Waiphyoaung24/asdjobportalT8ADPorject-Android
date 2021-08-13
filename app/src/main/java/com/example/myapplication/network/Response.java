@@ -14,6 +14,7 @@ import com.example.myapplication.data.ViewedJobsDTO;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -105,7 +106,7 @@ public interface Response {
     Call<Token> login(@Field("username") String username, @Field("password") String password);
 
     @GET("user/applicant/{username}")
-    Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username")String username);
+    Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username") String username);
 
     @POST("user/applicant")
     Call<ApplicantDTO> saveApplicant(@Body ApplicantDTO applicant);

@@ -11,6 +11,16 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/Email"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/et_userName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <EditText
             android:id="@+id/et_userName"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -24,6 +34,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_firstName"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/firstName"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/et_userName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_firstName" />
+        <EditText
             android:id="@+id/et_firstName"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -36,6 +55,15 @@
             app:layout_constraintTop_toBottomOf="@+id/et_userName" />
 
         <TextView
+            android:id="@+id/tv_lastname"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/lastName"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/et_lastName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_lastName" />
+        <EditText
             android:id="@+id/et_lastName"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -47,18 +75,48 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_firstName" />
 
+        <TextView
+            android:id="@+id/tv_avatar"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/Avatar"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/et_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_avatar" />
+        <ImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/et_lastName" />
         <EditText
-            android:id="@+id/et_avartar"
+            android:id="@+id/et_avatar"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/edit_text"
-            android:titleTextColor="@color/black"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.701"
+            app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_lastName" />
+            app:layout_constraintTop_toBottomOf="@+id/et_lastName"
+            android:visibility="invisible"/>
 
+        <TextView
+            android:id="@+id/tv_gender"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/gender"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/et_gender"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_avatar" />
         <EditText
             android:id="@+id/et_gender"
             android:layout_width="200dp"
@@ -67,9 +125,19 @@
             android:background="@drawable/edit_text"
             android:titleTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.701"
+            app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_avartar" />
+            app:layout_constraintTop_toBottomOf="@+id/img_avatar" />
+
+        <TextView
+            android:id="@+id/tv_resume"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/resume"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/et_resume"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_resume" />
 
         <EditText
             android:id="@+id/et_resume"
@@ -79,36 +147,69 @@
             android:background="@drawable/edit_text"
             android:titleTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.701"
+            app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_gender" />
 
+        <TextView
+            android:id="@+id/tv_contactNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contactNumber"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/et_resume"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_contactNumber" />
         <EditText
-            android:id="@+id/et_age"
+            android:id="@+id/et_contactNumber"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/edit_text"
             android:titleTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.701"
+            app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_resume" />
-
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_updateUserProfile"
             style="@style/CustomButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/black"
             android:text="update User profile"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.677"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_age" />
+            app:layout_constraintBottom_toTopOf="@+id/btn_logout"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_logout"
+            style="@style/CustomButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/black"
+            android:text="Log Out"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/btn_delete"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_delete"
+            style="@style/CustomButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/black"
+            android:text="Delete User"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -26,6 +26,9 @@
     <item android:id="@+id/menu_item_login"
         android:title="Login">
     </item>
+    <item android:id="@+id/menu_item_registration"
+        android:title="Sign Up">
+    </item>
     <item android:id="@+id/menu_item_user"
         android:title="User Setting">
     </item>

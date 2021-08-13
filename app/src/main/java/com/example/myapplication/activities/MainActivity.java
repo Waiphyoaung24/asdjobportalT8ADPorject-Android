@@ -1,12 +1,15 @@
 package com.example.myapplication.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,7 +23,9 @@ import com.example.myapplication.fragments.JobIndustryByCategoryFragment;
 import com.example.myapplication.fragments.ListBookmarkFragment;
 import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.fragments.ListViewedJobsFragment;
+import com.example.myapplication.fragments.LoginFragment;
 import com.example.myapplication.fragments.NewReviewFragment;
+import com.example.myapplication.fragments.RegistrationFragment;
 import com.example.myapplication.fragments.SearchJobFragment;
 import com.example.myapplication.fragments.UserFragment;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -51,14 +56,13 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initComponents();
 
-        //get token
-        try {
-            Intent intent = getIntent();
-            Bundle bundle = intent.getExtras();
-            token = (Token)bundle.getSerializable("Token");
-            Log.i("token get in main activity: ", token.toString());
-        } catch(Exception e){
-            Log.e("error: ", e.getMessage());
+        //TODO: may considering how to auto login as well as log out
+        try{
+            SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = storeToken.edit();
+            editor.clear().apply();
+        } catch(NullPointerException e){
+            Log.i("there is no user signed in","");
         }
 
         //drawerlayout toggle state
@@ -122,7 +126,12 @@ public class MainActivity extends BaseActivity {
 
                         break;
                     case R.id.menu_item_login:
-                        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        LoginFragment loginFragment = new LoginFragment();
+                        replaceFragment(loginFragment);
+                        break;
+                    case R.id.menu_item_registration:
+                        RegistrationFragment registrationFragment = new RegistrationFragment();
+                        replaceFragment(registrationFragment);
                         break;
                     case R.id.menu_item_user:
                         UserFragment userFragment = new UserFragment();
@@ -143,6 +152,8 @@ public class MainActivity extends BaseActivity {
 
 
     }
+
+    //TODO: when exit the app, clear sharedpreference("storeToken")
 
     private void initComponents() {
         flContainer = findViewById(R.id.fl_container);
