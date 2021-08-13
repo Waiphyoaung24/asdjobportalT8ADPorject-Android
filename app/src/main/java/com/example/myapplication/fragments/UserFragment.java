@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import retrofit2.Response;
 public class UserFragment extends Fragment {
     private EditText username,firsName,lastName,gender,contact;
     private ImageView avatar;
+    private Button delete, update,logOut;
     String username_,access_token;
 
     public UserFragment() {
@@ -58,6 +60,9 @@ public class UserFragment extends Fragment {
         gender = view.findViewById(R.id.et_gender);
         contact=view.findViewById(R.id.et_contactNumber);
         avatar = view.findViewById(R.id.img_avatar);
+        delete = view.findViewById(R.id.btn_delete);
+        update = view.findViewById(R.id.btn_updateUserProfile);
+        logOut = view.findViewById(R.id.btn_logout);
 
         try{
             SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
@@ -72,6 +77,13 @@ public class UserFragment extends Fragment {
         }
 
         loadUserProfile();
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateUser();
+            }
+        });
+
         return view;
     }
     public void loadUserProfile(){
@@ -86,7 +98,7 @@ public class UserFragment extends Fragment {
                 public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
                     Log.i("status", String.valueOf(response.code()));
                     if(response.isSuccessful()){
-                        Log.i("success","success");
+                        Log.i("get user profile success","success");
                         ApplicantDTO applicant = (ApplicantDTO)response.body();
                         Log.i("applicant",applicant.toString());
                         username.setText(applicant.getUsername());
@@ -107,4 +119,36 @@ public class UserFragment extends Fragment {
             Toast.makeText(getActivity(),"please login first",Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void updateUser(){
+        ApplicantDTO applicant = new ApplicantDTO();
+  /*      if(username_!=username.getText().toString()){
+            Toast.makeText(getActivity(),"can not update email",Toast.LENGTH_SHORT).show();
+        }*/
+        applicant.setUsername(username_);
+        applicant.setContactNumber(contact.getText().toString());
+        applicant.setGender(gender.getText().toString());
+        applicant.setFirstName(firsName.getText().toString());
+        applicant.setLastName(lastName.getText().toString());
+        Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().saveApplicant(applicant);
+        call.enqueue(new Callback<ApplicantDTO>() {
+            @Override
+            public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
+                if(response.isSuccessful()){
+                    Log.i("update success",response.toString());
+                    Toast.makeText(getActivity(),"Update success",Toast.LENGTH_SHORT).show();
+                    //loadUserProfile();
+                } else {
+                    Log.i("response",response.message());
+                    Toast.makeText(getActivity(),response.message(),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApplicantDTO> call, Throwable t) {
+                Log.i("update on failure",t.getMessage());
+            }
+        });
+    }
+
 }
