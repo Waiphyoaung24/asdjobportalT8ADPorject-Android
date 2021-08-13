@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Header;
 
 public class JobDetailFragment extends Fragment {
 
@@ -66,11 +65,11 @@ public class JobDetailFragment extends Fragment {
 
         asd_level = root.findViewById(R.id.asd_level);
         ApplyViaURL = root.findViewById(R.id.ApplyViaURL);
-         job_title = root.findViewById(R.id.job_title);
-         job_company = root.findViewById(R.id.job_company);
+        job_title = root.findViewById(R.id.job_title);
+        job_company = root.findViewById(R.id.job_company);
         ApplyViaHrEmail = root.findViewById(R.id.ApplyViaHrEmail);
-         job_qualification = root.findViewById(R.id.job_qualification);
-         job_description = root.findViewById(R.id.job_description);
+        job_qualification = root.findViewById(R.id.job_qualification);
+        job_description = root.findViewById(R.id.job_description);
         ShareURL = root.findViewById(R.id.ShareURL);
         ivBack = root.findViewById(R.id.iv_back_detail);
         SeeReviews = root.findViewById(R.id.SeeReviews);
@@ -118,7 +117,7 @@ public class JobDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                }
+            }
         });
     }
 
@@ -135,7 +134,7 @@ public class JobDetailFragment extends Fragment {
 
             @Override
             public void onFailure(Call<BookmarkedJobsDTO> call, Throwable t) {
-              
+
             }
         });
         Toast.makeText(getActivity().getApplicationContext(), "Bookmark this job", Toast.LENGTH_SHORT).show();

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
-import com.example.myapplication.activities.JobAdminActivity;
 import com.example.myapplication.adapters.ListJobAdapter;
 import com.example.myapplication.data.JobDTO;
 import com.example.myapplication.delegates.CategoryByJobDelegate;
@@ -104,9 +105,12 @@ public class JobIndustryByListFragment extends Fragment implements JobListDelega
 
     @Override
     public void onClickJobList(long jobId) {
-        Intent intent = new Intent(getActivity(), JobAdminActivity.class);
-        intent.putExtra("jobId",jobId);
-        startActivity(intent);
+        JobDetailFragment fragment = new JobDetailFragment();
+        fragment.setJobId(jobId);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fl_container, fragment);
+        trans.commit();
     }
 
 

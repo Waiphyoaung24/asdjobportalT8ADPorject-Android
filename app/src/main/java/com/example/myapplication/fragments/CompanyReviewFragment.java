@@ -70,7 +70,7 @@ public class CompanyReviewFragment extends Fragment implements ListAllReviewAdap
 
 
 
-         return root;
+        return root;
     }
 
     private void fetchData() {
@@ -142,15 +142,15 @@ public class CompanyReviewFragment extends Fragment implements ListAllReviewAdap
     public void onItemClick(int position, String jobTitle) {
 
         if(currentView.equals("Company")){
-        Bundle arguments = new Bundle();
-        arguments.putString("CompanyName",mDataset.get(position).getCompanyName());
-        ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
-        fragment.setArguments(arguments);
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        FragmentTransaction trans = fm.beginTransaction();
-        trans.replace(R.id.fl_container,fragment,"tag");
-        trans.addToBackStack("tag");
-        trans.commit();
+            Bundle arguments = new Bundle();
+            arguments.putString("CompanyName",mDataset.get(position).getCompanyName());
+            ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
+            fragment.setArguments(arguments);
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            FragmentTransaction trans = fm.beginTransaction();
+            trans.replace(R.id.fl_container,fragment,"tag");
+            trans.addToBackStack("tag");
+            trans.commit();
         }
 
         if(currentView.equals("Job")){
@@ -210,7 +210,7 @@ public class CompanyReviewFragment extends Fragment implements ListAllReviewAdap
         if(currentView.equals("Job")){
             Bundle arguments = new Bundle();
             //need to get the data from the recycleview
-           // arguments.putString("JobName",jobTitle);
+            // arguments.putString("JobName",jobTitle);
             ListJobReviewFragment fragment = new ListJobReviewFragment();
             fragment.setArguments(arguments);
             FragmentManager fm = getActivity().getSupportFragmentManager();
