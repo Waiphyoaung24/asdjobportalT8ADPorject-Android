@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
             token = (Token)bundle.getSerializable("Token");
-            Log.i("token: ", token.toString());
+            Log.i("token get in main activity: ", token.toString());
         } catch(Exception e){
             Log.e("error: ", e.getMessage());
         }

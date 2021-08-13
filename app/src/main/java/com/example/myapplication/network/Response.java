@@ -107,6 +107,8 @@ public interface Response {
     @GET("user/applicant/{username}")
     Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username")String username);
 
+    @POST("user/applicant")
+    Call<ApplicantDTO> saveApplicant(@Body ApplicantDTO applicant);
 
 /*    @GET("user/list")
     Call<List<UserDTO>> getUserList();
@@ -114,8 +116,7 @@ public interface Response {
     @POST("user/admin")
     Call<ResponseBody> saveAdmin(UserDTO user);
 
-    @POST("user/applicant")
-    Call<ResponseBody> saveApplicant(ApplicantDTO applicant);
+
 
     @DELETE("user/Applicant")
     Call<ResponseBody> deleteApplicant(ApplicantDTO applicant);

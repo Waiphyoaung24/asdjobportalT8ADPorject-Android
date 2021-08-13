@@ -1,6 +1,5 @@
 package com.example.myapplication.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.JobDTO;
-import com.example.myapplication.delegates.CategoryByJobDelegate;
 import com.example.myapplication.delegates.JobListDelegate;
 import com.example.myapplication.viewholders.JobListItemViewHolder;
 
