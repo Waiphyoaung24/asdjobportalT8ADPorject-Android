@@ -2,12 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-<<<<<<< Updated upstream
-    android:layout_height="match_parent"
-    android:gravity="top"
-    android:orientation="vertical"
-    >
-=======
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
@@ -23,16 +17,12 @@
         android:layout_marginTop="12dp">
 
     </ImageView>
->>>>>>> Stashed changes
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="13sp"
-        android:layout_marginTop="54dp"
-        android:gravity="center"
         android:textColor="@color/black"
-<<<<<<< Updated upstream
         android:layout_marginTop="0dp"
         android:text="ASD Level"/>
     <TextView
@@ -49,15 +39,12 @@
         android:textSize="13sp"
         android:textColor="@color/black"
         android:layout_marginTop="0dp"
-=======
->>>>>>> Stashed changes
         android:text="Job Title"/>
     <TextView
         android:id="@+id/job_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:gravity="center"
         android:textColor="@color/black"
         android:layout_marginTop="0dp"
         android:layout_marginLeft="15dp"/>
@@ -66,14 +53,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="13sp"
-        android:gravity="center"
         android:textColor="@color/black"
         android:layout_marginTop="10dp"
         android:text="Company"/>
     <TextView
         android:id="@+id/job_company"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textColor="@color/black"
@@ -83,7 +68,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:textSize="13sp"
         android:textColor="@color/black"
         android:layout_marginTop="10dp"
         android:text="Job Qualification"/>
@@ -91,7 +76,6 @@
         android:id="@+id/job_qualification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:textSize="16sp"
         android:textColor="@color/black"
         android:layout_marginTop="0dp"
@@ -102,21 +86,21 @@
         android:layout_height="wrap_content"
         android:textSize="13sp"
         android:textColor="@color/black"
-        android:gravity="center"
         android:layout_marginTop="10dp"
         android:text="Job Description"/>
     <TextView
         android:id="@+id/job_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:textSize="16sp"
         android:textColor="@color/black"
         android:layout_marginTop="0dp"
         android:layout_marginLeft="15dp"/>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="34dp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.button.MaterialButton
