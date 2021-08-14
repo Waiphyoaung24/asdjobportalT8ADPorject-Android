@@ -1,7 +1,6 @@
 package com.example.myapplication.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,8 +27,13 @@ import com.example.myapplication.fragments.NewReviewFragment;
 import com.example.myapplication.fragments.RegistrationFragment;
 import com.example.myapplication.fragments.SearchJobFragment;
 import com.example.myapplication.fragments.UserFragment;
+import com.example.myapplication.network.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -56,14 +60,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initComponents();
 
-        //TODO: may considering how to auto login as well as log out
-        try{
-            SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = storeToken.edit();
-            editor.clear().apply();
-        } catch(NullPointerException e){
-            Log.i("there is no user signed in","");
-        }
+        refreshToken();
 
         //drawerlayout toggle state
         toggle = new ActionBarDrawerToggle(this, findViewById(R.id.drawerlayout), R.string.open, R.string.close);
@@ -73,7 +70,6 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_dehaze);
-
 
 
         //changing color of status bar
@@ -136,7 +132,7 @@ public class MainActivity extends BaseActivity {
                     case R.id.menu_item_user:
                         UserFragment userFragment = new UserFragment();
                         Bundle bundle = new Bundle();
-                        if(token!=null){
+                        if (token != null) {
                             bundle.putSerializable("Token", token);
                             userFragment.setArguments(bundle);
                             Log.i("token: ", token.toString());
@@ -153,7 +149,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    //TODO: when exit the app, clear sharedpreference("storeToken")
 
     private void initComponents() {
         flContainer = findViewById(R.id.fl_container);
@@ -164,7 +159,50 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    //TODO: when exit the app, clear sharedpreference("storeToken")
+    private void refreshToken() {
+        String username_, refresh_token;
+        try {
+            SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+            username_ = storeToken.getString("username", null);
+            refresh_token = storeToken.getString("refresh_token", null);
+            if (username_ != null && refresh_token != null) {
+                String authorization = "Bearer " + refresh_token;
+                Log.i("refreshtoken", authorization);
+                Call<Token> call = RetrofitClient.getInstance().getResponse().refreshToken(authorization);
+                call.enqueue(new Callback<Token>() {
+                    @Override
+                    public void onResponse(Call<Token> call, Response<Token> response) {
+                        Log.i("status", String.valueOf(response.code()));
+                        if (response.isSuccessful()) {
+                            Log.i("refresh success", "success");
+                            SharedPreferences.Editor editor = storeToken.edit();
+                            Token token = response.body();
+                            editor.putString("access_token", token.getAccess_token());
+                            editor.putString("refresh_token", token.getRefresh_token());
+                            editor.putString("username", token.getUsername());
+                            editor.apply();
+                        } else {
+                            Log.i("refresh fail", "");
+                            Toast.makeText(getApplicationContext(), "plese login first", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<Token> call, Throwable t) {
+                        Log.i("refresh token on failure error: ", t.getMessage());
+                        Toast.makeText(getApplicationContext(), "plese login first", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Log.i("there is no token stored, need login first", "");
+                Toast.makeText(getApplicationContext(), "please login first", Toast.LENGTH_SHORT).show();
+            }
+        } catch(NullPointerException e){
+            Toast.makeText(this,"please login first",Toast.LENGTH_SHORT).show();
+            Log.i("there is no user stored","");
+        }
+    }
 }
 
 

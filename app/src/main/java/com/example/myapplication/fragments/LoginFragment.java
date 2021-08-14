@@ -65,7 +65,7 @@ public class LoginFragment extends Fragment {
         call.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
-                Token token = (Token)response.body();
+                Token token = response.body();
                 if(token!=null && response.isSuccessful()){
                     Log.i("login success",token.toString());
                     SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
@@ -76,6 +76,8 @@ public class LoginFragment extends Fragment {
                     editor.apply();
                     Toast.makeText(getActivity(),"login success",Toast.LENGTH_SHORT).show();
                     //TODO return back to main activity;
+                } else {
+                    Toast.makeText(getActivity(),"login unsuccessful",Toast.LENGTH_SHORT).show();
                 }
             }
             @Override

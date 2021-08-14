@@ -1,12 +1,8 @@
 package com.example.myapplication.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,27 +10,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.ApplicantDTO;
-import com.example.myapplication.data.Token;
 import com.example.myapplication.network.RetrofitClient;
-import com.google.gson.JsonObject;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 public class UserFragment extends Fragment {
-    private EditText username,firsName,lastName,gender,contact;
+    private EditText username,firsName,lastName,gender,contact,password;
     private ImageView avatar;
     private Button delete, update,logOut;
     String username_,access_token;
@@ -55,6 +44,7 @@ public class UserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
 
         username = view.findViewById(R.id.et_userName);
+        password =view.findViewById(R.id.et_password);
         firsName = view.findViewById(R.id.et_firstName);
         lastName = view.findViewById(R.id.et_lastName);
         gender = view.findViewById(R.id.et_gender);
@@ -71,7 +61,7 @@ public class UserFragment extends Fragment {
             if(username_!=null)
                 Toast.makeText(getActivity(),"you have already Signed in",Toast.LENGTH_SHORT).show();
             else
-                Toast.makeText(getActivity(),"there is no user signed in",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"there is no user signed in, please lpgin first",Toast.LENGTH_SHORT).show();
         } catch(NullPointerException e){
             Log.i("there is no user signed in","");
         }
@@ -83,12 +73,25 @@ public class UserFragment extends Fragment {
                 updateUser();
             }
         });
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOut();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteUser();
+            }
+        });
 
         return view;
     }
+
     public void loadUserProfile(){
         //check token
-        if(access_token!=null){
+        if(username_ != null&&access_token!=null){
             String authorization = "Bearer "+access_token;
             Log.i("request input", username_);
             Log.i("authorization", authorization);
@@ -115,40 +118,90 @@ public class UserFragment extends Fragment {
             });
         } else {
             Log.i("need to go back to login", "");
-            //TODO back to LoginFragment
+
             Toast.makeText(getActivity(),"please login first",Toast.LENGTH_SHORT).show();
         }
     }
 
     public void updateUser(){
-        ApplicantDTO applicant = new ApplicantDTO();
-  /*      if(username_!=username.getText().toString()){
-            Toast.makeText(getActivity(),"can not update email",Toast.LENGTH_SHORT).show();
-        }*/
-        applicant.setUsername(username_);
-        applicant.setContactNumber(contact.getText().toString());
-        applicant.setGender(gender.getText().toString());
-        applicant.setFirstName(firsName.getText().toString());
-        applicant.setLastName(lastName.getText().toString());
-        Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().saveApplicant(applicant);
-        call.enqueue(new Callback<ApplicantDTO>() {
-            @Override
-            public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
-                if(response.isSuccessful()){
-                    Log.i("update success",response.toString());
-                    Toast.makeText(getActivity(),"Update success",Toast.LENGTH_SHORT).show();
-                    //loadUserProfile();
-                } else {
-                    Log.i("response",response.message());
-                    Toast.makeText(getActivity(),response.message(),Toast.LENGTH_SHORT).show();
+        if (username_ != null && access_token != null) {
+            String authorization = "Bearer "+access_token;
+            ApplicantDTO applicant = new ApplicantDTO();
+            applicant.setUsername(username_);
+            applicant.setPassword(password.getText().toString());
+            applicant.setContactNumber(contact.getText().toString());
+            applicant.setGender(gender.getText().toString());
+            applicant.setFirstName(firsName.getText().toString());
+            applicant.setLastName(lastName.getText().toString());
+            Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().updateApplicant(authorization, applicant);
+            call.enqueue(new Callback<ApplicantDTO>() {
+                @Override
+                public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
+                    if (response.isSuccessful()) {
+                        Log.i("update success", response.toString());
+                        Toast.makeText(getActivity(), "Update success", Toast.LENGTH_SHORT).show();
+                        //loadUserProfile();
+                    } else {
+                        Log.i("response", response.message());
+                        Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ApplicantDTO> call, Throwable t) {
-                Log.i("update on failure",t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<ApplicantDTO> call, Throwable t) {
+                    Log.i("update on failure", t.getMessage());
+                }
+            });
+        } else {
+            //TODO back to LoginFragment
+            Toast.makeText(getActivity(), "please login first", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void deleteUser() {
+        if (username_ != null && access_token != null) {
+            String authorization = "Bearer " + access_token;
+            Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().deleteApplicant(authorization, username_);
+            call.enqueue(new Callback<ApplicantDTO>() {
+                @Override
+                public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getActivity(), "delete user success", Toast.LENGTH_SHORT).show();
+                        username.setText("");
+                        firsName.setText("");
+                        lastName.setText("");
+                        gender.setText("");
+                        contact.setText("");
+                        password.setText("");
+                    } else {Toast.makeText(getActivity(), "delete user unsuccessful", Toast.LENGTH_SHORT).show();}
+                }
+                @Override
+                public void onFailure(Call<ApplicantDTO> call, Throwable t) {
+                    Log.i("delete user failure",t.getMessage());
+                    Toast.makeText(getActivity(), "delete user unsuccessful", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            //TODO back to LoginFragment
+            Toast.makeText(getActivity(), "please login first", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void logOut(){
+        try{
+            SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = storeToken.edit();
+            editor.clear().apply();
+            Toast.makeText(getActivity(),"you have logged out", Toast.LENGTH_SHORT).show();
+            password.setText("");
+            username.setText("");
+            firsName.setText("");
+            lastName.setText("");
+            gender.setText("");
+            contact.setText("");
+        } catch(NullPointerException e){
+            Log.i("there is no user to log out","");
+        }
     }
 
 }

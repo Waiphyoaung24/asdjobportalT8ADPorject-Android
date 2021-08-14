@@ -105,26 +105,19 @@ public interface Response {
     @FormUrlEncoded
     Call<Token> login(@Field("username") String username, @Field("password") String password);
 
-    @GET("user/applicant/{username}")
-    Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username") String username);
-
     @POST("user/applicant")
     Call<ApplicantDTO> saveApplicant(@Body ApplicantDTO applicant);
 
-/*    @GET("user/list")
-    Call<List<UserDTO>> getUserList();
+    @GET("user/applicant/{username}")
+    Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username") String username);
 
-    @POST("user/admin")
-    Call<ResponseBody> saveAdmin(UserDTO user);
+    @POST("user/applicant/update")
+    Call<ApplicantDTO> updateApplicant(@Header("Authorization") String authHeader, @Body ApplicantDTO applicant);
 
-
-
-    @DELETE("user/Applicant")
-    Call<ResponseBody> deleteApplicant(ApplicantDTO applicant);
+    @DELETE("user/applicant/{username}")
+    Call<ApplicantDTO> deleteApplicant(@Header("Authorization") String authHeader, @Path("username") String username);
 
     @GET("user/refreshtoken")
-    Call<Token> refreshToken();*/
-
-
+    Call<Token> refreshToken(@Header("Authorization") String authHeader);
 
 }
