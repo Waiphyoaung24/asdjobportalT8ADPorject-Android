@@ -159,7 +159,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    //TODO: when exit the app, clear sharedpreference("storeToken")
     private void refreshToken() {
         String username_, refresh_token;
         try {
