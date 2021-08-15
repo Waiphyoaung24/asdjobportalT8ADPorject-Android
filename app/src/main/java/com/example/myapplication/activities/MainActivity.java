@@ -1,6 +1,7 @@
 package com.example.myapplication.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -201,6 +202,18 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(this,"please login first",Toast.LENGTH_SHORT).show();
             Log.i("there is no user stored","");
         }
+    }
+
+    @Override
+    public void onActivityResult(int req, int res, Intent data) {
+        super.onActivityResult(req, res, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        int i = RESULT_OK;
     }
 }
 
