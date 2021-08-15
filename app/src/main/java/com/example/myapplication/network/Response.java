@@ -129,5 +129,5 @@ public interface Response {
 
     @Streaming
     @POST("user/applicant/avatar/{username}")
-    Call<ResponseBody> uploadAvatar(String authorization, @Part MultipartBody.Part filePart, String username_);
+    Call<ResponseBody> uploadAvatar(@Header("Authorization")String authorization, @Part MultipartBody.Part filePart, String username_);
 }

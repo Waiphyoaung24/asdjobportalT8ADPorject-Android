@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,19 +27,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.network.RetrofitClient;
+import com.lzy.okgo.OkGo;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import okhttp3.MultipartBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -144,7 +143,10 @@ public class UserFragment extends Fragment {
                         lastName.setText(applicant.getLastName());
                         gender.setText(applicant.getGender());
                         contact.setText(applicant.getContactNumber());
-                        loadUserAvatar();
+                        String avatarUrl = "http://10.0.2.2:8080/static/"+ applicant.getUsername()+"/avatar.png";
+                        Glide.with(getView())
+                            .load(avatarUrl)
+                            .into(avatar);
                     }
                 }
                 @Override
@@ -177,6 +179,8 @@ public class UserFragment extends Fragment {
                         Log.i("update success", response.toString());
                         Toast.makeText(getActivity(), "Update success", Toast.LENGTH_SHORT).show();
                         //loadUserProfile();
+                        updateAvatar(applicant.getUsername(),authorization);
+
                     } else {
                         Log.i("response", response.message());
                         Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
@@ -246,36 +250,28 @@ public class UserFragment extends Fragment {
     //select a photo from folder
     //take a photo and save in the folder
 
-    public void loadUserAvatar() {
-        String authorization = "Bearer "+access_token;
-        Call<ResponseBody> call = RetrofitClient.getInstance().getResponse().downloadAvatar(authorization,username_);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                File file = new File(Environment.getExternalStorageDirectory()+"/avatar");
-                try {
-                    InputStream inputStream = response.body().byteStream();
-                    FileOutputStream outputStream = new FileOutputStream(file);
-                    avatar.setImageURI(Uri.fromFile(file));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (NullPointerException nulle){
-                    nulle.printStackTrace();
-                }
-            }
+    private void updateAvatar(String username, String authorization) {
+        String url = "http://10.0.2.2:8080/api/user/applicant/avatar/";
+        Bitmap bitmap = ((BitmapDrawable) avatar.getDrawable()).getBitmap();
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-             }
-        });
+            File file=new File("/storage/emulated/0/{}.jpg",username);
+        try { BufferedOutputStream bos = new BufferedOutputStream(
+                new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+            OkGo.post(url)
+                    .isMultipart(true).headers("Authorization", authorization)
+                    .params("username", username).isSpliceUrl(true)
+                    .params("file", file)
+                    .tag(this).execute();
+        }
+        catch (IOException e) {
+            e.printStackTrace(); }
 
     }
 
 
-    public void uploadAvatar(){
-
-    }
 
 
     private void showChoosePicDialog(){
