@@ -21,6 +21,7 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/edit_text"
             android:padding="8dp"
+            android:textSize="7pt"
             app:titleTextColor="@color/black"
             android:hint="Search Here"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -49,7 +50,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvList_Jobs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="54dp"

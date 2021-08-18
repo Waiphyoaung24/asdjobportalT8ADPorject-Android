@@ -78,6 +78,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:id="@+id/nav_menu"
+        style="@style/Widget.App.NavigationView"
         android:layout_gravity="start"
         app:menu="@menu/nav_menu"/>
         <!--app:headerLayout="@layout/header_layout"-->/>

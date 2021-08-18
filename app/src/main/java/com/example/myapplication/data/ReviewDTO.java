@@ -19,7 +19,7 @@ public class ReviewDTO implements Serializable {
     private String jobTitle;
     //private String jobIndustry;
     private long userId;
-    //private String applicantName;
+
 
     public ReviewDTO() {}
 

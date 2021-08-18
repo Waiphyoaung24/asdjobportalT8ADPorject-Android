@@ -23,8 +23,8 @@ public class ViewedJobsItemViewHolder extends RecyclerView.ViewHolder  {
     }
 
     public void bind(ViewedJobsDTO mData){
-        tvjobtitle1.setText("Title :"+mData.getJobtitle());
-        tvjobcompany1.setText("Position : "+mData.getCompanyname());
+        tvjobtitle1.setText(mData.getJobtitle());
+        tvjobcompany1.setText(mData.getCompanyname());
         tvjobdateapplied.setText("Date Applied :" +mData.getAppliedDate());
     }
 }

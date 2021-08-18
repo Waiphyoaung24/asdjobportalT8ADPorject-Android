@@ -9,60 +9,102 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <EditText
-        android:id="@+id/et_searchbyName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/edit_text"
-        android:padding="8dp"
-        app:titleTextColor="@color/black"
-        android:hint="Search By Name"
-        app:layout_constraintLeft_toLeftOf="parent"
+
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_baseline_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.6">
-
-    </EditText>
-    <EditText
-        android:id="@+id/et_jobstarRating"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/iv_back"
+        android:layout_marginTop="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/edit_text"
-        android:padding="8dp"
-        app:titleTextColor="@color/black"
-        android:hint="Search By Job Star Rating"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_searchbyName"
-        app:layout_constraintWidth_percent="0.6">
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
-    </EditText>
-    <EditText
-        android:id="@+id/et_searchbyAutisumLvl"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/edit_text"
-        android:padding="8dp"
-        app:titleTextColor="@color/black"
-        android:hint="Search by AutismLvl"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_jobstarRating"
-        app:layout_constraintWidth_percent="0.6">
-
-    </EditText>
-
-    <com.google.android.material.button.MaterialButton
+    <TextView
+        android:id="@+id/tv_job_category_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/et_searchbyAutisumLvl"
-        app:layout_constraintLeft_toLeftOf="@id/et_searchbyAutisumLvl"
         android:text="Filter"
+        android:textColor="#0F0250"
+        android:textSize="9pt"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_back"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintTop_toTopOf="@+id/iv_back" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/iv_back"
+        android:hint="Name or Location"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_searchbyName"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_jobstarRating_container"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/outlinedTextField"
+        android:hint="Job Rating"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_jobstarRating"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_searchbyAutisumLvl_container"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
+        android:hint="Autism Level"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_jobstarRating_container">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_searchbyAutisumLvl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_filter"
-        android:layout_marginTop="24dp">
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:text="Filter"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_searchbyAutisumLvl_container">
 
     </com.google.android.material.button.MaterialButton>
 </androidx.constraintlayout.widget.ConstraintLayout>

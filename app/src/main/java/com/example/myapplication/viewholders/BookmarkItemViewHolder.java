@@ -23,8 +23,8 @@ public class BookmarkItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(BookmarkedJobsDTO mData){
-        tvjobtitle.setText("Title :"+mData.getJobtitle());
-        tvjobcompany.setText("Position : "+mData.getCompanyname());
+        tvjobtitle.setText(mData.getJobtitle());
+        tvjobcompany.setText(mData.getCompanyname());
         tvjobdatebookmark.setText("Date Bookmarked :" +mData.getBookmarkDate());
     }
 }
