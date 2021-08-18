@@ -34,15 +34,24 @@ import com.example.myapplication.network.RetrofitClient;
 import com.lzy.okgo.OkGo;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory;
+import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 
 
 public class UserFragment extends Fragment {
@@ -50,11 +59,9 @@ public class UserFragment extends Fragment {
     private ImageView avatar;
     private Button delete, update,logOut,selectAvatar;
     String username_,access_token;
-    private File output;
+    private static final String AVATAR_BASE_URL = "http://10.0.2.2:8080/static/";
+    private static final String AVATAR_FILE_NAME = "avatar.png";
 
-    public static final int REQUEST_PERMISSION_CAMERA_CODE = 123;
-    private static final int CROP_PHOTO = 2;
-    private static final int REQUEST_CODE_PICK_IMAGE=3;
 
     public UserFragment() {
         // Required empty public constructor
@@ -80,7 +87,7 @@ public class UserFragment extends Fragment {
         delete = view.findViewById(R.id.btn_delete);
         update = view.findViewById(R.id.btn_updateUserProfile);
         logOut = view.findViewById(R.id.btn_logout);
-        selectAvatar = view.findViewById(R.id.btn_selectAvatar);
+/*        selectAvatar = view.findViewById(R.id.btn_selectAvatar);*/
 
         try{
             SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
@@ -117,7 +124,7 @@ public class UserFragment extends Fragment {
         selectAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showChoosePicDialog();
+                //showChoosePicDialog();
             }
         });
         return view;
@@ -143,10 +150,7 @@ public class UserFragment extends Fragment {
                         lastName.setText(applicant.getLastName());
                         gender.setText(applicant.getGender());
                         contact.setText(applicant.getContactNumber());
-                        String avatarUrl = "http://10.0.2.2:8080/static/"+ applicant.getUsername()+"/avatar.png";
-                        Glide.with(getView())
-                            .load(avatarUrl)
-                            .into(avatar);
+                        downLoadAvatar(username_);
                     }
                 }
                 @Override
@@ -244,157 +248,31 @@ public class UserFragment extends Fragment {
         }
     }
 
+    private void downLoadAvatar(String username) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(getContext()).clearDiskCache();
+            }
+        };
+        new Thread(runnable).start();
+        Glide.get(getContext()).clearMemory();
+        String avatarUrl = AVATAR_BASE_URL + File.separator + username+File.separator+AVATAR_FILE_NAME;
+        Glide.with(getView())
+                .load(avatarUrl)
+                .into(avatar);
+    }
+
+    private void updateAvatar(String username, String authorization) {
+    }
+
+
 
     //show the option for choose take a photo or take a picture
     //check permission
     //select a photo from folder
     //take a photo and save in the folder
-
-    private void updateAvatar(String username, String authorization) {
-        String url = "http://10.0.2.2:8080/api/user/applicant/avatar/";
-        Bitmap bitmap = ((BitmapDrawable) avatar.getDrawable()).getBitmap();
-
-            File file=new File("/storage/emulated/0/{}.jpg",username);
-        try { BufferedOutputStream bos = new BufferedOutputStream(
-                new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-            bos.flush();
-            bos.close();
-            OkGo.post(url)
-                    .isMultipart(true).headers("Authorization", authorization)
-                    .params("username", username).isSpliceUrl(true)
-                    .params("file", file)
-                    .tag(this).execute();
-        }
-        catch (IOException e) {
-            e.printStackTrace(); }
-
-    }
+ }
 
 
 
-
-    private void showChoosePicDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("select a picture");
-        String[] items = {"take a picture","select a picture"};
-        builder.setNegativeButton("取消",null);
-        builder.setItems(items, new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                switch(which){
-                    case 0:
-                        Log.e("Dialog","TAKE picture");
-                        //choose to take a picture using camera
-                        check_permission_and_take_photo();
-                        break;
-                    case 1:
-                        Log.e("Dialog","CHOOSE picture");
-                        check_permission_and_choose_Photo();
-                        break;
-                }
-            }
-        });
-        builder.show();
-    }
-
-    public void check_permission_and_take_photo(){
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                Log.i("PEMISSION","success");
-                take_Photos();
-        }
-        else {
-            Log.i("PEMISSION","need apply permission");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},REQUEST_PERMISSION_CAMERA_CODE);
-        }
-    }
-
-    public void check_permission_and_choose_Photo(){
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                Log.i("PEMISSION","approved, choose a picture");
-                choose_Photos();
-            }
-        else {
-                Log.i("PEMISSION","please apply the permission");
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CAMERA_CODE);
-            }
-    }
-
-    void take_Photos(){
-        File file=new File(Environment.getExternalStorageDirectory()+"/"+"avatar");
-        if(!file.exists()){
-            file.mkdir();
-        }
-        //use timestamp as file name
-        output=new File(file,System.currentTimeMillis()+".jpg");
-        try {
-            if (output.exists()) {
-                output.delete();
-            }
-            output.createNewFile();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        Uri imageUri = Uri.fromFile(output);
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, CROP_PHOTO);
-    }
-
-    void choose_Photos(){
-        //how to open the folder
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");//相片类型
-        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
-    }
-
-    @Override
-    public void onActivityResult(int req, int res, Intent data) {
-        super.onActivityResult(req, res, data);
-        switch (req) {
-            case CROP_PHOTO:
-/*                if (res==RESULT_OK) {
-                    try {
-                        Bitmap bit = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(imageUri));
-                        img.setImageBitmap(bit);
-                    } catch (Exception e) {
-                        Toast.makeText(this,"程序崩溃",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-                    Log.i("tag", "失败");
-                }*/
-                break;
-
-            case REQUEST_CODE_PICK_IMAGE:
-                if (res == RESULT_OK) {
-                    try {
-                        Uri uri = data.getData();
-                        Bitmap bit = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(uri));
-                        avatar.setImageBitmap(bit);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.d("tag", e.getMessage());
-                        Toast.makeText(getContext(), "can not select the picture", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.i("", "fail");
-                }
-                break;
-
-            default:
-                break;
-
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-
-}
