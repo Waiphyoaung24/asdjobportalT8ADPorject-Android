@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">My Application</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
@@ -21,6 +21,15 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="register">Sign Up</string>
+
+    <string name="Email">Email:</string>
+    <string name="firstName">First Name:</string>
+    <string name="lastName">Last Name:</string>
+    <string name="Avatar">Avatar:</string>
+    <string name="gender">Gender:</string>
+    <string name="resume">Resume:</string>
+    <string name="contactNumber">Contact Number:</string>
+
     <string name="dummy_qualification">Good communication skills, good working attitude, highly motivated, multitasking, resourceful &amp; responsible towards works.
 Proficient in computer skills such as Microsoft words, excel
 Candidate that can start immediately will be preferred
@@ -29,4 +38,5 @@ Candidate that can start immediately will be preferred
 Perform basic bookkeeping and data entry duties
 Provide administrative support when required
 Filling &amp; other administrative duties as assigned</string>
+
 </resources>

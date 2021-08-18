@@ -73,7 +73,7 @@ public class FilterSearchFragment extends Fragment {
                 float searchByRating = Float.parseFloat(ettext2.getText().toString());
                 int searchByAutismLvl = Integer.parseInt(ettext3.getText().toString()) ;
                 if(!searchbyName.isEmpty() && searchByRating != 0 && searchByAutismLvl != 00){
-                    bindDataAndResult(searchbyName,searchByRating,searchByAutismLvl,true);
+                    //bindDataAndResult(searchbyName,searchByRating,searchByAutismLvl,true);
                 }
                 else {
                     Toast.makeText(getActivity(), "Please enter a valid search keyword", Toast.LENGTH_SHORT).show();
@@ -87,13 +87,16 @@ public class FilterSearchFragment extends Fragment {
 
 
 
-    private void bindDataAndResult(String name, float rating, int lvl,boolean flag){
+/*    private void bindDataAndResult(String name, float rating, int lvl,boolean flag){
         ListJobFragment fragment = new ListJobFragment();
         fragment.sendData(name,rating,lvl,flag);
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
         trans.replace(R.id.fl_container, fragment);
         trans.commit();
+
+    }*/
+
     }
 
     @Override
@@ -107,4 +110,5 @@ public class FilterSearchFragment extends Fragment {
         super.onDestroyView();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
+
 }

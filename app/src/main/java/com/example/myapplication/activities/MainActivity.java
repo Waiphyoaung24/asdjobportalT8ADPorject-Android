@@ -1,7 +1,12 @@
 package com.example.myapplication.activities;
 
+
+import android.content.Context;
+
 import android.app.Activity;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,11 +28,18 @@ import com.example.myapplication.fragments.JobIndustryByCategoryFragment;
 import com.example.myapplication.fragments.ListBookmarkFragment;
 import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.fragments.ListViewedJobsFragment;
+import com.example.myapplication.fragments.LoginFragment;
 import com.example.myapplication.fragments.NewReviewFragment;
+import com.example.myapplication.fragments.RegistrationFragment;
 import com.example.myapplication.fragments.SearchJobFragment;
 import com.example.myapplication.fragments.UserFragment;
+import com.example.myapplication.network.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -74,15 +86,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initComponents();
 
-        //get token
-        try {
-            Intent intent = getIntent();
-            Bundle bundle = intent.getExtras();
-            token = (Token)bundle.getSerializable("Token");
-            Log.i("token get in main activity: ", token.toString());
-        } catch(Exception e){
-            Log.e("error: ", e.getMessage());
-        }
+        refreshToken();
 
         //drawerlayout toggle state
         toggle = new ActionBarDrawerToggle(this, findViewById(R.id.drawerlayout), R.string.open, R.string.close);
@@ -92,7 +96,6 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_dehaze);
-
 
 
         //changing color of status bar
@@ -146,12 +149,17 @@ public class MainActivity extends BaseActivity {
 
                         break;
                     case R.id.menu_item_login:
-                        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        LoginFragment loginFragment = new LoginFragment();
+                        replaceFragment(loginFragment);
+                        break;
+                    case R.id.menu_item_registration:
+                        RegistrationFragment registrationFragment = new RegistrationFragment();
+                        replaceFragment(registrationFragment);
                         break;
                     case R.id.menu_item_user:
                         UserFragment userFragment = new UserFragment();
                         Bundle bundle = new Bundle();
-                        if(token!=null){
+                        if (token != null) {
                             bundle.putSerializable("Token", token);
                             userFragment.setArguments(bundle);
                             Log.i("token: ", token.toString());
@@ -168,6 +176,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
+
     private void initComponents() {
         flContainer = findViewById(R.id.fl_container);
         drawerLayout = findViewById(R.id.drawerlayout);
@@ -177,7 +186,67 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    private void refreshToken() {
+        String username_, refresh_token;
+        try {
+            SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+            username_ = storeToken.getString("username", null);
+            refresh_token = storeToken.getString("refresh_token", null);
+            if (username_ != null && refresh_token != null) {
+                String authorization = "Bearer " + refresh_token;
+                Log.i("refreshtoken", authorization);
+                Call<Token> call = RetrofitClient.getInstance().getResponse().refreshToken(authorization);
+                call.enqueue(new Callback<Token>() {
+                    @Override
+                    public void onResponse(Call<Token> call, Response<Token> response) {
+                        Log.i("status", String.valueOf(response.code()));
+                        if (response.isSuccessful()) {
+                            Log.i("refresh success", "success");
+                            SharedPreferences.Editor editor = storeToken.edit();
+                            Token token = response.body();
+                            editor.putString("access_token", token.getAccess_token());
+                            editor.putString("refresh_token", token.getRefresh_token());
+                            editor.putString("username", token.getUsername());
+                            editor.apply();
+                        } else {
+                            Log.i("refresh fail", "");
+                            Toast.makeText(getApplicationContext(), "please login first", Toast.LENGTH_SHORT).show();
+                            SharedPreferences.Editor editor = storeToken.edit();
+                            editor.clear().commit();
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<Token> call, Throwable t) {
+                        Log.i("refresh token on failure error: ", t.getMessage());
+                        Toast.makeText(getApplicationContext(), "plese login first", Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor editor = storeToken.edit();
+                        editor.clear().commit();
+                    }
+                });
+            } else {
+                Log.i("there is no token stored, need login first", "");
+                Toast.makeText(getApplicationContext(), "please login first", Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = storeToken.edit();
+                editor.clear().commit();
+            }
+        } catch(NullPointerException e){
+            Toast.makeText(this,"please login first",Toast.LENGTH_SHORT).show();
+            Log.i("there is no user stored","");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int req, int res, Intent data) {
+        super.onActivityResult(req, res, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        int i = RESULT_OK;
+    }
 }
 
 

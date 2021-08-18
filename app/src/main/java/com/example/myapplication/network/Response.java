@@ -14,6 +14,8 @@ import com.example.myapplication.data.ViewedJobsDTO;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,7 +25,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Streaming;
 
 public interface Response {
 
@@ -104,26 +108,26 @@ public interface Response {
     @FormUrlEncoded
     Call<Token> login(@Field("username") String username, @Field("password") String password);
 
-    @GET("user/applicant/{username}")
-    Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username")String username);
-
     @POST("user/applicant")
     Call<ApplicantDTO> saveApplicant(@Body ApplicantDTO applicant);
 
-/*    @GET("user/list")
-    Call<List<UserDTO>> getUserList();
+    @GET("user/applicant/{username}")
+    Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username") String username);
 
-    @POST("user/admin")
-    Call<ResponseBody> saveAdmin(UserDTO user);
+    @POST("user/applicant/update")
+    Call<ApplicantDTO> updateApplicant(@Header("Authorization") String authHeader, @Body ApplicantDTO applicant);
 
-
-
-    @DELETE("user/Applicant")
-    Call<ResponseBody> deleteApplicant(ApplicantDTO applicant);
+    @DELETE("user/applicant/{username}")
+    Call<ApplicantDTO> deleteApplicant(@Header("Authorization") String authHeader, @Path("username") String username);
 
     @GET("user/refreshtoken")
-    Call<Token> refreshToken();*/
+    Call<Token> refreshToken(@Header("Authorization") String authHeader);
 
+    @Streaming
+    @GET("user/applicant/avatar/{username}")
+    Call<ResponseBody> downloadAvatar(@Header("Authorization")String authorization,@Path("username") String username);
 
-
+    @Streaming
+    @POST("user/applicant/avatar/{username}")
+    Call<ResponseBody> uploadAvatar(@Header("Authorization")String authorization, @Part MultipartBody.Part filePart, String username_);
 }
