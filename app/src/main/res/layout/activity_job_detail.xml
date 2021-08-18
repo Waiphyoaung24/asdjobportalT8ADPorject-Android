@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_back_detail"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_baseline_arrow_back"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/iv_bookmark"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="24dp"
+            android:src="@drawable/ic_baseline_bookmark_border"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Detail"
+            android:textColor="@color/black"
+            android:textSize="9pt"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_back_detail">
+
+        </com.google.android.material.textview.MaterialTextView>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="80dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/company_logo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_job_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Creative Director"
+            android:textSize="12pt"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/asd_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Level 1"
+            android:textSize="5pt"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_job_title">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/job_qualification_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:text="Job Qualification :"
+            android:textSize="6pt"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/asd_level">
+
+        </TextView>
+
+    <TextView
+        android:id="@+id/job_qualification"
+        android:layout_width="wrap_content"
+        android:layout_height="71dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:lineSpacingMultiplier="1.3"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:text="@string/dummy_qualification"
+        android:textSize="5pt"
+        app:layout_constraintBottom_toTopOf="@+id/job_description_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/job_qualification_title">
+
+    </TextView>
+
+        <TextView
+            android:id="@+id/job_description_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:text="Job Description :"
+            android:textSize="6pt"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/job_qualification">
+
+        </TextView>
+
+    <TextView
+        android:id="@+id/job_description"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="left"
+        android:lineSpacingMultiplier="1.3"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:text="@string/dummy_description"
+        android:textSize="5pt"
+        app:layout_constraintBottom_toTopOf="@+id/ApplyViaURL"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/job_description_title">
+
+    </TextView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ApplyViaURL"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:text="Apply via Company"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/ShareURL"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+        </com.google.android.material.button.MaterialButton>
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ApplyViaHrEmail"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:text="Apply via Email"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/SeeReviews"
+            app:layout_constraintLeft_toRightOf="@id/ApplyViaURL">
+
+        </com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ShareURL"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="44dp"
+            android:text="Share Company Link"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/ApplyViaURL"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        </com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/SeeReviews"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="44dp"
+            android:text="See Reviews"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@+id/ApplyViaHrEmail"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        </com.google.android.material.button.MaterialButton>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

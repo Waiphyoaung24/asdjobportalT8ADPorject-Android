@@ -1,40 +1,78 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:paddingTop="12dp"
-android:paddingBottom="12dp">
-
-<TextView
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/tv_job_title1"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:text="Job Title">
-</TextView>
+    android:layout_marginLeft="12dp"
+    android:layout_marginTop="14dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="4dp">
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/tv_job_company1"
-    app:layout_constraintTop_toBottomOf="@id/tv_job_title1"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:text="Job Company">
-</TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/tv_job_applied"
-    app:layout_constraintTop_toBottomOf="@id/tv_job_company1"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:text="Date Applied">
-</TextView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@color/white">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_job_company1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_job_title1"
+                android:layout_alignLeft="@id/tv_job_title1"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/rubik"
+                android:layout_alignTop="@+id/ivProductImage"
+                android:text="ABC Company"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/text_regular_2x" />
+
+            <TextView
+                android:id="@+id/tv_job_applied"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_job_company1"
+                android:layout_alignLeft="@id/tv_job_company1"
+                android:fontFamily="@font/rubik"
+                android:text="Bookmark Date -"
+                android:layout_marginTop="14dp"
+                android:textStyle="normal"
+                android:textColor="@color/secondary_text"
+                android:textSize="@dimen/text_small" />
+
+
+            <TextView
+                android:id="@+id/tv_job_title1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="12dp"
+                android:layout_toRightOf="@id/ivProductImage"
+                android:fontFamily="@font/font"
+                android:text="Android Developer"
+                android:textStyle="bold"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/text_heading_1x" />
+
+
+            <ImageView
+                android:id="@+id/ivProductImage"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="28dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/company_logo" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

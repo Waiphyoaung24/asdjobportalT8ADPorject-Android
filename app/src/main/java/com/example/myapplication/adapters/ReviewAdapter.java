@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,12 +44,12 @@ public class ReviewAdapter extends
     @Override
     public void onBindViewHolder(ReviewViewHolder holder, final int position) {
         // set the data
-        holder.reviewDescription.setText("Description: " + reviewListResponseData.get(position).getReviewDescription());
-        holder.reviewCompany.setText("Company: " + reviewListResponseData.get(position).getCompanyName());
-        holder.reviewJob.setText("Job: " + reviewListResponseData.get(position).getJobTitle());
-        holder.reviewStar.setText("Stars: " + String.valueOf(reviewListResponseData.get(position).getReviewstars()));
-        holder.reviewUser.setText("User: " + String.valueOf(reviewListResponseData.get(position).getUserId()));
-        holder.reviewDate.setText("Date: " + String.valueOf(reviewListResponseData.get(position).getReviewDate()));
+        holder.reviewDescription.setText( reviewListResponseData.get(position).getReviewDescription());
+       // holder.reviewCompany.setText(reviewListResponseData.get(position).getCompanyName());
+        holder.reviewJob.setText( reviewListResponseData.get(position).getJobTitle());
+        holder.reviewStar.setRating((float) reviewListResponseData.get(position).getReviewstars());
+        holder.reviewUser.setText( String.valueOf(reviewListResponseData.get(position).getUserId()));
+        holder.reviewDate.setText( String.valueOf(reviewListResponseData.get(position).getReviewDate()));
         // implement setONCLickListtener on itemView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,18 +67,19 @@ public class ReviewAdapter extends
 
     class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // init the item view's
-        TextView reviewDescription, reviewStar,reviewJob, reviewCompany,reviewUser, reviewDate;
+        TextView reviewDescription,reviewJob, reviewCompany,reviewUser, reviewDate;
+        RatingBar reviewStar;
         ItemClickListener clickListener;
 
         public ReviewViewHolder(View itemView, ItemClickListener clickListener) {
             super(itemView);
             // get the reference of item view's
-            reviewDate = (TextView) itemView.findViewById(R.id.ReviewDate);
-            reviewUser = (TextView) itemView.findViewById(R.id.ReviewUser);
-            reviewCompany = (TextView) itemView.findViewById(R.id.ReviewCompany);
-            reviewJob = (TextView) itemView.findViewById(R.id.ReviewJob);
-            reviewDescription = (TextView) itemView.findViewById(R.id.ReviewDescription);
-            reviewStar = (TextView) itemView.findViewById(R.id.ReviewStar);
+            reviewDate = (TextView) itemView.findViewById(R.id.tv_review_date);
+            reviewUser = (TextView) itemView.findViewById(R.id.tv_profile_name);
+           /* reviewCompany = (TextView) itemView.findViewById(R.id.ReviewCompany);*/
+            reviewJob = (TextView) itemView.findViewById(R.id.tv_job_title);
+            reviewDescription = (TextView) itemView.findViewById(R.id.tv_desc);
+            reviewStar = (RatingBar) itemView.findViewById(R.id.ratingbar_each);
             itemView.setOnClickListener(this);
         }
 

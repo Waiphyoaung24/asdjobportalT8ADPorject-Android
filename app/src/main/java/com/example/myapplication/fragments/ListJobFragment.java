@@ -19,6 +19,7 @@ import android.widget.ImageView;
 
 import com.example.myapplication.R;
 
+import com.example.myapplication.activities.JobDetailActivity;
 import com.example.myapplication.adapters.ListJobAdapter;
 import com.example.myapplication.data.JobDTO;
 import com.example.myapplication.delegates.JobListDelegate;
@@ -129,12 +130,9 @@ public class ListJobFragment extends Fragment implements JobListDelegate {
 
     @Override
     public void onClickJobList(long jobId) {
-        JobDetailFragment fragment = new JobDetailFragment();
-        fragment.setJobId(jobId);
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        FragmentTransaction trans = fm.beginTransaction();
-        trans.replace(R.id.fl_container,fragment);
-        trans.commit();
+        Intent intent = new Intent(getActivity(),JobDetailActivity.class);
+        intent.putExtra("jobId",jobId);
+        startActivity(intent);
     }
 
     public void sendData(String name, float rating, int lvl, boolean flag) {

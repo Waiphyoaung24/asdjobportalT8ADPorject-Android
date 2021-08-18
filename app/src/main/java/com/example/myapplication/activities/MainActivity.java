@@ -1,5 +1,6 @@
 package com.example.myapplication.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,11 +8,13 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.Token;
@@ -35,7 +38,7 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     NavigationView navView;
     MaterialToolbar toolbar;
-
+    String tag = "";
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -43,6 +46,26 @@ public class MainActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("list");
+        if(fragment!=null)
+        Toast.makeText(this, "List method", Toast.LENGTH_SHORT).show();
+
+        Fragment fragmentForCategory = getSupportFragmentManager().findFragmentByTag("category");
+        if(fragmentForCategory!=null)
+           replaceFragment(new ListJobFragment(),"list");
+
+
+
+       //
+       /* Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("list");
+        if(fragment1!=null){
+            Toast.makeText(this, "List last page", Toast.LENGTH_SHORT).show();
+        }*/
     }
 
     @Override
@@ -79,7 +102,8 @@ public class MainActivity extends BaseActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
 
         ListJobFragment fragment = new ListJobFragment();
-        replaceFragment(fragment);
+        replaceFragment(fragment,"list");
+
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -90,35 +114,35 @@ public class MainActivity extends BaseActivity {
                 switch (id) {
                     case R.id.menu_item_job_list:
                         ListJobFragment fragment = new ListJobFragment();
-                        replaceFragment(fragment);
+                        replaceFragment(fragment,"list");
                         break;
                     case R.id.menu_item_job_category:
                         JobIndustryByCategoryFragment categoryByJobIndustry = new JobIndustryByCategoryFragment();
-                        replaceFragment(categoryByJobIndustry);
+                        replaceFragment(categoryByJobIndustry,"category");
                         break;
                     case R.id.menu_item_search:
                         SearchJobFragment searchJobFragment = new SearchJobFragment();
-                        replaceFragment(searchJobFragment);
+                        replaceFragment(searchJobFragment,"search");
 
                         break;
                     case R.id.menu_item_bookmark:
                         ListBookmarkFragment bookmarkFragment = new ListBookmarkFragment();
-                        replaceFragment(bookmarkFragment);
+                        replaceFragment(bookmarkFragment,"bookmark");
 
                         break;
                     case R.id.menu_item_viewedjobs:
                         ListViewedJobsFragment listviewedjobsFragment = new ListViewedJobsFragment();
-                        replaceFragment(listviewedjobsFragment);
+                        replaceFragment(listviewedjobsFragment,"viewdJob");
 
                         break;
                     case R.id.menu_item_review:
                         CompanyReviewFragment companyReviewFragment = new CompanyReviewFragment();
-                        replaceFragment(companyReviewFragment);
+                        replaceFragment(companyReviewFragment,"companyReview");
 
                         break;
                     case R.id.menu_item_new_review:
                         NewReviewFragment newReview = new NewReviewFragment();
-                        replaceFragment(newReview);
+                        replaceFragment(newReview,"newReview");
 
                         break;
                     case R.id.menu_item_login:
@@ -132,7 +156,7 @@ public class MainActivity extends BaseActivity {
                             userFragment.setArguments(bundle);
                             Log.i("token: ", token.toString());
                         }
-                        replaceFragment(userFragment);
+                        replaceFragment(userFragment,"userProfile");
                         break;
 
 

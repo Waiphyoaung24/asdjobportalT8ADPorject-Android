@@ -1,20 +1,14 @@
-package com.example.myapplication.fragments;
+package com.example.myapplication.activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,17 +18,16 @@ import com.example.myapplication.R;
 import com.example.myapplication.data.BookmarkedJobsDTO;
 import com.example.myapplication.data.JobAdminDTO;
 import com.example.myapplication.data.ResponseMessage;
+import com.example.myapplication.fragments.ListCompanyReviewFragment;
 import com.example.myapplication.network.RetrofitClient;
-
-import org.jetbrains.annotations.NotNull;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class JobDetailFragment extends Fragment {
+public class JobDetailActivity extends AppCompatActivity {
 
-    Button Bookmark;
+    ImageView Bookmark;
     Button SeeReviews;
     Button ApplyViaURL;
     Button ApplyViaHrEmail;
@@ -43,45 +36,27 @@ public class JobDetailFragment extends Fragment {
     Intent intent = null;
     Uri uri;
     TextView asd_level;
-    TextView job_company;
     TextView job_title;
     TextView job_qualification;
     TextView job_description;
     ImageView ivBack;
+    JobAdminDTO jobadminDTO;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_job_detail);
+
+        bindComponents();
 
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_job_detail, container, false);
-
-        Bookmark = root.findViewById(R.id.Bookmark);
-
-        asd_level = root.findViewById(R.id.asd_level);
-        ApplyViaURL = root.findViewById(R.id.ApplyViaURL);
-        job_title = root.findViewById(R.id.job_title);
-        job_company = root.findViewById(R.id.job_company);
-        ApplyViaHrEmail = root.findViewById(R.id.ApplyViaHrEmail);
-        job_qualification = root.findViewById(R.id.job_qualification);
-        job_description = root.findViewById(R.id.job_description);
-        ShareURL = root.findViewById(R.id.ShareURL);
-        ivBack = root.findViewById(R.id.iv_back_detail);
-        SeeReviews = root.findViewById(R.id.SeeReviews);
+        Intent intent = getIntent();
+        id = intent.getLongExtra("jobId",-1);
 
 
-        return root;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         getJob();
+
+
         Bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,11 +91,27 @@ public class JobDetailFragment extends Fragment {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+        onBackPressed();
 
             }
         });
+
     }
 
+    private void bindComponents() {
+
+        Bookmark = findViewById(R.id.iv_bookmark);
+
+        asd_level = findViewById(R.id.asd_level);
+        ApplyViaURL = findViewById(R.id.ApplyViaURL);
+        job_title = findViewById(R.id.tv_job_title);
+        ApplyViaHrEmail = findViewById(R.id.ApplyViaHrEmail);
+        job_qualification = findViewById(R.id.job_qualification);
+        job_description = findViewById(R.id.job_description);
+        ShareURL = findViewById(R.id.ShareURL);
+        ivBack = findViewById(R.id.iv_back_detail);
+        SeeReviews = findViewById(R.id.SeeReviews);
+    }
 
     private void saveBookmark() {
         Call<BookmarkedJobsDTO> call = RetrofitClient.getInstance().getResponse().saveBookmark(id);
@@ -137,7 +128,7 @@ public class JobDetailFragment extends Fragment {
 
             }
         });
-        Toast.makeText(getActivity().getApplicationContext(), "Bookmark this job", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Bookmark this job", Toast.LENGTH_SHORT).show();
     }
 
     private void ApplyJobUrl() {
@@ -153,7 +144,7 @@ public class JobDetailFragment extends Fragment {
                 //if intent contain something
                 if (intent != null) {
                     //to check if the device has an app that can handle the requested implicit intent
-                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    if (intent.resolveActivity(getPackageManager()) != null) {
                         //controlling how this intent is handled
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -187,7 +178,7 @@ public class JobDetailFragment extends Fragment {
                 //if intent contain something
                 if (intent != null) {
                     //to check if the device has an app that can handle the requested implicit intent
-                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    if (intent.resolveActivity(getPackageManager()) != null) {
                         //controlling how this intent is handled
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -219,7 +210,7 @@ public class JobDetailFragment extends Fragment {
                 //if intent contain something
                 if (intent != null) {
                     //to check if the device has an app that can handle the requested implicit intent
-                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    if (intent.resolveActivity(getPackageManager()) != null) {
                         //controlling how this intent is handled
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -239,32 +230,25 @@ public class JobDetailFragment extends Fragment {
         call.enqueue(new Callback<JobAdminDTO>() {
             @Override
             public void onResponse(Call<JobAdminDTO> call, Response<JobAdminDTO> response) {
-                JobAdminDTO jobadminDTO = response.body();
+                jobadminDTO = response.body();
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
 
-                        if(asd_level != null){
-                            asd_level.setText(Integer.toString(jobadminDTO.getAutismLevel()));
-                        }
-                        if (job_title != null) {
-                            job_title.setText(jobadminDTO.getJobTitle());
-                        }
+                if (asd_level != null) {
+                    asd_level.setText("Autism Level - " + Integer.toString(jobadminDTO.getAutismLevel()));
+                }
+                if (job_title != null) {
+                    job_title.setText(jobadminDTO.getJobTitle());
+                }
 
-                        if (job_company != null) {
-                            job_company.setText(jobadminDTO.getCompanyname());
-                        }
 
-                        if (job_qualification != null) {
-                            job_qualification.setText(jobadminDTO.getJobqualification());
-                        }
+                if (job_qualification != null) {
+                    job_qualification.setText(jobadminDTO.getJobqualification());
+                }
 
-                        if (job_description != null) {
-                            job_description.setText(jobadminDTO.getJobDescription());
-                        }
-                    }
-                }).start();
+                if (job_description != null) {
+                    job_description.setText(jobadminDTO.getJobDescription());
+                }
+
 
             }
 
@@ -274,19 +258,20 @@ public class JobDetailFragment extends Fragment {
             }
         });
     }
-    public void seeReviewForAParticularCompany(){
+
+    public void seeReviewForAParticularCompany() {
         Bundle arguments = new Bundle();
-        arguments.putString("CompanyName",job_company.getText().toString());
+        arguments.putString("CompanyName", jobadminDTO.getCompanyname());
         ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
         fragment.setArguments(arguments);
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
-        trans.replace(R.id.fl_container,fragment,"tag");
+        trans.replace(R.id.fl_container, fragment, "tag");
         trans.addToBackStack("tag");
         trans.commit();
     }
 
-    public void setJobId(Long jobId) {
-        this.id = jobId;
-    }
+
+
+
 }

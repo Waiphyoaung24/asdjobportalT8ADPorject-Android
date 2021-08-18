@@ -1,55 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="6dp"
-    android:gravity="center_vertical"
-    android:background="@color/white"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--
-    create Textview's for user name and email id
-    -->
-    <TextView
-        android:id="@+id/ReviewUser"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name:"
-        android:textSize="17sp" />
-    <TextView
-        android:id="@+id/ReviewCompany"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name:"
-        android:textSize="17sp" />
-    <TextView
-        android:id="@+id/ReviewJob"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name:"
-        android:textSize="17sp" />
-    <TextView
-        android:id="@+id/ReviewDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name:"
-        android:textSize="17sp" />
-    <TextView
-        android:id="@+id/ReviewStar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name:"
-        android:textSize="17sp" />
+    android:background="@color/white">
+
+
+    <ImageView
+        android:id="@+id/iv_profile_picture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/circle"
+        android:src="@drawable/icons8_female_profile"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
 
     <TextView
-        android:id="@+id/ReviewDescription"
-        android:layout_width="match_parent"
+        android:id="@+id/tv_profile_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email:"
-        android:textSize="16sp" />
-    <View
+        android:layout_marginLeft="14dp"
+        android:textStyle="bold"
+        android:textSize="9pt"
+        android:text="James Anderson"
+        app:layout_constraintLeft_toRightOf="@id/iv_profile_picture"
+        app:layout_constraintTop_toTopOf="@+id/iv_profile_picture">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_job_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Android Developer"
+        android:textSize="5pt"
+        app:layout_constraintLeft_toLeftOf="@id/tv_profile_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_profile_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_name">
+
+    </TextView>
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/ratingbar_each"
+        style="@android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:scaleX=".3"
+        android:scaleY=".3"
+        android:stepSize="0.1"
+        android:transformPivotX="0dp"
+        android:transformPivotY="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/tv_job_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_job_title" />
+
+    <TextView
+        android:id="@+id/tv_review_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="20 Apr 2018"
+        android:layout_marginRight="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_profile_name">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/tv_review_date"
+        app:layout_constraintStart_toStartOf="@+id/tv_profile_name"
+        app:layout_constraintTop_toBottomOf="@id/ratingbar_each">
+
+    </TextView>
+
+    <View android:id="@+id/tile_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp" />
-</LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/tv_desc"
+        android:layout_marginTop="14dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="?android:attr/dividerVertical" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

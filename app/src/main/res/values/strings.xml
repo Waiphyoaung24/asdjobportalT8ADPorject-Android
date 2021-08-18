@@ -21,4 +21,12 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="register">Sign Up</string>
+    <string name="dummy_qualification">Good communication skills, good working attitude, highly motivated, multitasking, resourceful &amp; responsible towards works.
+Proficient in computer skills such as Microsoft words, excel
+Candidate that can start immediately will be preferred
+</string>
+    <string name="dummy_description">Perform reception duties such as attending to walk-in guests, answering, screening, taking messages and forwarding incoming phone calls
+Perform basic bookkeeping and data entry duties
+Provide administrative support when required
+Filling &amp; other administrative duties as assigned</string>
 </resources>
