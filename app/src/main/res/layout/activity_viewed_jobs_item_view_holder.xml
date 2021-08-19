@@ -31,7 +31,7 @@
                 android:layout_alignTop="@+id/ivProductImage"
                 android:text="ABC Company"
                 android:textColor="@color/primary_text"
-                android:textSize="@dimen/text_regular_2x" />
+                android:textSize="@dimen/text_small" />
 
             <TextView
                 android:id="@+id/tv_job_applied"
@@ -44,7 +44,7 @@
                 android:layout_marginTop="14dp"
                 android:textStyle="normal"
                 android:textColor="@color/secondary_text"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_smaller" />
 
 
             <TextView

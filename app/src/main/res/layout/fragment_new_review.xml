@@ -4,87 +4,130 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.NewReviewFragment">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:orientation="vertical"
         tools:context=".WriteReview">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/AddingReviewText"/>
+            android:layout_marginTop="24dp"
+            android:text="@string/AddingReviewText" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/company_spinner"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
 
-        <TextView
-            android:id="@+id/Company_Name"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name of Company will be here"/>
+            android:gravity="center"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatRatingBar
-            android:id="@+id/Company_Rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:stepSize="0.1"/>
+            <TextView
+                android:id="@+id/Company_Name"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name of Company will be here" />
 
-        <TextView
-            android:id="@+id/UserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name of user will be here"/>
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/Company_Rating"
+                android:layout_width="wrap_content"
+                android:layout_height="49dp"
+                android:numStars="5"
+                android:scaleX=".5"
+                android:layout_weight="1"
+                android:scaleY=".5"
+                android:stepSize="0.1" />
+        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatRatingBar
-            android:id="@+id/Rating_By_User"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:stepSize="0.1"/>
+            android:gravity="center"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/UserName"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name of user will be here" />
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/Rating_By_User"
+                android:layout_gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="49dp"
+                android:numStars="5"
+                android:layout_weight="1"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                android:stepSize="0.1" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/ratingNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Job Title"/>
-
-        <EditText
-            android:id="@+id/job_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Job Title"/>
+            android:text="" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_searchbyAutisumLvl_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Job Title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_jobstarRating_container">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/job_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             app:counterEnabled="true"
             app:counterMaxLength="150">
-            <EditText
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Written_Review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+
+                android:hint="Write your review here"
                 android:inputType="textCapSentences|textMultiLine"
-                android:maxLength="150"
-                android:hint="Write your review here"/>
+
+                android:maxLength="150" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/submit"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit"/>
+            android:layout_gravity="center"
+            android:text="Submit"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
 
 
     </LinearLayout>

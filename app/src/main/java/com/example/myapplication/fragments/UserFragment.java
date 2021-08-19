@@ -31,7 +31,6 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.network.RetrofitClient;
-import com.lzy.okgo.OkGo;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -57,7 +56,7 @@ import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 public class UserFragment extends Fragment {
     private EditText username,firsName,lastName,gender,contact,password;
     private ImageView avatar;
-    private Button delete, update,logOut,selectAvatar;
+    private Button delete, update,logOut;
     String username_,access_token;
     private static final String AVATAR_BASE_URL = "http://10.0.2.2:8080/static/";
     private static final String AVATAR_FILE_NAME = "avatar.png";
@@ -121,12 +120,12 @@ public class UserFragment extends Fragment {
                 deleteUser();
             }
         });
-        selectAvatar.setOnClickListener(new View.OnClickListener() {
+       /* selectAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //showChoosePicDialog();
             }
-        });
+        });*/
         return view;
     }
 

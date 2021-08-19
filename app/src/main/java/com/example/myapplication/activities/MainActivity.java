@@ -20,12 +20,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.Token;
 import com.example.myapplication.fragments.CompanyReviewFragment;
 import com.example.myapplication.fragments.JobIndustryByCategoryFragment;
 import com.example.myapplication.fragments.ListBookmarkFragment;
+import com.example.myapplication.fragments.ListCompanyReviewFragment;
 import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.fragments.ListViewedJobsFragment;
 import com.example.myapplication.fragments.LoginFragment;
@@ -104,8 +107,19 @@ public class MainActivity extends BaseActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
 
-        ListJobFragment fragment = new ListJobFragment();
-        replaceFragment(fragment,"list");
+
+        String intentMsg = getIntent().getStringExtra("company");
+        if (intentMsg != null){
+            Bundle arguments = new Bundle();
+            arguments.putString("CompanyName", intentMsg);
+            ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
+            fragment.setArguments(arguments);
+            replaceFragment(fragment,"review");
+        } else {
+
+            ListJobFragment fragment = new ListJobFragment();
+            replaceFragment(fragment,"list");
+        }
 
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -150,11 +164,11 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.menu_item_login:
                         LoginFragment loginFragment = new LoginFragment();
-                        replaceFragment(loginFragment);
+                        replaceFragment(loginFragment,"login");
                         break;
                     case R.id.menu_item_registration:
                         RegistrationFragment registrationFragment = new RegistrationFragment();
-                        replaceFragment(registrationFragment);
+                        replaceFragment(registrationFragment,"register");
                         break;
                     case R.id.menu_item_user:
                         UserFragment userFragment = new UserFragment();
@@ -231,7 +245,7 @@ public class MainActivity extends BaseActivity {
                 editor.clear().commit();
             }
         } catch(NullPointerException e){
-            Toast.makeText(this,"please login first",Toast.LENGTH_SHORT).show();
+          /*  Toast.makeText(this,"please login first",Toast.LENGTH_SHORT).show();*/
             Log.i("there is no user stored","");
         }
     }

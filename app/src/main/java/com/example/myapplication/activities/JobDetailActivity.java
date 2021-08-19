@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,7 @@ public class JobDetailActivity extends AppCompatActivity {
     TextView job_description;
     ImageView ivBack;
     JobAdminDTO jobadminDTO;
+    String username_,access_token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,29 +59,48 @@ public class JobDetailActivity extends AppCompatActivity {
 
         getJob();
 
+        SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+        username_ = storeToken.getString("username",null);
+        access_token = storeToken.getString("access_token",null);
 
         Bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveBookmark();
+                if(username_!=null) {
+                    saveBookmark();
+                }else{
+                    Toast.makeText(JobDetailActivity.this, "Login First to use this feature", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         ApplyViaURL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApplyJobUrl();
+                if(username_!=null) {
+                    ApplyJobUrl();
+                }else{
+                    Toast.makeText(JobDetailActivity.this, "Login First to use this feature", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         ApplyViaHrEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApplyViaHrEmail();
+                if(username_!=null) {
+                    ApplyViaHrEmail();
+                }else{
+                    Toast.makeText(JobDetailActivity.this, "Login First to use this feature", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         ShareURL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareURL();
+                if(username_!=null) {
+                    ShareURL();
+                }else{
+                    Toast.makeText(JobDetailActivity.this, "Login First to use this feature", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -260,15 +282,11 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     public void seeReviewForAParticularCompany() {
-        Bundle arguments = new Bundle();
-        arguments.putString("CompanyName", jobadminDTO.getCompanyname());
-        ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
-        fragment.setArguments(arguments);
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction trans = fm.beginTransaction();
-        trans.replace(R.id.fl_container, fragment, "tag");
-        trans.addToBackStack("tag");
-        trans.commit();
+        Intent i = new Intent(JobDetailActivity.this,MainActivity.class);
+        i.putExtra("company",jobadminDTO.getCompanyname());
+        startActivity(i);
+
+
     }
 
 
