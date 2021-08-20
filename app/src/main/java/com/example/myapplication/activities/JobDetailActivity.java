@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.data.BookmarkedJobsDTO;
 import com.example.myapplication.data.JobAdminDTO;
 import com.example.myapplication.data.ResponseMessage;
@@ -43,15 +44,22 @@ public class JobDetailActivity extends AppCompatActivity {
     TextView job_description;
     ImageView ivBack;
     JobAdminDTO jobadminDTO;
+
     String username_,access_token;
+    String authorization;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_detail);
 
-        bindComponents();
+        SharedPreferences storeToken = this.getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+        access_token = storeToken.getString("access_token",null);
+        authorization = "Bearer "+access_token;
 
+        loadUserProfile();
+        bindComponents();
 
         Intent intent = getIntent();
         id = intent.getLongExtra("jobId",-1);
@@ -59,14 +67,10 @@ public class JobDetailActivity extends AppCompatActivity {
 
         getJob();
 
-        SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
-        username_ = storeToken.getString("username",null);
-        access_token = storeToken.getString("access_token",null);
-
         Bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username_!=null) {
+                if(access_token!=null) {
                     saveBookmark();
                 }else{
                     Toast.makeText(JobDetailActivity.this, "Login First to use this feature", Toast.LENGTH_SHORT).show();
@@ -76,7 +80,7 @@ public class JobDetailActivity extends AppCompatActivity {
         ApplyViaURL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username_!=null) {
+                if(access_token!=null) {
                     ApplyJobUrl();
                 }else{
                     Toast.makeText(JobDetailActivity.this, "Login First to use this feature", Toast.LENGTH_SHORT).show();
@@ -86,7 +90,7 @@ public class JobDetailActivity extends AppCompatActivity {
         ApplyViaHrEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username_!=null) {
+                if(access_token!=null) {
                     ApplyViaHrEmail();
                 }else{
                     Toast.makeText(JobDetailActivity.this, "Login First to use this feature", Toast.LENGTH_SHORT).show();
@@ -96,7 +100,7 @@ public class JobDetailActivity extends AppCompatActivity {
         ShareURL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username_!=null) {
+                if(access_token!=null) {
                     ShareURL();
                 }else{
                     Toast.makeText(JobDetailActivity.this, "Login First to use this feature", Toast.LENGTH_SHORT).show();
@@ -136,7 +140,7 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     private void saveBookmark() {
-        Call<BookmarkedJobsDTO> call = RetrofitClient.getInstance().getResponse().saveBookmark(id);
+        Call<BookmarkedJobsDTO> call = RetrofitClient.getInstance().getResponse().saveBookmark(id,authorization);
         call.enqueue(new Callback<BookmarkedJobsDTO>() {
             @Override
             public void onResponse(Call<BookmarkedJobsDTO> call, Response<BookmarkedJobsDTO> response) {
@@ -154,7 +158,7 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     private void ApplyJobUrl() {
-        Call<ResponseMessage> call = RetrofitClient.getInstance().getResponse().ApplyJobUrl(id);
+        Call<ResponseMessage> call = RetrofitClient.getInstance().getResponse().ApplyJobUrl(id,authorization);
         call.enqueue(new Callback<ResponseMessage>() {
             @Override
             public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
@@ -184,7 +188,7 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     private void ShareURL() {
-        Call<JobAdminDTO> call = RetrofitClient.getInstance().getResponse().ShareURL(id);
+        Call<JobAdminDTO> call = RetrofitClient.getInstance().getResponse().ShareURL(id,authorization);
         call.enqueue(new Callback<JobAdminDTO>() {
             @Override
             public void onResponse(Call<JobAdminDTO> call, Response<JobAdminDTO> response) {
@@ -216,7 +220,7 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     private void ApplyViaHrEmail() {
-        Call<JobAdminDTO> call = RetrofitClient.getInstance().getResponse().ApplyJobEmail(id);
+        Call<JobAdminDTO> call = RetrofitClient.getInstance().getResponse().ApplyJobEmail(id,authorization);
         call.enqueue(new Callback<JobAdminDTO>() {
             @Override
             public void onResponse(Call<JobAdminDTO> call, Response<JobAdminDTO> response) {
@@ -289,7 +293,10 @@ public class JobDetailActivity extends AppCompatActivity {
 
     }
 
+    public void loadUserProfile() {
 
+            Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().getApplicant(authorization, username_);
+    }
 
 
 }
