@@ -31,7 +31,11 @@ public class ListViewedJobsAdapter extends RecyclerView.Adapter<ViewedJobsItemVi
 
     @Override
     public int getItemCount() {
-        return mdata1.size();
+        if(mdata1!=null) {
+            return mdata1.size();
+        }else {
+            return 0;
+        }
     }
 
     public void setData(List<ViewedJobsDTO> mData){

@@ -69,6 +69,7 @@ public class ListBookmarkFragment extends Fragment {
         call.enqueue(new Callback<List<BookmarkedJobsDTO>>() {
             @Override
             public void onResponse(Call<List<BookmarkedJobsDTO>> call, Response<List<BookmarkedJobsDTO>> response) {
+
                 mData = response.body();
                 mAdapter.setData(mData);
                 bindAndShowAllJobs();

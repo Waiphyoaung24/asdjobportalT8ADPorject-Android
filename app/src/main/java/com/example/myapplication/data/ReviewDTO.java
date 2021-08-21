@@ -19,7 +19,15 @@ public class ReviewDTO implements Serializable {
     private String jobTitle;
     //private String jobIndustry;
     private long userId;
+    private String applicantName;
 
+    public String getApplicantName() {
+        return applicantName;
+    }
+
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
+    }
 
     public ReviewDTO() {}
 

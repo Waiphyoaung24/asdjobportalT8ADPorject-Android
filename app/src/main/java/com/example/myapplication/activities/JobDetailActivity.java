@@ -287,7 +287,7 @@ public class JobDetailActivity extends AppCompatActivity {
 
     public void seeReviewForAParticularCompany() {
         Intent i = new Intent(JobDetailActivity.this,MainActivity.class);
-        i.putExtra("company",jobadminDTO.getCompanyname());
+        i.putExtra("tag",jobadminDTO.getCompanyname());
         startActivity(i);
 
 

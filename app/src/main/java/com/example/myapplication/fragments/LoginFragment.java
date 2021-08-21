@@ -1,8 +1,13 @@
 package com.example.myapplication.fragments;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.os.Bundle;
@@ -11,9 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.ActivityPreAccount;
 import com.example.myapplication.data.Token;
 import com.example.myapplication.network.RetrofitClient;
 
@@ -27,6 +34,7 @@ public class LoginFragment extends Fragment {
     Button loginButton;
     EditText usernameText, passwordText;
     String username;
+    ImageView ivBack;
 
     public LoginFragment() {}
 
@@ -42,6 +50,7 @@ public class LoginFragment extends Fragment {
         loginButton = view.findViewById(R.id.loginButton);
         usernameText = view.findViewById(R.id.usernameText);
         passwordText = view.findViewById(R.id.passwordText);
+        ivBack = view.findViewById(R.id.iv_back);
         try{
             SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
             username = storeToken.getString("username",null);
@@ -50,6 +59,13 @@ public class LoginFragment extends Fragment {
         } catch(NullPointerException e){
             Log.i("there is no user signed in","");
         }
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ActivityPreAccount.class);
+                startActivity(intent);
+            }
+        });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +90,12 @@ public class LoginFragment extends Fragment {
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
-                    Toast.makeText(getActivity(),"login success",Toast.LENGTH_SHORT).show();
-                    //TODO return back to main activity;
+                    Toast.makeText(getContext(), "Login success", Toast.LENGTH_SHORT).show();
+                    ListJobFragment fragment = new ListJobFragment();
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction trans = fm.beginTransaction();
+                    trans.replace(R.id.fl_container, fragment,"list");
+                    trans.commit();
                 } else {
                     Toast.makeText(getActivity(),"login unsuccessful",Toast.LENGTH_SHORT).show();
                 }
@@ -86,5 +106,17 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getActivity(),"login fail",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

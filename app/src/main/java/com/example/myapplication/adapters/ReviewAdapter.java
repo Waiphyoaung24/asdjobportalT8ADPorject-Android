@@ -48,7 +48,7 @@ public class ReviewAdapter extends
        // holder.reviewCompany.setText(reviewListResponseData.get(position).getCompanyName());
         holder.reviewJob.setText( reviewListResponseData.get(position).getJobTitle());
         holder.reviewStar.setRating((float) reviewListResponseData.get(position).getReviewstars());
-        holder.reviewUser.setText( String.valueOf(reviewListResponseData.get(position).getUserId()));
+        holder.reviewUser.setText( String.valueOf(reviewListResponseData.get(position).getApplicantName()));
         holder.reviewDate.setText( String.valueOf(reviewListResponseData.get(position).getReviewDate()));
         // implement setONCLickListtener on itemView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +62,7 @@ public class ReviewAdapter extends
 
     @Override
     public int getItemCount() {
+
         return reviewListResponseData.size(); // size of the list items
     }
 
