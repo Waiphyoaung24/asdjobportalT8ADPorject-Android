@@ -1,8 +1,10 @@
 package com.example.myapplication.fragments;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.os.Bundle;
@@ -14,8 +16,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.MainActivity;
 import com.example.myapplication.data.Token;
 import com.example.myapplication.network.RetrofitClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,12 +34,14 @@ public class LoginFragment extends Fragment {
     Button loginButton;
     EditText usernameText, passwordText;
     String username;
+    FirebaseAuth auth;
 
     public LoginFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -54,7 +63,19 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(usernameText.getText().toString(), passwordText.getText().toString());
+                //login(usernameText.getText().toString(), passwordText.getText().toString());
+                auth.signInWithEmailAndPassword(usernameText.getText().toString(), passwordText.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                if(task.isSuccessful()){
+                                    Log.i("TAG","LOGGING INTO FIREBASE");
+                                }else {
+
+                                }
+                            }
+                        });
             }
         });
         return view;
@@ -75,6 +96,8 @@ public class LoginFragment extends Fragment {
                     editor.putString("username",token.getUsername());
                     editor.apply();
                     Toast.makeText(getActivity(),"login success",Toast.LENGTH_SHORT).show();
+
+
                     //TODO return back to main activity;
                 } else {
                     Toast.makeText(getActivity(),"login unsuccessful",Toast.LENGTH_SHORT).show();

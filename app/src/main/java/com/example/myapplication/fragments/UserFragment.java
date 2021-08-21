@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -51,6 +52,16 @@ import static android.app.Activity.RESULT_OK;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class UserFragment extends Fragment {
@@ -60,7 +71,8 @@ public class UserFragment extends Fragment {
     String username_,access_token;
     private static final String AVATAR_BASE_URL = "http://10.0.2.2:8080/static/";
     private static final String AVATAR_FILE_NAME = "avatar.png";
-
+    FirebaseAuth auth;
+    private DatabaseReference RootRef;
 
     public UserFragment() {
         // Required empty public constructor
@@ -69,6 +81,8 @@ public class UserFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
+        RootRef = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -184,6 +198,8 @@ public class UserFragment extends Fragment {
                         //loadUserProfile();
                         updateAvatar(applicant.getUsername(),authorization);
 
+                        RootRef.child("Users").child(auth.getCurrentUser().getUid()).child("userName").setValue(firsName.getText().toString()+lastName.getText().toString());
+
                     } else {
                         Log.i("response", response.message());
                         Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
@@ -205,6 +221,27 @@ public class UserFragment extends Fragment {
         if (username_ != null && access_token != null) {
             String authorization = "Bearer " + access_token;
             Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().deleteApplicant(authorization, username_);
+
+            //delete in firebase
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            Query userQuery = ref.child("Users").child(auth.getCurrentUser().getUid());
+
+            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                        appleSnapshot.getRef().removeValue();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e("TAG", "onCancelled", databaseError.toException());
+                }
+            });
+            auth.getCurrentUser().delete();
+
+
             call.enqueue(new Callback<ApplicantDTO>() {
                 @Override
                 public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
@@ -231,6 +268,7 @@ public class UserFragment extends Fragment {
     }
 
     public void logOut(){
+        auth.signOut();
         try{
             SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = storeToken.edit();
