@@ -39,7 +39,7 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
 
     List<ReviewDTO> reviewListResponseData;
     List<String> mDataset;
-    private TextView Company_Name, UserName,ratingNumber;
+    private TextView Company_Name;
     private RatingBar Company_Rating, Rating_By_User;
     private Button submit;
     private EditText Written_Review, job_title;
@@ -106,10 +106,8 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
     private void initializeInterface(View root) {
 
         Company_Name = root.findViewById(R.id.Company_Name);
-        UserName = root.findViewById(R.id.UserName);
         Company_Rating = root.findViewById(R.id.Company_Rating);
         Rating_By_User = root.findViewById(R.id.Rating_By_User);
-        ratingNumber = root.findViewById(R.id.ratingNumber);
         submit = root.findViewById(R.id.submit);
         Written_Review = root.findViewById(R.id.Written_Review);
         job_title = root.findViewById(R.id.job_title);
@@ -121,7 +119,7 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 if(fromUser==true){
                     userReview.setReviewstars(ratingBar.getRating());
-                    ratingNumber.setText(String.valueOf(ratingBar.getRating()));
+
                 }
             }
         });
@@ -180,7 +178,6 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
                 Company_Name.setText(reviewListResponseData.get(0).getCompanyName());
                 Company_Rating.setRating((float)reviewListResponseData.stream().mapToDouble(x->x.getReviewstars()).average().getAsDouble());
                 // This user name data will have to change. Will be the login user name
-                UserName.setText(String.valueOf(reviewListResponseData.get(0).getUserId()));
             }
 
             @Override

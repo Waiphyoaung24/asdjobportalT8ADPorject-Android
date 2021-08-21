@@ -6,14 +6,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.ListViewedJobsAdapter;
+import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.data.ViewedJobsDTO;
 import com.example.myapplication.network.RetrofitClient;
 
@@ -28,11 +32,19 @@ public class ListViewedJobsFragment extends Fragment {
     RecyclerView rvListViewedJobs;
     private ListViewedJobsAdapter mAdapter;
     private List<ViewedJobsDTO> mData;
+    String username_,access_token;
+    ApplicantDTO applicant;
+    String authorization;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+        access_token = storeToken.getString("access_token",null);
+        authorization = "Bearer "+access_token;
+
+        loadUserProfile();
     }
 
     @Nullable
@@ -54,7 +66,7 @@ public class ListViewedJobsFragment extends Fragment {
 
     private void startloadingViewedJobs() {
         //Retrofit api call ListViewed Jobs
-        Call<List<ViewedJobsDTO>> call = RetrofitClient.getInstance().getResponse().ListViewedJobs();
+        Call<List<ViewedJobsDTO>> call = RetrofitClient.getInstance().getResponse().ListViewedJobs(authorization);
         call.enqueue(new Callback<List<ViewedJobsDTO>>() {
             @Override
             public void onResponse(Call<List<ViewedJobsDTO>> call, Response<List<ViewedJobsDTO>> response) {
@@ -75,4 +87,9 @@ public class ListViewedJobsFragment extends Fragment {
         rvListViewedJobs.setLayoutManager(linearLayoutManager);
         rvListViewedJobs.setAdapter(mAdapter);
     }
+
+    public void loadUserProfile() {
+        if(username_ != null&&access_token!=null){
+            Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().getApplicant(authorization, username_);
+        }}
 }

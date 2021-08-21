@@ -1,11 +1,18 @@
 package com.example.myapplication.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+
 import androidx.annotation.NonNull;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,9 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.ActivityPreAccount;
 import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.data.ChatUsers;
 import com.example.myapplication.data.Token;
@@ -37,8 +46,12 @@ public class RegistrationFragment extends Fragment {
     EditText signUpUsernameText, signUpPasswordText;
     Boolean userLogined;
     String username;
+
     private FirebaseAuth auth;
     FirebaseDatabase database;
+
+    ImageView ivBack;
+
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -59,6 +72,7 @@ public class RegistrationFragment extends Fragment {
         signUpButton = view.findViewById(R.id.signUpButton);
         signUpUsernameText = view.findViewById(R.id.signUpUsernameText);
         signUpPasswordText = view.findViewById(R.id.signUpPasswordText);
+        ivBack = view.findViewById(R.id.iv_back);
         try{
             SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
             username = storeToken.getString("username",null);
@@ -100,6 +114,15 @@ public class RegistrationFragment extends Fragment {
                 }
             }
         });
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ActivityPreAccount.class);
+                startActivity(intent);
+            }
+        });
+
 
         return view;
     }
@@ -150,7 +173,12 @@ public class RegistrationFragment extends Fragment {
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
-                    Toast.makeText(getActivity(),"login success",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Register success", Toast.LENGTH_SHORT).show();
+                    ListJobFragment fragment = new ListJobFragment();
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction trans = fm.beginTransaction();
+                    trans.replace(R.id.fl_container, fragment,"list");
+                    trans.commit();
                     //TODO return back to main activity;
                 }
             }
@@ -160,5 +188,16 @@ public class RegistrationFragment extends Fragment {
                 Toast.makeText(getActivity(),"login fail",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

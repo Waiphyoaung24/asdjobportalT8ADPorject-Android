@@ -31,7 +31,11 @@ public class ListBookmarkAdapter extends RecyclerView.Adapter<BookmarkItemViewHo
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        if(mData!=null) {
+            return mData.size();
+        }else {
+            return 0;
+        }
     }
 
     public void setData(List<BookmarkedJobsDTO> mData){

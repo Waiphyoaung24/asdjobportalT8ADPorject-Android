@@ -116,7 +116,7 @@ public class ListJobFragment extends Fragment implements JobListDelegate {
 
                 @Override
                 public void onFailure(Call<List<JobDTO>> call, Throwable t) {
-                    Log.e("error", "error");
+                    Log.e("error", t.getMessage());
                 }
             });
         }

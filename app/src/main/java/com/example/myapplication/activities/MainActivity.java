@@ -78,16 +78,15 @@ public class MainActivity extends BaseActivity {
     public void onBackPressed() {
 
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("list");
-        if(fragment!=null)
-        Toast.makeText(this, "List method", Toast.LENGTH_SHORT).show();
+        if (fragment != null)
+            Toast.makeText(this, "List method", Toast.LENGTH_SHORT).show();
 
         Fragment fragmentForCategory = getSupportFragmentManager().findFragmentByTag("category");
-        if(fragmentForCategory!=null)
-           replaceFragment(new ListJobFragment(),"list");
+        if (fragmentForCategory != null)
+            replaceFragment(new ListJobFragment(), "list");
 
 
-
-       //
+        //
        /* Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("list");
         if(fragment1!=null){
             Toast.makeText(this, "List last page", Toast.LENGTH_SHORT).show();
@@ -123,17 +122,34 @@ public class MainActivity extends BaseActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
 
 
-        String intentMsg = getIntent().getStringExtra("company");
-        if (intentMsg != null){
-            Bundle arguments = new Bundle();
-            arguments.putString("CompanyName", intentMsg);
-            ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
-            fragment.setArguments(arguments);
-            replaceFragment(fragment,"review");
+        String intentMsg = getIntent().getStringExtra("tag");
+        if (intentMsg != null) {
+
+            if (intentMsg.equals("login")) {
+
+                LoginFragment loginFragment = new LoginFragment();
+                replaceFragment(loginFragment, "login");
+            }else if(intentMsg.equals("signup")){
+                RegistrationFragment registrationFragment = new RegistrationFragment();
+                replaceFragment(registrationFragment, "register");
+            }
+            else if(intentMsg.equals("skip")){
+                ListJobFragment fragment = new ListJobFragment();
+                replaceFragment(fragment, "list");
+            }
+
+
+            else {
+                Bundle arguments = new Bundle();
+                arguments.putString("CompanyName", intentMsg);
+                ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
+                fragment.setArguments(arguments);
+                replaceFragment(fragment, "review");
+            }
         } else {
 
             ListJobFragment fragment = new ListJobFragment();
-            replaceFragment(fragment,"list");
+            replaceFragment(fragment, "list");
         }
 
 
@@ -146,44 +162,44 @@ public class MainActivity extends BaseActivity {
                 switch (id) {
                     case R.id.menu_item_job_list:
                         ListJobFragment fragment = new ListJobFragment();
-                        replaceFragment(fragment,"list");
+                        replaceFragment(fragment, "list");
                         break;
                     case R.id.menu_item_job_category:
                         JobIndustryByCategoryFragment categoryByJobIndustry = new JobIndustryByCategoryFragment();
-                        replaceFragment(categoryByJobIndustry,"category");
+                        replaceFragment(categoryByJobIndustry, "category");
                         break;
                     case R.id.menu_item_search:
                         SearchJobFragment searchJobFragment = new SearchJobFragment();
-                        replaceFragment(searchJobFragment,"search");
+                        replaceFragment(searchJobFragment, "search");
 
                         break;
                     case R.id.menu_item_bookmark:
                         ListBookmarkFragment bookmarkFragment = new ListBookmarkFragment();
-                        replaceFragment(bookmarkFragment,"bookmark");
+                        replaceFragment(bookmarkFragment, "bookmark");
 
                         break;
                     case R.id.menu_item_viewedjobs:
                         ListViewedJobsFragment listviewedjobsFragment = new ListViewedJobsFragment();
-                        replaceFragment(listviewedjobsFragment,"viewdJob");
+                        replaceFragment(listviewedjobsFragment, "viewdJob");
 
                         break;
                     case R.id.menu_item_review:
                         CompanyReviewFragment companyReviewFragment = new CompanyReviewFragment();
-                        replaceFragment(companyReviewFragment,"companyReview");
+                        replaceFragment(companyReviewFragment, "companyReview");
 
                         break;
                     case R.id.menu_item_new_review:
                         NewReviewFragment newReview = new NewReviewFragment();
-                        replaceFragment(newReview,"newReview");
+                        replaceFragment(newReview, "newReview");
 
                         break;
                     case R.id.menu_item_login:
                         LoginFragment loginFragment = new LoginFragment();
-                        replaceFragment(loginFragment,"login");
+                        replaceFragment(loginFragment, "login");
                         break;
                     case R.id.menu_item_registration:
                         RegistrationFragment registrationFragment = new RegistrationFragment();
-                        replaceFragment(registrationFragment,"register");
+                        replaceFragment(registrationFragment, "register");
                         break;
                     case R.id.menu_item_user:
                         UserFragment userFragment = new UserFragment();
@@ -193,7 +209,7 @@ public class MainActivity extends BaseActivity {
                             userFragment.setArguments(bundle);
                             Log.i("token: ", token.toString());
                         }
-                        replaceFragment(userFragment,"userProfile");
+                        replaceFragment(userFragment, "userProfile");
                         break;
                     case R.id.chat:
                         Intent i = new Intent(getApplication().getBaseContext(),
@@ -317,9 +333,9 @@ public class MainActivity extends BaseActivity {
                 SharedPreferences.Editor editor = storeToken.edit();
                 editor.clear().commit();
             }
-        } catch(NullPointerException e){
-          /*  Toast.makeText(this,"please login first",Toast.LENGTH_SHORT).show();*/
-            Log.i("there is no user stored","");
+        } catch (NullPointerException e) {
+            /*  Toast.makeText(this,"please login first",Toast.LENGTH_SHORT).show();*/
+            Log.i("there is no user stored", "");
         }
     }
 

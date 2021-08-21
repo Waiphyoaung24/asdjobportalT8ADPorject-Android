@@ -58,22 +58,22 @@ public interface Response {
     Call<JobAdminDTO> getJob(@Path("id")Long id);
 
     @POST("job/bookmark/{id}")
-    Call<BookmarkedJobsDTO> saveBookmark(@Path("id")Long id);
+    Call<BookmarkedJobsDTO> saveBookmark(@Path("id")Long id,@Header("Authorization") String authHeader);
 
     @POST("job/applyjoburl/{id}")
-    Call<ResponseMessage> ApplyJobUrl(@Path("id")Long id);
+    Call<ResponseMessage> ApplyJobUrl(@Path("id")Long id,@Header("Authorization") String authHeader);
 
     @POST("job/applyjobemail/{id}")
-    Call<JobAdminDTO> ApplyJobEmail(@Path("id")Long id);
+    Call<JobAdminDTO> ApplyJobEmail(@Path("id")Long id,@Header("Authorization") String authHeader);
 
     @POST("job/shareurl/{id}")
-    Call<JobAdminDTO> ShareURL(@Path("id")Long id);
+    Call<JobAdminDTO> ShareURL(@Path("id")Long id,@Header("Authorization") String authHeader);
 
     @GET("job/details/bookmark/list")
-    Call<List<BookmarkedJobsDTO>> listBookmarkJobs();
+    Call<List<BookmarkedJobsDTO>> listBookmarkJobs(@Header("Authorization") String authHeader);
 
     @GET("job/details/viewed/list")
-    Call<List<ViewedJobsDTO>> ListViewedJobs();
+    Call<List<ViewedJobsDTO>> ListViewedJobs(@Header("Authorization") String authHeader);
 
 
 
