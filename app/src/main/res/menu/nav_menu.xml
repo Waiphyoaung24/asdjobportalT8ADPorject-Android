@@ -32,4 +32,10 @@
     <item android:id="@+id/menu_item_user"
         android:title="User Setting">
     </item>
+    <item android:id="@+id/chat"
+        android:title="Chat">
+    </item>
+    <item android:id="@+id/createGroup"
+        android:title="Create Chat Group">
+    </item>
     </menu>

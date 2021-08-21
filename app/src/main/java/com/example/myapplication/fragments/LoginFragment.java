@@ -1,6 +1,10 @@
 package com.example.myapplication.fragments;
 
+
+import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,9 +24,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+
+import com.example.myapplication.activities.MainActivity;
+
 import com.example.myapplication.activities.ActivityPreAccount;
+
 import com.example.myapplication.data.Token;
 import com.example.myapplication.network.RetrofitClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,13 +46,18 @@ public class LoginFragment extends Fragment {
     Button loginButton;
     EditText usernameText, passwordText;
     String username;
+
+    FirebaseAuth auth;
+
     ImageView ivBack;
+
 
     public LoginFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -70,7 +87,19 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(usernameText.getText().toString(), passwordText.getText().toString());
+                //login(usernameText.getText().toString(), passwordText.getText().toString());
+                auth.signInWithEmailAndPassword(usernameText.getText().toString(), passwordText.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                if(task.isSuccessful()){
+                                    Log.i("TAG","LOGGING INTO FIREBASE");
+                                }else {
+
+                                }
+                            }
+                        });
             }
         });
         return view;
@@ -90,12 +119,19 @@ public class LoginFragment extends Fragment {
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
+
+                  
+
+
+                    //TODO return back to main activity;
+
                     Toast.makeText(getContext(), "Login success", Toast.LENGTH_SHORT).show();
                     ListJobFragment fragment = new ListJobFragment();
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     FragmentTransaction trans = fm.beginTransaction();
                     trans.replace(R.id.fl_container, fragment,"list");
                     trans.commit();
+
                 } else {
                     Toast.makeText(getActivity(),"login unsuccessful",Toast.LENGTH_SHORT).show();
                 }

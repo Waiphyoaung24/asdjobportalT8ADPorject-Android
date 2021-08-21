@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+
+import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,8 +26,14 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.activities.ActivityPreAccount;
 import com.example.myapplication.data.ApplicantDTO;
+import com.example.myapplication.data.ChatUsers;
 import com.example.myapplication.data.Token;
 import com.example.myapplication.network.RetrofitClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,7 +46,12 @@ public class RegistrationFragment extends Fragment {
     EditText signUpUsernameText, signUpPasswordText;
     Boolean userLogined;
     String username;
+
+    private FirebaseAuth auth;
+    FirebaseDatabase database;
+
     ImageView ivBack;
+
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -45,6 +60,8 @@ public class RegistrationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
     }
 
     @Override
@@ -72,8 +89,28 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(!userLogined){
-                    //do sign
-                    signUp(signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString());
+                    //do sign-up
+
+                    auth.createUserWithEmailAndPassword(
+                            signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString()
+                    ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if(task.isSuccessful()){
+                                ChatUsers user = new ChatUsers("",
+                                        signUpUsernameText.getText().toString(),
+                                        signUpPasswordText.getText().toString());
+                                String id = task.getResult().getUser().getUid();
+                                database.getReference().child("Users").child(id).setValue(user);
+                                signUp(signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString());
+
+                            }else {
+                                Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                 }
             }
         });
@@ -98,8 +135,21 @@ public class RegistrationFragment extends Fragment {
             public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
                 if(response.isSuccessful()){
                     Log.i("register success","register success");
+
                     Toast.makeText(getActivity(), "register success, automatic login and back to home page", Toast.LENGTH_SHORT).show();
                     login(applicant_.getUsername(), applicant_.getPassword());
+                    auth.signInWithEmailAndPassword(applicant_.getUsername(), applicant_.getPassword())
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                    if(task.isSuccessful()){
+                                        Log.i("TAG","LOGGING INTO FIREBASE");
+                                    }else {
+
+                                    }
+                                }
+                            });
                 }
             }
             @Override
