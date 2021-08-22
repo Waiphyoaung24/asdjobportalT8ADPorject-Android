@@ -217,7 +217,12 @@ public class MainActivity extends BaseActivity {
                         startActivity(i);
                         break;
                     case R.id.createGroup:
-                        RequestNewGroup();
+                        if(auth.getCurrentUser()!=null){
+                            RequestNewGroup();
+                        }else {
+                            Toast.makeText(MainActivity.this, "Please sign in first", Toast.LENGTH_SHORT).show();
+                        }
+
                         break;
 
                 }

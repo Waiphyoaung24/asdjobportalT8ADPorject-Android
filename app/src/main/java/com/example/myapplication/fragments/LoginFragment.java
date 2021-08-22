@@ -87,25 +87,29 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //login(usernameText.getText().toString(), passwordText.getText().toString());
-                auth.signInWithEmailAndPassword(usernameText.getText().toString(), passwordText.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                login(usernameText.getText().toString(), passwordText.getText().toString());
 
-                                if(task.isSuccessful()){
-                                    Log.i("TAG","LOGGING INTO FIREBASE");
-                                }else {
-
-                                }
-                            }
-                        });
             }
         });
         return view;
+
     }
 
     private void login(String username, String password){
+
+        auth.signInWithEmailAndPassword(username, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if(task.isSuccessful()){
+                            Toast.makeText(getContext(), "LOGGING IN TO FIREBASE", Toast.LENGTH_SHORT).show();
+                        }else {
+
+                        }
+                    }
+                });
+
         Call<Token> call = RetrofitClient.getInstance().getResponse().login(username, password);
         call.enqueue(new Callback<Token>() {
             @Override
@@ -119,19 +123,10 @@ public class LoginFragment extends Fragment {
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
-
-                  
+                    Toast.makeText(getActivity(),"login success",Toast.LENGTH_SHORT).show();
 
 
                     //TODO return back to main activity;
-
-                    Toast.makeText(getContext(), "Login success", Toast.LENGTH_SHORT).show();
-                    ListJobFragment fragment = new ListJobFragment();
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    FragmentTransaction trans = fm.beginTransaction();
-                    trans.replace(R.id.fl_container, fragment,"list");
-                    trans.commit();
-
                 } else {
                     Toast.makeText(getActivity(),"login unsuccessful",Toast.LENGTH_SHORT).show();
                 }

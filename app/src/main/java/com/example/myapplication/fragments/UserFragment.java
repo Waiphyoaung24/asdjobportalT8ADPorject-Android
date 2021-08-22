@@ -119,7 +119,13 @@ public class UserFragment extends Fragment {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUser();
+                if(password.getText().toString() == ""){
+                    Toast.makeText(getContext(),"please enter your password or a new one",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    updateUser();
+                }
+
             }
         });
         logOut.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +205,7 @@ public class UserFragment extends Fragment {
                         updateAvatar(applicant.getUsername(),authorization);
 
                         RootRef.child("Users").child(auth.getCurrentUser().getUid()).child("userName").setValue(firsName.getText().toString()+lastName.getText().toString());
-
+                        RootRef.child("Users").child(auth.getCurrentUser().getUid()).child("password").setValue(password.getText().toString());
                     } else {
                         Log.i("response", response.message());
                         Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();

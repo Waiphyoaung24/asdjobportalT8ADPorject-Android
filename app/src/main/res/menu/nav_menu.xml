@@ -33,9 +33,9 @@
         android:title="User Setting">
     </item>
     <item android:id="@+id/chat"
-        android:title="Chat">
+        android:title="Our Community">
     </item>
     <item android:id="@+id/createGroup"
-        android:title="Create Chat Group">
+        android:title="Let's Create Group To Chat">
     </item>
     </menu>

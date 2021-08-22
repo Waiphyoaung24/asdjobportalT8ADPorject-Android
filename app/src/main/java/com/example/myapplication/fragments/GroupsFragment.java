@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.GroupChatActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -76,7 +77,7 @@ public class GroupsFragment extends Fragment {
     private ListView list_view;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list_of_groups = new ArrayList<>();
-
+    private FirebaseAuth auth;
     private DatabaseReference GroupRef;
 
     @Override
@@ -87,12 +88,15 @@ public class GroupsFragment extends Fragment {
 
 
         GroupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
+        auth = FirebaseAuth.getInstance();
 
 
         IntializeFields();
 
+        if(auth.getCurrentUser()!=null){
+            RetrieveAndDisplayGroups();
+        }
 
-        RetrieveAndDisplayGroups();
 
 
 

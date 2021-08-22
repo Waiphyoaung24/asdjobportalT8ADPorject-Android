@@ -34,6 +34,7 @@ public class ChatsFragment extends Fragment {
     FragmentChatsBinding binding;
     ArrayList<ChatUsers> list = new ArrayList<>();
     FirebaseDatabase database;
+    FirebaseAuth auth;
 
 
     @Override
@@ -42,6 +43,7 @@ public class ChatsFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentChatsBinding.inflate(inflater, container, false);
         database = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
         ChatUsersAdapter adapter = new ChatUsersAdapter(list, getContext());
         binding.chatRecycleView.setAdapter(adapter);
 
@@ -51,14 +53,17 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    ChatUsers users = dataSnapshot.getValue(ChatUsers.class);
-                    users.setUserId(dataSnapshot.getKey());
-                    if (!users.getUserId().equals(FirebaseAuth.getInstance().getUid())){
-                        list.add(users);
-                    }
+                if(auth.getCurrentUser()!=null){
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        ChatUsers users = dataSnapshot.getValue(ChatUsers.class);
+                        users.setUserId(dataSnapshot.getKey());
+                        if (!users.getUserId().equals(FirebaseAuth.getInstance().getUid())){
+                            list.add(users);
+                        }
 
+                    }
                 }
+
                 adapter.notifyDataSetChanged();
             }
 
