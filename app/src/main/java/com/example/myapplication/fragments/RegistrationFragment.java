@@ -138,18 +138,17 @@ public class RegistrationFragment extends Fragment {
 
                     Toast.makeText(getActivity(), "register success, automatic login and back to home page", Toast.LENGTH_SHORT).show();
                     login(applicant_.getUsername(), applicant_.getPassword());
-                    auth.signInWithEmailAndPassword(applicant_.getUsername(), applicant_.getPassword())
+                    /*auth.signInWithEmailAndPassword(applicant_.getUsername(), applicant_.getPassword())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                                     if(task.isSuccessful()){
-                                        Log.i("TAG","LOGGING INTO FIREBASE");
-                                    }else {
+                                        Toast.makeText(getContext(), "LOGGING INTO FIREBASE", Toast.LENGTH_SHORT).show();
 
                                     }
                                 }
-                            });
+                            });*/
                 }
             }
             @Override

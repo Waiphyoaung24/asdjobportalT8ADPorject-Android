@@ -40,7 +40,7 @@ public class ListJobAdapter extends RecyclerView.Adapter<JobListItemViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 6;
+        return mData.size();
     }
     public void setData(List<JobDTO> mData){
         this.mData = mData;

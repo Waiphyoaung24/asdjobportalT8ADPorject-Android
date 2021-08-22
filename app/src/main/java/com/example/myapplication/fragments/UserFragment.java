@@ -205,7 +205,7 @@ public class UserFragment extends Fragment {
                         updateAvatar(applicant.getUsername(),authorization);
 
                         RootRef.child("Users").child(auth.getCurrentUser().getUid()).child("userName").setValue(firsName.getText().toString()+lastName.getText().toString());
-
+                        RootRef.child("Users").child(auth.getCurrentUser().getUid()).child("password").setValue(password.getText().toString());
                     } else {
                         Log.i("response", response.message());
                         Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
