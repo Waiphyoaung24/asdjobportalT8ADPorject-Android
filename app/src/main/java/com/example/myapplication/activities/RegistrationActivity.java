@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegistrationActivity extends BaseActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     Button signUpButton;
     EditText signUpUsernameText, signUpPasswordText,firstUserText,lastUserText;
@@ -84,7 +84,7 @@ public class RegistrationActivity extends BaseActivity {
                     //do sign-up
 
                     auth.createUserWithEmailAndPassword(
-                            signUpUsernameText.getText().toString(), "123456"
+                            signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString()
                     ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -92,7 +92,7 @@ public class RegistrationActivity extends BaseActivity {
                             if(task.isSuccessful()){
                                 ChatUsers user = new ChatUsers(firstUserText.getText().toString()+" "+lastUserText.getText().toString(),
                                         signUpUsernameText.getText().toString(),
-                                       "123456");
+                                        signUpPasswordText.getText().toString());
 
                                 String id = task.getResult().getUser().getUid();
                                 database.getReference().child("Users").child(id).setValue(user);

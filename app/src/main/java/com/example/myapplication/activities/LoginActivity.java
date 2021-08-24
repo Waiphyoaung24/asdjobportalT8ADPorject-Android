@@ -29,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity {
 
 
     Button loginButton;
@@ -78,7 +78,6 @@ public class LoginActivity extends BaseActivity {
     }
     private void login(String username, String password){
 
-        //log-in with firebase data
         auth.signInWithEmailAndPassword(username, "123456")
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -86,7 +85,6 @@ public class LoginActivity extends BaseActivity {
 
                         if(task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "LOGGING IN TO FIREBASE", Toast.LENGTH_SHORT).show();
-
                         }else {
 
                         }
@@ -111,6 +109,7 @@ public class LoginActivity extends BaseActivity {
                     intent.putExtra("tag", "list");
                     startActivity(intent);
 
+
                     //TODO return back to main activity;
                 } else {
                     Toast.makeText(getApplicationContext(),"login unsuccessful",Toast.LENGTH_SHORT).show();
@@ -123,5 +122,4 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
-
 }
