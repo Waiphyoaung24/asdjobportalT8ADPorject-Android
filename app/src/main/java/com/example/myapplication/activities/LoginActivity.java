@@ -1,35 +1,24 @@
-package com.example.myapplication.fragments;
-
+package com.example.myapplication.activities;
 
 import androidx.annotation.NonNull;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.ListFragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
-
-import com.example.myapplication.activities.MainActivity;
-
-import com.example.myapplication.activities.ActivityPreAccount;
-
 import com.example.myapplication.data.Token;
+import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.network.RetrofitClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,8 +29,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+public class LoginActivity extends AppCompatActivity {
 
-public class LoginFragment extends Fragment {
 
     Button loginButton;
     EditText usernameText, passwordText;
@@ -50,36 +39,28 @@ public class LoginFragment extends Fragment {
     FirebaseAuth auth;
 
     ImageView ivBack;
-
-
-    public LoginFragment() {}
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        auth = FirebaseAuth.getInstance();
-    }
+        setContentView(R.layout.activity_login);
+        initcomponents();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        loginButton = view.findViewById(R.id.loginButton);
-        usernameText = view.findViewById(R.id.usernameText);
-        passwordText = view.findViewById(R.id.passwordText);
-        ivBack = view.findViewById(R.id.iv_back);
+        loginButton = findViewById(R.id.loginButton);
+        usernameText = findViewById(R.id.usernameText);
+        passwordText = findViewById(R.id.passwordText);
+        ivBack = findViewById(R.id.iv_back);
         try{
-            SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+            SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
             username = storeToken.getString("username",null);
             if(username!=null)
-                Toast.makeText(getActivity(),"you have already Signed in",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"you have already Signed in",Toast.LENGTH_SHORT).show();
         } catch(NullPointerException e){
             Log.i("there is no user signed in","");
         }
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ActivityPreAccount.class);
+                Intent intent = new Intent(LoginActivity.this, ActivityPreAccount.class);
                 startActivity(intent);
             }
         });
@@ -89,17 +70,18 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 login(usernameText.getText().toString(), passwordText.getText().toString());
                 ListJobFragment fragment = new ListJobFragment();
-                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction trans = fm.beginTransaction();
                 trans.replace(R.id.fl_container, fragment,"list");
                 trans.commit();
 
             }
         });
-        return view;
-
     }
 
+    private void initcomponents() {
+        auth = FirebaseAuth.getInstance();
+    }
     private void login(String username, String password){
 
         auth.signInWithEmailAndPassword(username, password)
@@ -108,7 +90,7 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()){
-                            Toast.makeText(getContext(), "LOGGING IN TO FIREBASE", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "LOGGING IN TO FIREBASE", Toast.LENGTH_SHORT).show();
                         }else {
 
                         }
@@ -122,15 +104,15 @@ public class LoginFragment extends Fragment {
                 Token token = response.body();
                 if(token!=null && response.isSuccessful()){
                     Log.i("login success",token.toString());
-                    SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+                    SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = storeToken.edit();
                     editor.putString("access_token",token.getAccess_token());
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
-                    Toast.makeText(getActivity(),"login success",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"login success",Toast.LENGTH_SHORT).show();
                     ListJobFragment fragment = new ListJobFragment();
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentManager fm = getSupportFragmentManager();
                     FragmentTransaction trans = fm.beginTransaction();
                     trans.replace(R.id.fl_container, fragment,"list");
                     trans.commit();
@@ -138,26 +120,14 @@ public class LoginFragment extends Fragment {
 
                     //TODO return back to main activity;
                 } else {
-                    Toast.makeText(getActivity(),"login unsuccessful",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"login unsuccessful",Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
                 Log.i("login fail: ", t.getMessage());
-                Toast.makeText(getActivity(),"login fail",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"login fail",Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

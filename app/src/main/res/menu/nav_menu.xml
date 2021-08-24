@@ -38,4 +38,7 @@
     <item android:id="@+id/createGroup"
         android:title="Let's Create Group To Chat">
     </item>
+    <item android:id="@+id/menu_logout"
+        android:title="Logout">
+    </item>
     </menu>

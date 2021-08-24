@@ -23,6 +23,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import com.example.myapplication.R;
 import com.example.myapplication.activities.ActivityPreAccount;
 import com.example.myapplication.data.ApplicantDTO;
@@ -31,9 +40,12 @@ import com.example.myapplication.data.Token;
 import com.example.myapplication.network.RetrofitClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,9 +55,10 @@ import retrofit2.Response;
 public class RegistrationFragment extends Fragment {
 
     Button signUpButton;
-    EditText signUpUsernameText, signUpPasswordText;
+    EditText signUpUsernameText, signUpPasswordText,firstUserText,lastUserText;
     Boolean userLogined;
     String username;
+
 
     private FirebaseAuth auth;
     FirebaseDatabase database;
@@ -71,7 +84,10 @@ public class RegistrationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
         signUpButton = view.findViewById(R.id.signUpButton);
         signUpUsernameText = view.findViewById(R.id.signUpUsernameText);
+
         signUpPasswordText = view.findViewById(R.id.signUpPasswordText);
+        firstUserText = view.findViewById(R.id.et_firstuserName);
+        lastUserText = view.findViewById(R.id.et_lastuserName);
         ivBack = view.findViewById(R.id.iv_back);
         try{
             SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
@@ -85,6 +101,10 @@ public class RegistrationFragment extends Fragment {
             userLogined = false;
             Log.i("there is no user signed in","");
         }
+
+
+
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,12 +118,13 @@ public class RegistrationFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if(task.isSuccessful()){
-                                ChatUsers user = new ChatUsers("",
+                                ChatUsers user = new ChatUsers(firstUserText.getText().toString()+" "+lastUserText.getText().toString(),
                                         signUpUsernameText.getText().toString(),
                                         signUpPasswordText.getText().toString());
+
                                 String id = task.getResult().getUser().getUid();
                                 database.getReference().child("Users").child(id).setValue(user);
-                                signUp(signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString());
+                                signUp(signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString(),firstUserText.getText().toString(),lastUserText.getText().toString());
 
                             }else {
                                 Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -127,8 +148,8 @@ public class RegistrationFragment extends Fragment {
         return view;
     }
 
-    private void signUp(String username1, String password1){
-        ApplicantDTO applicant_ = new ApplicantDTO(username1, password1);
+    private void signUp(String username1, String password1,String firstName,String lastName){
+        ApplicantDTO applicant_ = new ApplicantDTO(username1, password1,firstName,lastName);
         Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().saveApplicant(applicant_);
         call.enqueue(new Callback<ApplicantDTO>() {
             @Override
@@ -199,4 +220,4 @@ public class RegistrationFragment extends Fragment {
         super.onDestroyView();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
-}
+    }

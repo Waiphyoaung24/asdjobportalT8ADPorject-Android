@@ -26,7 +26,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ChatDetailActivity extends AppCompatActivity {
+public class ChatDetailActivity extends BaseActivity {
 
     ActivityChatDetailBinding binding;
     FirebaseDatabase database;
@@ -54,8 +54,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         binding.backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatDetailActivity.this, MainActivity.class);
-                startActivity(intent);
+               onBackPressed();
             }
         });
 

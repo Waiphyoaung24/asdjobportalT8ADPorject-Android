@@ -22,9 +22,11 @@ public class ApplicantDTO implements Serializable{
     public ApplicantDTO() {
     }
 
-    public ApplicantDTO(String username, String password) {
+    public ApplicantDTO(String username, String password,String firstName,String lastName) {
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public ApplicantDTO(Long id, String username, String password, String firstName, String lastName, String contactNumber, String avatarImageURl, String roles, String resumeURl, String userStatus, String chatstatus, LocalDate dob, String gender, String selfIntroduction) {

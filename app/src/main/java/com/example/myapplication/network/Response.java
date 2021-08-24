@@ -86,7 +86,7 @@ public interface Response {
     Call<List<ReviewDTO>> getReviewsByCompanyName(@Path("companyname") String companyname);
 
     @POST("review/newreview")
-    Call<ReviewDTO> createReview(@Body ReviewDTO rdto);
+    Call<ReviewDTO> createReview(@Body ReviewDTO rdto,@Header("Authorization") String authHeader);
 
     @DELETE("review/deletereview/{reviewid}")
     Call<Void> deleteReview(@Path("reviewid") Long reviewid);

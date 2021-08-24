@@ -16,7 +16,7 @@ import com.example.myapplication.fragments.ListJobFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
-public class ActivityPreAccount extends AppCompatActivity {
+public class ActivityPreAccount extends BaseActivity {
 
     MaterialTextView tvLogin;
     MaterialButton btnSignup;

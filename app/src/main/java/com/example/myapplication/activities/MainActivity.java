@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
@@ -116,10 +117,8 @@ public class MainActivity extends BaseActivity {
 
 
         //changing color of status bar
-        Window window = getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black));
+
+        isUserLogin();
 
 
         String intentMsg = getIntent().getStringExtra("tag");
@@ -129,17 +128,13 @@ public class MainActivity extends BaseActivity {
 
                 LoginFragment loginFragment = new LoginFragment();
                 replaceFragment(loginFragment, "login");
-            }else if(intentMsg.equals("signup")){
+            } else if (intentMsg.equals("signup")) {
                 RegistrationFragment registrationFragment = new RegistrationFragment();
                 replaceFragment(registrationFragment, "register");
-            }
-            else if(intentMsg.equals("skip")){
+            } else if (intentMsg.equals("skip")) {
                 ListJobFragment fragment = new ListJobFragment();
                 replaceFragment(fragment, "list");
-            }
-
-
-            else {
+            } else {
                 Bundle arguments = new Bundle();
                 arguments.putString("CompanyName", intentMsg);
                 ListCompanyReviewFragment fragment = new ListCompanyReviewFragment();
@@ -217,12 +212,16 @@ public class MainActivity extends BaseActivity {
                         startActivity(i);
                         break;
                     case R.id.createGroup:
-                        if(auth.getCurrentUser()!=null){
+                        if (auth.getCurrentUser() != null) {
                             RequestNewGroup();
-                        }else {
+                        } else {
                             Toast.makeText(MainActivity.this, "Please sign in first", Toast.LENGTH_SHORT).show();
                         }
 
+                        break;
+
+                    case R.id.menu_logout:
+                        logout();
                         break;
 
                 }
@@ -233,8 +232,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void RequestNewGroup()
-    {
+    private void RequestNewGroup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog);
         builder.setTitle("Enter Group Name :");
 
@@ -243,16 +241,12 @@ public class MainActivity extends BaseActivity {
 
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 String groupName = groupNameField.getText().toString();
 
-                if (TextUtils.isEmpty(groupName))
-                {
+                if (TextUtils.isEmpty(groupName)) {
                     Toast.makeText(MainActivity.this, "Please write Group Name...", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     CreateNewGroup(groupName);
                 }
             }
@@ -260,8 +254,7 @@ public class MainActivity extends BaseActivity {
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
             }
         });
@@ -274,10 +267,8 @@ public class MainActivity extends BaseActivity {
         RootRef.child("Groups").child(groupName).setValue("")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if (task.isSuccessful())
-                        {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, groupName + " group is Created Successfully...", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -292,6 +283,12 @@ public class MainActivity extends BaseActivity {
         navView = findViewById(R.id.nav_menu);
         toolbar = findViewById(R.id.toolbar);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isUserLogin();
     }
 
     private void refreshToken() {
@@ -354,6 +351,38 @@ public class MainActivity extends BaseActivity {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         int i = RESULT_OK;
+    }
+
+    private void isUserLogin() {
+        SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+        String accesstoken = storeToken.getString("access_token", "");
+        navView = (NavigationView) findViewById(R.id.nav_menu);
+        Menu nav_Menu = navView.getMenu();
+
+        if (!accesstoken.equals("")) {
+
+            nav_Menu.findItem(R.id.menu_item_login).setVisible(false);
+            nav_Menu.findItem(R.id.menu_item_registration).setVisible(false);
+            nav_Menu.findItem(R.id.menu_logout).setVisible(true);
+
+        } else {
+            nav_Menu.findItem(R.id.menu_item_login).setVisible(true);
+            nav_Menu.findItem(R.id.menu_item_registration).setVisible(true);
+            nav_Menu.findItem(R.id.menu_logout).setVisible(false);
+        }
+    }
+
+    public void logout() {
+        auth.signOut();
+        try {
+            SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = storeToken.edit();
+            editor.clear().apply();
+            Toast.makeText(getApplicationContext(), "you have logged out", Toast.LENGTH_SHORT).show();
+
+        } catch (NullPointerException e) {
+            Log.i("there is no user to log out", "");
+        }
     }
 }
 

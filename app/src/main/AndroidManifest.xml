@@ -15,12 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.RegistrationActivity">
 
-        <activity android:name=".activities.ChatDetailActivity"></activity>
+        </activity>
+        <activity android:name=".activities.LoginActivity">
+
+        </activity>
+
+        <activity android:name=".activities.ChatDetailActivity" />
         <activity android:name=".activities.GroupChatActivity" />
         <activity android:name=".activities.ChatMainActivity" />
         <activity android:name=".activities.JobDetailActivity" />
-
         <activity android:name=".activities.ActivityPreAccount">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,15 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.JobDetailActivity"></activity>
-
-        <activity android:name=".activities.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activities.MainActivity" />
     </application>
 
 </manifest>

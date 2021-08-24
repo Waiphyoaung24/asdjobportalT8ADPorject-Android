@@ -1,5 +1,7 @@
 package com.example.myapplication.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -45,7 +47,7 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
     private EditText Written_Review, job_title;
     private Spinner spin;
     ReviewDTO userReview;
-
+    String authorization,access_token;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,10 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
 
         //Get the list of companies names
         fetchData();
+
+        SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+        access_token = storeToken.getString("access_token",null);
+        authorization = "Bearer "+access_token;
 
         return root;
     }
@@ -140,7 +146,7 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
 
     private void sendData(){
 
-        Call<ReviewDTO> call1 =  RetrofitClient.getInstance().getResponse().createReview(userReview);
+        Call<ReviewDTO> call1 =  RetrofitClient.getInstance().getResponse().createReview(userReview,authorization);
         call1.enqueue(new Callback<ReviewDTO>() {
             @Override
             public void onResponse(Call<ReviewDTO> call1, Response<ReviewDTO> response) {

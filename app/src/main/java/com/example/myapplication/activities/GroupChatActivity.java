@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class GroupChatActivity extends AppCompatActivity {
+public class GroupChatActivity extends BaseActivity {
 
     ActivityGroupChatBinding binding;
     String currentGroupName;
@@ -38,8 +38,7 @@ public class GroupChatActivity extends AppCompatActivity {
         binding.backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(GroupChatActivity.this, MainActivity.class);
-                startActivity(intent);
+              onBackPressed();
             }
         });
         currentGroupName = getIntent().getExtras().get("groupName").toString();
