@@ -33,15 +33,14 @@ public class ActivityPreAccount extends BaseActivity {
         if(!accesstoken.equals("")){
             Toast.makeText(getApplicationContext(), "Login success", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ActivityPreAccount.this, MainActivity.class);
-            intent.putExtra("tag", "skip");
+            intent.putExtra("tag", "list");
             startActivity(intent);
         }
         else {
             tvLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ActivityPreAccount.this, MainActivity.class);
-                    intent.putExtra("tag", "login");
+                    Intent intent = new Intent(ActivityPreAccount.this, LoginActivity.class);
                     startActivity(intent);
                 }
             });
@@ -49,15 +48,14 @@ public class ActivityPreAccount extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ActivityPreAccount.this, MainActivity.class);
-                    intent.putExtra("tag", "skip");
+                    intent.putExtra("tag", "list");
                     startActivity(intent);
                 }
             });
             btnSignup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ActivityPreAccount.this, MainActivity.class);
-                    intent.putExtra("tag", "signup");
+                    Intent intent = new Intent(ActivityPreAccount.this, RegistrationActivity.class);
                     startActivity(intent);
                 }
             });

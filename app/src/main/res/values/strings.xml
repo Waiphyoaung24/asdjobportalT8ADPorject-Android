@@ -28,7 +28,7 @@
     <string name="Avatar">Avatar:</string>
     <string name="gender">Gender:</string>
     <string name="resume">Resume:</string>
-    <string name="contactNumber">Contact Number:</string>
+    <string name="contactNumber">Phone Number:</string>
 
     <string name="dummy_qualification">Good communication skills, good working attitude, highly motivated, multitasking, resourceful &amp; responsible towards works.
 Proficient in computer skills such as Microsoft words, excel
@@ -38,5 +38,6 @@ Candidate that can start immediately will be preferred
 Perform basic bookkeeping and data entry duties
 Provide administrative support when required
 Filling &amp; other administrative duties as assigned</string>
+    <string name="loginstatus">Already have an account?<font fgcolor='#1A237E'><u>  Login</u></font></string>
 
 </resources>

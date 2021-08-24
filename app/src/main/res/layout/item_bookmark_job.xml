@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view1"
-                android:id="@+id/view_buynow"
+                android:id="@+id/ll_viewJob"
                 android:layout_toRightOf="@id/view2">
 
                 <ImageView

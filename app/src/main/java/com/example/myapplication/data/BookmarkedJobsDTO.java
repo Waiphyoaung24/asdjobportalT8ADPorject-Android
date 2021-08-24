@@ -9,6 +9,16 @@ public class BookmarkedJobsDTO implements Serializable {
     private String companyname;
     private String bookmarkDate;
 
+    private long jobId;
+
+    public long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
+    }
+
     public BookmarkedJobsDTO() {}
 
     public BookmarkedJobsDTO(long id, String jobtitle, String companyname,String bookmarkDate) {

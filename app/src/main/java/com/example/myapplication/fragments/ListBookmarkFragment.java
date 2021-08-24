@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.JobDetailActivity;
 import com.example.myapplication.adapters.ListBookmarkAdapter;
 import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.data.BookmarkedJobsDTO;
+import com.example.myapplication.delegates.BookmarkItemDelegate;
 import com.example.myapplication.network.RetrofitClient;
 
 import java.util.List;
@@ -28,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ListBookmarkFragment extends Fragment {
+public class ListBookmarkFragment extends Fragment implements BookmarkItemDelegate {
 
     RecyclerView rvListBookmark;
     private ListBookmarkAdapter mAdapter;
@@ -54,7 +57,7 @@ public class ListBookmarkFragment extends Fragment {
     public View onCreateView(@NonNull  LayoutInflater inflater, @Nullable ViewGroup container, @Nullable  Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.list_bookmark_fragment,container,false);
         rvListBookmark = root.findViewById(R.id.rvListBookmark);
-        mAdapter = new ListBookmarkAdapter();
+        mAdapter = new ListBookmarkAdapter(this);
         return root;
     }
 
@@ -94,4 +97,10 @@ public class ListBookmarkFragment extends Fragment {
             Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().getApplicant(authorization, username_);
         }}
 
+    @Override
+    public void onClickViewJob(Long jobId) {
+        Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+        intent.putExtra("jobId",jobId);
+        startActivity(intent);
+    }
 }

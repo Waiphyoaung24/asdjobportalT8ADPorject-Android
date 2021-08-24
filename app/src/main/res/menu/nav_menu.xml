@@ -23,6 +23,12 @@
     <item android:id="@+id/menu_item_new_review"
         android:title="Write Review">
     </item>
+    <item android:id="@+id/chat"
+        android:title="Our Community">
+    </item>
+    <item android:id="@+id/createGroup"
+        android:title="Let's Create Group To Chat">
+    </item>
     <item android:id="@+id/menu_item_login"
         android:title="Login">
     </item>
@@ -31,12 +37,6 @@
     </item>
     <item android:id="@+id/menu_item_user"
         android:title="User Setting">
-    </item>
-    <item android:id="@+id/chat"
-        android:title="Our Community">
-    </item>
-    <item android:id="@+id/createGroup"
-        android:title="Let's Create Group To Chat">
     </item>
     <item android:id="@+id/menu_logout"
         android:title="Logout">

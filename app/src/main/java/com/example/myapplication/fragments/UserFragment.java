@@ -30,6 +30,9 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.activities.ActivityPreAccount;
+import com.example.myapplication.activities.MainActivity;
+import com.example.myapplication.activities.RegistrationActivity;
 import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.network.RetrofitClient;
 
@@ -67,7 +70,7 @@ import com.google.firebase.database.ValueEventListener;
 public class UserFragment extends Fragment {
     private EditText username,firsName,lastName,gender,contact,password;
     private ImageView avatar;
-    private Button delete, update,logOut;
+    private Button delete, update;
     String username_,access_token;
     private static final String AVATAR_BASE_URL = "http://10.0.2.2:8080/static/";
     private static final String AVATAR_FILE_NAME = "avatar.png";
@@ -99,7 +102,7 @@ public class UserFragment extends Fragment {
         avatar = view.findViewById(R.id.img_avatar);
         delete = view.findViewById(R.id.btn_delete);
         update = view.findViewById(R.id.btn_updateUserProfile);
-        logOut = view.findViewById(R.id.btn_logout);
+
 /*        selectAvatar = view.findViewById(R.id.btn_selectAvatar);*/
 
         try{
@@ -128,12 +131,7 @@ public class UserFragment extends Fragment {
 
             }
         });
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logOut();
-            }
-        });
+
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,6 +257,19 @@ public class UserFragment extends Fragment {
                         gender.setText("");
                         contact.setText("");
                         password.setText("");
+                        auth.signOut();
+                        try {
+                            SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = storeToken.edit();
+                            editor.clear().apply();
+                            Toast.makeText(getActivity(), "you have logged out", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getActivity(), ActivityPreAccount.class);
+                            startActivity(intent);
+
+                        } catch (NullPointerException e) {
+                            Log.i("there is no user to delete out", "there is no user to delete out");
+                        }
+
                     } else {Toast.makeText(getActivity(), "delete user unsuccessful", Toast.LENGTH_SHORT).show();}
                 }
                 @Override
@@ -273,23 +284,7 @@ public class UserFragment extends Fragment {
         }
     }
 
-    public void logOut(){
-        auth.signOut();
-        try{
-            SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = storeToken.edit();
-            editor.clear().apply();
-            Toast.makeText(getActivity(),"you have logged out", Toast.LENGTH_SHORT).show();
-            password.setText("");
-            username.setText("");
-            firsName.setText("");
-            lastName.setText("");
-            gender.setText("");
-            contact.setText("");
-        } catch(NullPointerException e){
-            Log.i("there is no user to log out","");
-        }
-    }
+
 
     private void downLoadAvatar(String username) {
         Runnable runnable = new Runnable() {

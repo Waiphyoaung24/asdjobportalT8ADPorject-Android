@@ -166,16 +166,10 @@ public class JobDetailActivity extends BaseActivity {
 
                 uri = Uri.parse(message.getMessage());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
 
-                //if intent contain something
-                if (intent != null) {
-                    //to check if the device has an app that can handle the requested implicit intent
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        //controlling how this intent is handled
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                }
+
                 //String url = response.body();
                 //Log.e("message",url);
             }
@@ -202,14 +196,12 @@ public class JobDetailActivity extends BaseActivity {
                 intent.putExtra(Intent.EXTRA_TEXT, string + jobadminDTO.getJobPositionURL());
 
                 //if intent contain something
-                if (intent != null) {
-                    //to check if the device has an app that can handle the requested implicit intent
-                    if (intent.resolveActivity(getPackageManager()) != null) {
+
                         //controlling how this intent is handled
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
-                    }
-                }
+
+
             }
 
             @Override
@@ -234,14 +226,12 @@ public class JobDetailActivity extends BaseActivity {
                 intent.putExtra(Intent.EXTRA_TEXT, string);
 
                 //if intent contain something
-                if (intent != null) {
-                    //to check if the device has an app that can handle the requested implicit intent
-                    if (intent.resolveActivity(getPackageManager()) != null) {
+
                         //controlling how this intent is handled
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
-                    }
-                }
+
+
             }
 
             @Override

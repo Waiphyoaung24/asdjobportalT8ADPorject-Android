@@ -3,8 +3,6 @@ package com.example.myapplication.activities;
 
 import android.content.Context;
 
-import android.app.Activity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,8 +11,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -22,11 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.Token;
@@ -36,9 +29,7 @@ import com.example.myapplication.fragments.ListBookmarkFragment;
 import com.example.myapplication.fragments.ListCompanyReviewFragment;
 import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.fragments.ListViewedJobsFragment;
-import com.example.myapplication.fragments.LoginFragment;
 import com.example.myapplication.fragments.NewReviewFragment;
-import com.example.myapplication.fragments.RegistrationFragment;
 import com.example.myapplication.fragments.SearchJobFragment;
 import com.example.myapplication.fragments.UserFragment;
 import com.example.myapplication.network.RetrofitClient;
@@ -126,12 +117,7 @@ public class MainActivity extends BaseActivity {
 
             if (intentMsg.equals("login")) {
 
-                LoginFragment loginFragment = new LoginFragment();
-                replaceFragment(loginFragment, "login");
-            } else if (intentMsg.equals("signup")) {
-                RegistrationFragment registrationFragment = new RegistrationFragment();
-                replaceFragment(registrationFragment, "register");
-            } else if (intentMsg.equals("skip")) {
+            } else if (intentMsg.equals("list")) {
                 ListJobFragment fragment = new ListJobFragment();
                 replaceFragment(fragment, "list");
             } else {
@@ -189,12 +175,12 @@ public class MainActivity extends BaseActivity {
 
                         break;
                     case R.id.menu_item_login:
-                        LoginFragment loginFragment = new LoginFragment();
-                        replaceFragment(loginFragment, "login");
+                       Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
+                       startActivity(loginIntent);
                         break;
                     case R.id.menu_item_registration:
-                        RegistrationFragment registrationFragment = new RegistrationFragment();
-                        replaceFragment(registrationFragment, "register");
+                        Intent registerintent = new Intent(MainActivity.this,RegistrationActivity.class);
+                        startActivity(registerintent);
                         break;
                     case R.id.menu_item_user:
                         UserFragment userFragment = new UserFragment();
@@ -364,11 +350,26 @@ public class MainActivity extends BaseActivity {
             nav_Menu.findItem(R.id.menu_item_login).setVisible(false);
             nav_Menu.findItem(R.id.menu_item_registration).setVisible(false);
             nav_Menu.findItem(R.id.menu_logout).setVisible(true);
+            nav_Menu.findItem(R.id.menu_item_user).setVisible(true);
+            nav_Menu.findItem(R.id.chat).setVisible(true);
+            nav_Menu.findItem(R.id.createGroup).setVisible(true);
+            nav_Menu.findItem(R.id.menu_item_new_review).setVisible(true);
+            nav_Menu.findItem(R.id.menu_item_bookmark).setVisible(true);
+            nav_Menu.findItem(R.id.menu_item_viewedjobs).setVisible(true);
+
 
         } else {
             nav_Menu.findItem(R.id.menu_item_login).setVisible(true);
             nav_Menu.findItem(R.id.menu_item_registration).setVisible(true);
             nav_Menu.findItem(R.id.menu_logout).setVisible(false);
+            nav_Menu.findItem(R.id.menu_item_user).setVisible(false);
+            nav_Menu.findItem(R.id.chat).setVisible(false);
+            nav_Menu.findItem(R.id.createGroup).setVisible(false);
+            nav_Menu.findItem(R.id.menu_item_new_review).setVisible(false);
+            nav_Menu.findItem(R.id.menu_item_bookmark).setVisible(false);
+            nav_Menu.findItem(R.id.menu_item_viewedjobs).setVisible(false);
+
+
         }
     }
 
@@ -379,6 +380,8 @@ public class MainActivity extends BaseActivity {
             SharedPreferences.Editor editor = storeToken.edit();
             editor.clear().apply();
             Toast.makeText(getApplicationContext(), "you have logged out", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,ActivityPreAccount.class);
+            startActivity(intent);
 
         } catch (NullPointerException e) {
             Log.i("there is no user to log out", "");

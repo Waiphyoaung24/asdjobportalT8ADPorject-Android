@@ -60,8 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ActivityPreAccount.class);
-                startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -69,12 +68,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login(usernameText.getText().toString(), passwordText.getText().toString());
-                ListJobFragment fragment = new ListJobFragment();
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction trans = fm.beginTransaction();
-                trans.replace(R.id.fl_container, fragment,"list");
-                trans.commit();
-
+               Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                intent.putExtra("tag", "list");
+                startActivity(intent);
             }
         });
     }
