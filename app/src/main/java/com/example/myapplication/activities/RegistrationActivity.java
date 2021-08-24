@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends BaseActivity {
 
     Button signUpButton;
     EditText signUpUsernameText, signUpPasswordText,firstUserText,lastUserText;
@@ -84,7 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     //do sign-up
 
                     auth.createUserWithEmailAndPassword(
-                            signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString()
+                            signUpUsernameText.getText().toString(), "123456"
                     ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -92,7 +92,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 ChatUsers user = new ChatUsers(firstUserText.getText().toString()+" "+lastUserText.getText().toString(),
                                         signUpUsernameText.getText().toString(),
-                                        signUpPasswordText.getText().toString());
+                                       "123456");
 
                                 String id = task.getResult().getUser().getUid();
                                 database.getReference().child("Users").child(id).setValue(user);
@@ -118,7 +118,7 @@ public class RegistrationActivity extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             onBackPressed();
+                onBackPressed();
             }
         });
 
@@ -138,10 +138,8 @@ public class RegistrationActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-
                                     if(task.isSuccessful()){
                                         Toast.makeText(getContext(), "LOGGING INTO FIREBASE", Toast.LENGTH_SHORT).show();
-
                                     }
                                 }
                             });*/

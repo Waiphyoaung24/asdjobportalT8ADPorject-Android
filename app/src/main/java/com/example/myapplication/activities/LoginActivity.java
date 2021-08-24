@@ -29,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
 
     Button loginButton;
@@ -68,9 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login(usernameText.getText().toString(), passwordText.getText().toString());
-               Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                intent.putExtra("tag", "list");
-                startActivity(intent);
+
             }
         });
     }
@@ -80,13 +78,15 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void login(String username, String password){
 
-        auth.signInWithEmailAndPassword(username, password)
+        //log-in with firebase data
+        auth.signInWithEmailAndPassword(username, "123456")
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "LOGGING IN TO FIREBASE", Toast.LENGTH_SHORT).show();
+
                         }else {
 
                         }
@@ -107,12 +107,9 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("username",token.getUsername());
                     editor.apply();
                     Toast.makeText(getApplicationContext(),"login success",Toast.LENGTH_SHORT).show();
-                    ListJobFragment fragment = new ListJobFragment();
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction trans = fm.beginTransaction();
-                    trans.replace(R.id.fl_container, fragment,"list");
-                    trans.commit();
-
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    intent.putExtra("tag", "list");
+                    startActivity(intent);
 
                     //TODO return back to main activity;
                 } else {
@@ -126,4 +123,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }

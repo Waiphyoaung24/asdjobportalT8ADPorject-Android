@@ -1,36 +1,51 @@
 package com.example.myapplication.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.GroupChatActivity;
+import com.example.myapplication.activities.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.zip.Inflater;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link GroupsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class GroupsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -46,14 +61,6 @@ public class GroupsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GroupsFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static GroupsFragment newInstance(String param1, String param2) {
         GroupsFragment fragment = new GroupsFragment();
@@ -89,16 +96,13 @@ public class GroupsFragment extends Fragment {
 
         GroupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
         auth = FirebaseAuth.getInstance();
-
+        NavigationView navView;
 
         IntializeFields();
 
         if(auth.getCurrentUser()!=null){
             RetrieveAndDisplayGroups();
         }
-
-
-
 
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,17 +114,59 @@ public class GroupsFragment extends Fragment {
                 groupChatIntent.putExtra("groupName" , currentGroupName);
                 startActivity(groupChatIntent);
             }
+
+
+        });
+
+        list_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String name = (String) adapterView.getItemAtPosition(i);
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Delete Group")
+                        .setMessage("Are you sure to delete group?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Query gpQuery = GroupRef.child(name);
+
+                                gpQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        dataSnapshot.getRef().removeValue();
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.e("TAG", "onCancelled", databaseError.toException());
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("NO", null)
+                        .show();
+
+                return true;
+            }
         });
 
 
         return groupFragmentView;
     }
 
+
+
     private void IntializeFields()
     {
         list_view = (ListView) groupFragmentView.findViewById(R.id.list_view);
         arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, list_of_groups);
         list_view.setAdapter(arrayAdapter);
+        registerForContextMenu(list_view);
+
+
     }
 
     private void RetrieveAndDisplayGroups()
@@ -147,5 +193,11 @@ public class GroupsFragment extends Fragment {
 
             }
         });
+    }
+
+    private void UpdateGroupName(String groupName) {
+
+
+
     }
 }

@@ -104,6 +104,7 @@ public interface Response {
     Call<List<CompaniesReviewDTO>> getAllCompanyReviews();
 
     //account related
+
     @POST("login")
     @FormUrlEncoded
     Call<Token> login(@Field("username") String username, @Field("password") String password);
@@ -113,6 +114,9 @@ public interface Response {
 
     @GET("user/applicant/{username}")
     Call<ApplicantDTO> getApplicant(@Header("Authorization") String authHeader, @Path("username") String username);
+
+    @GET("user/userlist")
+    Call<List<ApplicantDTO>> getAllApplicant();
 
     @POST("user/applicant/update")
     Call<ApplicantDTO> updateApplicant(@Header("Authorization") String authHeader, @Body ApplicantDTO applicant);
