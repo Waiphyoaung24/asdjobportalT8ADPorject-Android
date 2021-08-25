@@ -19,6 +19,17 @@ public class JobDTO {
     @SerializedName(("jobPositionURL"))
     private String jobPositionURL;
 
+    public float getJobStarRating() {
+        return jobStarRating;
+    }
+
+    public void setJobStarRating(float jobStarRating) {
+        this.jobStarRating = jobStarRating;
+    }
+
+    @SerializedName("jobStarRating")
+    private float jobStarRating;
+
     public String getJobPositionURL() {
         return jobPositionURL;
     }

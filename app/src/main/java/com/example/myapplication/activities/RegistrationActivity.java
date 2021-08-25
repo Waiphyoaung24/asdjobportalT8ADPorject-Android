@@ -25,6 +25,7 @@ import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.network.RetrofitClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,15 +34,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends BaseActivity {
 
     Button signUpButton;
     EditText signUpUsernameText, signUpPasswordText,firstUserText,lastUserText;
     Boolean userLogined;
     String username;
     TextView tvLogin;
-
+    CircularProgressIndicator indicator;
     private FirebaseAuth auth;
+    String defaultPassword = "123456";
     FirebaseDatabase database;
 
     ImageView ivBack;
@@ -52,6 +54,7 @@ public class RegistrationActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        indicator = findViewById(R.id.indicator);
         signUpButton = findViewById(R.id.signUpButton);
         signUpUsernameText = findViewById(R.id.signUpUsernameText);
         tvLogin = findViewById(R.id.tv_login);
@@ -74,35 +77,21 @@ public class RegistrationActivity extends AppCompatActivity {
             Log.i("there is no user signed in","");
         }
 
-
-
-
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!userLogined){
                     //do sign-up
+                    indicator.setVisibility(View.VISIBLE);
+                    signUp(signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString(),firstUserText.getText().toString(),lastUserText.getText().toString());
 
-                    auth.createUserWithEmailAndPassword(
-                            signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString()
-                    ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    new Thread(new Runnable() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if(task.isSuccessful()){
-                                ChatUsers user = new ChatUsers(firstUserText.getText().toString()+" "+lastUserText.getText().toString(),
-                                        signUpUsernameText.getText().toString(),
-                                        signUpPasswordText.getText().toString());
-
-                                String id = task.getResult().getUser().getUid();
-                                database.getReference().child("Users").child(id).setValue(user);
-                                signUp(signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString(),firstUserText.getText().toString(),lastUserText.getText().toString());
-
-                            }else {
-                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                        public void run() {
+                            createAccountInFirebase();
                         }
-                    });
+                    }).start();
+
 
                 }
             }
@@ -123,6 +112,30 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
     }
+
+    private void createAccountInFirebase() {
+        auth.createUserWithEmailAndPassword(
+                signUpUsernameText.getText().toString(), defaultPassword
+        ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+
+                if(task.isSuccessful()){
+                    ChatUsers user = new ChatUsers(firstUserText.getText().toString()+" "+lastUserText.getText().toString(),
+                            signUpUsernameText.getText().toString(),
+                            defaultPassword);
+
+                    String id = task.getResult().getUser().getUid();
+                    database.getReference().child("Users").child(id).setValue(user);
+
+                }else {
+                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private void signUp(String username1, String password1,String firstName,String lastName){
         ApplicantDTO applicant_ = new ApplicantDTO(username1, password1,firstName,lastName);
         Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().saveApplicant(applicant_);
@@ -134,15 +147,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "register success, automatic login and back to home page", Toast.LENGTH_SHORT).show();
                     login(applicant_.getUsername(), applicant_.getPassword());
-                    /*auth.signInWithEmailAndPassword(applicant_.getUsername(), applicant_.getPassword())
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(getContext(), "LOGGING INTO FIREBASE", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });*/
                 }
             }
             @Override
@@ -166,6 +170,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
+                    indicator.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Register success", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegistrationActivity.this,MainActivity.class);
                     intent.putExtra("tag", "list");

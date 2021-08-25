@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
+
         <!-- Media -->
 
 
@@ -28,14 +29,17 @@
             android:paddingTop="14dp"
             android:paddingRight="12dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="4dp">
+                android:paddingTop="4dp"
+
+                >
 
                 <ImageView
                     android:layout_width="34dp"
                     android:layout_height="34dp"
+                    android:id="@+id/iv_logo"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/company_logo"
 
@@ -47,26 +51,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:textColor="#0F0250"
+                    android:layout_toRightOf="@id/iv_logo"
                     android:text="Graphic Designer"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
-            </LinearLayout>
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="#0F0250" />
 
-            <TextView
-                android:id="@+id/tv_company_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="55dp"
-                android:text="Zoho Corp"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
+
+
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        android:id="@+id/job_rating"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:rating="5"
+                        android:scaleX=".4"
+                        android:transformPivotX="170dp"
+                        android:transformPivotY="12dp"
+                        android:scaleY=".4"
+                        android:layout_alignParentRight="true"
+                       />
+
+
+            </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_company_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="55dp"
+                    android:text="Zoho Corp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:cardCornerRadius="16dp"
                 android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -80,16 +106,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="16dp">
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:layout_gravity="center"
                             android:layout_marginRight="24dp"
                             android:alpha="0.5"
                             android:scaleType="centerCrop"
-                            android:layout_gravity="center"
                             android:src="@drawable/icons8_marker">
 
                         </ImageView>
@@ -104,33 +130,34 @@
                             android:textColor="?android:attr/textColorSecondary" />
 
                     </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="8dp">
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="center"
-                        android:alpha="0.5"
-                        android:layout_marginRight="24dp"
-                        android:src="@drawable/icons8_resume">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
 
-                    </ImageView>
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="24dp"
+                            android:alpha="0.5"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icons8_resume">
 
-                    <TextView
-                        android:id="@+id/tv_short_desc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Photoshop, Adobe XD, Invision Studio,"
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary" />
-                </LinearLayout>
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/tv_short_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Photoshop, Adobe XD, Invision Studio,"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?android:attr/textColorSecondary" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

@@ -207,6 +207,7 @@ public class MainActivity extends BaseActivity {
                         break;
 
                     case R.id.menu_logout:
+                        auth.signOut();
                         logout();
                         break;
 
@@ -301,7 +302,7 @@ public class MainActivity extends BaseActivity {
                             editor.apply();
                         } else {
                             Log.i("refresh fail", "");
-                            Toast.makeText(getApplicationContext(), "please login first", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getApplicationContext(), "please login first", Toast.LENGTH_SHORT).show();
                             SharedPreferences.Editor editor = storeToken.edit();
                             editor.clear().commit();
                         }
@@ -310,14 +311,14 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onFailure(Call<Token> call, Throwable t) {
                         Log.i("refresh token on failure error: ", t.getMessage());
-                        Toast.makeText(getApplicationContext(), "plese login first", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "plese login first", Toast.LENGTH_SHORT).show();
                         SharedPreferences.Editor editor = storeToken.edit();
                         editor.clear().commit();
                     }
                 });
             } else {
                 Log.i("there is no token stored, need login first", "");
-                Toast.makeText(getApplicationContext(), "please login first", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "please login first", Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = storeToken.edit();
                 editor.clear().commit();
             }
@@ -374,7 +375,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void logout() {
-        auth.signOut();
+
         try {
             SharedPreferences storeToken = getSharedPreferences("storeToken", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = storeToken.edit();

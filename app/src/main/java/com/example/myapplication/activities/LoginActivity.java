@@ -22,6 +22,7 @@ import com.example.myapplication.fragments.ListJobFragment;
 import com.example.myapplication.network.RetrofitClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -29,12 +30,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
 
     Button loginButton;
     EditText usernameText, passwordText;
     String username;
+    CircularProgressIndicator indicator;
 
     FirebaseAuth auth;
 
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton = findViewById(R.id.loginButton);
         usernameText = findViewById(R.id.usernameText);
+        indicator = findViewById(R.id.indicator);
         passwordText = findViewById(R.id.passwordText);
         ivBack = findViewById(R.id.iv_back);
         try{
@@ -68,28 +71,38 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login(usernameText.getText().toString(), passwordText.getText().toString());
+                indicator.setVisibility(View.VISIBLE);
 
             }
         });
     }
+
+
 
     private void initcomponents() {
         auth = FirebaseAuth.getInstance();
     }
     private void login(String username, String password){
 
-        auth.signInWithEmailAndPassword(username, "123456")
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                auth.signInWithEmailAndPassword(username, "123456")
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(), "LOGGING IN TO FIREBASE", Toast.LENGTH_SHORT).show();
-                        }else {
+                                if(task.isSuccessful()){
 
-                        }
-                    }
-                });
+
+                                }else {
+
+                                }
+                            }
+                        });
+            }
+        }).start();
+       
 
         Call<Token> call = RetrofitClient.getInstance().getResponse().login(username, password);
         call.enqueue(new Callback<Token>() {
@@ -104,21 +117,22 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
-                    Toast.makeText(getApplicationContext(),"login success",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     intent.putExtra("tag", "list");
                     startActivity(intent);
+                    indicator.setVisibility(View.GONE);
+                   // Toast.makeText(getApplicationContext(),"Login successfully",Toast.LENGTH_SHORT).show();
 
 
                     //TODO return back to main activity;
                 } else {
-                    Toast.makeText(getApplicationContext(),"login unsuccessful",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Login unsuccessful",Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
                 Log.i("login fail: ", t.getMessage());
-                Toast.makeText(getApplicationContext(),"login fail",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Login fail",Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -38,6 +38,6 @@ Candidate that can start immediately will be preferred
 Perform basic bookkeeping and data entry duties
 Provide administrative support when required
 Filling &amp; other administrative duties as assigned</string>
-    <string name="loginstatus">Already have an account?<font fgcolor='#1A237E'><u>  Login</u></font></string>
+    <string name="loginstatus">Already have an account?<font fgcolor='#3C82FF'><u>  Login</u></font></string>
 
 </resources>

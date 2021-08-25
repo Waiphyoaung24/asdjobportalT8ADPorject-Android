@@ -18,59 +18,31 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/view_remove"
-                android:layout_below="@id/view1">
 
-                <ImageView
-                    android:id="@+id/ImageTrash"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_below="@id/view1"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/filled_trash1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/view1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_toRightOf="@id/ImageTrash"
-                    android:text="Remove"
-                    android:fontFamily="@font/rubik"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="@dimen/text_regular_2x" />
-
-
-            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view1"
+                android:paddingBottom="8dp"
+                android:gravity="center_horizontal"
                 android:id="@+id/ll_viewJob"
-                android:layout_toRightOf="@id/view2">
+                >
 
                 <ImageView
                     android:id="@+id/BuyNow"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_below="@id/view1"
-                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="13dp"
-                    android:layout_toRightOf="@id/view2"
                     android:src="@drawable/ic_baseline_article_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/view1"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="17dp"
                     android:layout_toRightOf="@id/BuyNow"
                     android:text="View Job"
                     android:fontFamily="@font/rubik"
@@ -120,7 +92,7 @@
                 android:text="Android Developer"
                 android:fontFamily="@font/font"
                 android:textColor="@color/primary_text"
-                android:textSize="@dimen/text_heading_1x" />
+                android:textSize="@dimen/text_regular_3x" />
 
             <View
                 android:id="@+id/view1"
@@ -131,21 +103,14 @@
                 android:background="@color/divider" />
 
 
-            <View
-                android:id="@+id/view2"
-                android:layout_width="1dp"
-                android:layout_height="50dp"
-                android:layout_below="@id/view1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:background="@color/divider" />
+
 
 
 
                 <ImageView
                     android:layout_margin="12dp"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/ivProductImage"
                     android:background="@drawable/circle"
                     android:scaleType="centerCrop"

@@ -38,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ActivityPreAccount extends AppCompatActivity {
+public class ActivityPreAccount extends BaseActivity {
 
     MaterialTextView tvLogin;
     MaterialButton btnSignup;
@@ -125,7 +125,7 @@ public class ActivityPreAccount extends AppCompatActivity {
                                                         "123456");
                                                 String id = task.getResult().getUser().getUid();
                                                 userRef.child(id).setValue(user);
-                                                Toast.makeText(ActivityPreAccount.this, "adding "+emailFromMYSQL, Toast.LENGTH_SHORT).show();
+
                                             }
                                         }
                                     });

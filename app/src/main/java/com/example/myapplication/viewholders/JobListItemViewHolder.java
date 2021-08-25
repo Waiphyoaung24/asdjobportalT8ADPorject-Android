@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
@@ -18,6 +19,7 @@ public class JobListItemViewHolder extends RecyclerView.ViewHolder {
     TextView tvCompanyName;
     TextView tvJobLocation;
     TextView tvJobDesc;
+    AppCompatRatingBar ratingJob;
     JobDTO data;
     MaterialCardView cardViewJobList;
     private JobListDelegate mDelegate;
@@ -29,6 +31,7 @@ public class JobListItemViewHolder extends RecyclerView.ViewHolder {
         tvCompanyName = itemView.findViewById(R.id.tv_company_name);
         tvJobLocation = itemView.findViewById(R.id.tv_job_location);
         tvJobDesc = itemView.findViewById(R.id.tv_short_desc);
+        ratingJob = itemView.findViewById(R.id.job_rating);
         cardViewJobList = itemView.findViewById(R.id.card_job_list);
 
         cardViewJobList.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +48,7 @@ public class JobListItemViewHolder extends RecyclerView.ViewHolder {
     tvJobLocation.setText(mData.getJobPositionURL());
     tvCompanyName.setText(mData.getJobIndustry());
     tvJobDesc.setText(mData.getJobDescription());
+    ratingJob.setRating(mData.getJobStarRating());
 
     }
 
