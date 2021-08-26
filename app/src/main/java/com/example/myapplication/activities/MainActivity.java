@@ -197,14 +197,7 @@ public class MainActivity extends BaseActivity {
                                 ChatMainActivity.class);
                         startActivity(i);
                         break;
-                    case R.id.createGroup:
-                        if (auth.getCurrentUser() != null) {
-                            RequestNewGroup();
-                        } else {
-                            Toast.makeText(MainActivity.this, "Please sign in first", Toast.LENGTH_SHORT).show();
-                        }
 
-                        break;
 
                     case R.id.menu_logout:
                         auth.signOut();
@@ -353,7 +346,6 @@ public class MainActivity extends BaseActivity {
             nav_Menu.findItem(R.id.menu_logout).setVisible(true);
             nav_Menu.findItem(R.id.menu_item_user).setVisible(true);
             nav_Menu.findItem(R.id.chat).setVisible(true);
-            nav_Menu.findItem(R.id.createGroup).setVisible(true);
             nav_Menu.findItem(R.id.menu_item_new_review).setVisible(true);
             nav_Menu.findItem(R.id.menu_item_bookmark).setVisible(true);
             nav_Menu.findItem(R.id.menu_item_viewedjobs).setVisible(true);
@@ -365,7 +357,6 @@ public class MainActivity extends BaseActivity {
             nav_Menu.findItem(R.id.menu_logout).setVisible(false);
             nav_Menu.findItem(R.id.menu_item_user).setVisible(false);
             nav_Menu.findItem(R.id.chat).setVisible(false);
-            nav_Menu.findItem(R.id.createGroup).setVisible(false);
             nav_Menu.findItem(R.id.menu_item_new_review).setVisible(false);
             nav_Menu.findItem(R.id.menu_item_bookmark).setVisible(false);
             nav_Menu.findItem(R.id.menu_item_viewedjobs).setVisible(false);

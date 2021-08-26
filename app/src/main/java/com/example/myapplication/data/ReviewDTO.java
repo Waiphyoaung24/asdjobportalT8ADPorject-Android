@@ -20,6 +20,15 @@ public class ReviewDTO implements Serializable {
     //private String jobIndustry;
     private long userId;
     private String applicantName;
+    private long reviewId;
+
+    public long getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(long reviewId) {
+        this.reviewId = reviewId;
+    }
 
     public String getApplicantName() {
         return applicantName;
@@ -31,13 +40,15 @@ public class ReviewDTO implements Serializable {
 
     public ReviewDTO() {}
 
-    public ReviewDTO(float reviewstars, String companyName, long userId, String reviewDescription, String jobTitle, String reviewDate) {
+    public ReviewDTO(float reviewstars, String companyName, long userId, String reviewDescription, String jobTitle, String reviewDate,String applicantName,long reviewId) {
         this.reviewstars = reviewstars;
         this.companyName = companyName;
         this.userId = userId;
         this.reviewDescription = reviewDescription;
         this.jobTitle = jobTitle;
         this.reviewDate = reviewDate;
+        this.applicantName = applicantName;
+        this.reviewId = reviewId;
     }
 
 /*
