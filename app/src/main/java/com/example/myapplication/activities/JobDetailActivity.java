@@ -44,9 +44,11 @@ public class JobDetailActivity extends BaseActivity {
     TextView job_description;
     ImageView ivBack;
     JobAdminDTO jobadminDTO;
+    ApplicantDTO applicantDTO;
 
     String username_,access_token;
     String authorization;
+
 
 
     @Override
@@ -56,6 +58,7 @@ public class JobDetailActivity extends BaseActivity {
 
         SharedPreferences storeToken = this.getSharedPreferences("storeToken", Context.MODE_PRIVATE);
         access_token = storeToken.getString("access_token",null);
+        username_ = storeToken.getString("username",null);
         authorization = "Bearer "+access_token;
 
         loadUserProfile();
@@ -190,7 +193,7 @@ public class JobDetailActivity extends BaseActivity {
                 String string = getString(R.string.shareurl);
 
                 //need to update using session user's email
-                uri = Uri.parse("mailto:john@gmail.com");
+                uri = Uri.parse("mailto:"+applicantDTO.getUsername());
                 intent = new Intent(Intent.ACTION_SENDTO, uri);
                 intent.putExtra(Intent.EXTRA_SUBJECT, jobadminDTO.getCompanyname() + " Career Website for application of " + jobadminDTO.getJobTitle());
                 intent.putExtra(Intent.EXTRA_TEXT, string + jobadminDTO.getJobPositionURL());
@@ -217,7 +220,9 @@ public class JobDetailActivity extends BaseActivity {
             @Override
             public void onResponse(Call<JobAdminDTO> call, Response<JobAdminDTO> response) {
                 JobAdminDTO jobadminDTO = response.body();
-                String string = getString(R.string.emailapplication, jobadminDTO.getJobTitle(), jobadminDTO.getCompanyname());
+                String string = getString(R.string.emailapplication, jobadminDTO.getJobTitle(), jobadminDTO.getCompanyname(),
+                        applicantDTO.getFirstName(),applicantDTO.getLastName(),applicantDTO.getGender(),applicantDTO.getUsername(),applicantDTO.getContactNumber(),
+                        applicantDTO.getResumeURl(),applicantDTO.getSelfIntroduction(),applicantDTO.getFirstName(),applicantDTO.getLastName());
 
                 uri = Uri.parse("mailto:" + jobadminDTO.getCompanyemail());
                 //Log.e("message", String.valueOf(uri));
@@ -285,8 +290,17 @@ public class JobDetailActivity extends BaseActivity {
 
     public void loadUserProfile() {
 
-            Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().getApplicant(authorization, username_);
+        Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().getApplicant(authorization, username_);
+        call.enqueue(new Callback<ApplicantDTO>() {
+            @Override
+            public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
+                 applicantDTO = response.body();
+            }
+            @Override
+            public void onFailure(Call<ApplicantDTO> call, Throwable t) {
+                Log.e("error", t.getMessage());
+            }
+        });
     }
-
 
 }

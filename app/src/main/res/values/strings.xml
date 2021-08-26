@@ -12,7 +12,18 @@
     <string name="ShareURL">Share Company Link</string>
 
     <string name="shareurl">Please see the Company URL for your reference : </string>
-    <string name="emailapplication">Dear Hiring manager, I came across a very exciting position on your job portal that I believe fits me perfectly. I am interested in applying for the position of <b>%1$s</b> at <b>%2$s</b>. I would love to talk to you in more detail regarding this amazing opportunity at your company. It would give me great pleasure to hear back from you regarding my application. Thank you ! </string>
+    <string name="emailapplication">Dear Hiring manager, I came across a very exciting position on your job portal that I believe fits me perfectly. I am interested in applying for the position of <b>%1$s</b> at <b>%2$s</b>. I would love to talk to you in more detail regarding this amazing opportunity at your company. It would give me great pleasure to hear back from you regarding my application.
+
+         \n\n=========Applicant Information=========\n
+         Name: <b>%3$s</b> <b>%4$s</b>\n
+         Gender: <b>%5$s</b>\n
+         Email: <b>%6$s</b>\n
+         Contact No: <b>%7$s</b>\n
+         Resume URL: <b>%8$s</b>\n
+         Introduction: <b>%9$s</b>\n
+         \n\n Thank you !\n
+         Kind Regards,\n
+         ASD Job Portal On Behalf of  <b>%10$s</b> <b>%11$s</b>\n  </string>
 
 
     <string name="FilterByCompany">Filter by Company</string>
