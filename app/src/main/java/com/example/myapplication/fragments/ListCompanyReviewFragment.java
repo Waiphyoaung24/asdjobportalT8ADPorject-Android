@@ -1,20 +1,24 @@
 package com.example.myapplication.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.ChatDetailActivity;
 import com.example.myapplication.data.ReviewDTO;
 import com.example.myapplication.adapters.ReviewAdapter;
+import com.example.myapplication.delegates.ReviewItemDelegate;
 import com.example.myapplication.network.RetrofitClient;
 
 import java.util.List;
@@ -24,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ListCompanyReviewFragment extends Fragment implements ReviewAdapter.ItemClickListener{
+public class ListCompanyReviewFragment extends Fragment implements ReviewItemDelegate {
 
     RecyclerView recyclerView;
     List<ReviewDTO> reviewListResponseData;
@@ -85,14 +89,37 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewAdapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         // call the constructor of UsersAdapter to send the reference and data to Adapter
-        ReviewAdapter reviewAdapter = new ReviewAdapter(reviewListResponseData,ListCompanyReviewFragment.this);
+        ReviewAdapter reviewAdapter = new ReviewAdapter(reviewListResponseData,this);
         recyclerView.setAdapter(reviewAdapter); // set the Adapter to RecyclerView
     }
 
-    @Override
-    public void onItemClick(int position) {
 
+
+
+    @Override
+    public void onTapSendMessage(String userId, String userName) {
+        Intent intent = new Intent(getActivity(), ChatDetailActivity.class);
+        intent.putExtra("userId",userId);
+        intent.putExtra("userName",userName);
+        startActivity(intent);
     }
 
+    @Override
+    public void onTapReport(Long reviewId) {
+
+        Log.e("reviewId",String.valueOf(reviewId));
+        Call<Void>call1 = RetrofitClient.getInstance().getResponse().updateReview(reviewId,"Reported");
+        call1.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
 
 }

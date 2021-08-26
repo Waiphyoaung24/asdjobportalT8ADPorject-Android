@@ -103,6 +103,10 @@ public interface Response {
     @GET("review/review/list")
     Call<List<CompaniesReviewDTO>> getAllCompanyReviews();
 
+    @GET("review/list/reviews/{reviewid}/{reviewstatus}")
+    Call<Void>updateReview(@Path("reviewid") Long reviewid,@Path("reviewstatus") String reviewstatus);
+
+
     //account related
 
     @POST("login")
