@@ -21,9 +21,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -71,6 +73,7 @@ public class UserFragment extends Fragment {
     private EditText username,firsName,lastName,gender,contact,password;
     private ImageView avatar;
     private Button delete, update;
+    private Switch chatStatus;
     String username_,access_token;
     private static final String AVATAR_BASE_URL = "http://10.0.2.2:8080/static/";
     private static final String AVATAR_FILE_NAME = "avatar.png";
@@ -102,6 +105,7 @@ public class UserFragment extends Fragment {
         avatar = view.findViewById(R.id.img_avatar);
         delete = view.findViewById(R.id.btn_delete);
         update = view.findViewById(R.id.btn_updateUserProfile);
+        chatStatus = view.findViewById(R.id.switch_chatstatus);
 
 /*        selectAvatar = view.findViewById(R.id.btn_selectAvatar);*/
 
@@ -167,6 +171,11 @@ public class UserFragment extends Fragment {
                         lastName.setText(applicant.getLastName());
                         gender.setText(applicant.getGender());
                         contact.setText(applicant.getContactNumber());
+                        if(applicant.getChatstatus() == "Enabled"){
+                            chatStatus.setChecked(true);
+                        } else {
+                            chatStatus.setChecked(false);
+                        }
                         downLoadAvatar(username_);
                     }
                 }
@@ -192,6 +201,11 @@ public class UserFragment extends Fragment {
             applicant.setGender(gender.getText().toString());
             applicant.setFirstName(firsName.getText().toString());
             applicant.setLastName(lastName.getText().toString());
+            if(chatStatus.isChecked()){
+                applicant.setChatstatus("Enabled");
+            } else {
+                applicant.setChatstatus("Disabled");
+            }
             Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().updateApplicant(authorization, applicant);
             call.enqueue(new Callback<ApplicantDTO>() {
                 @Override

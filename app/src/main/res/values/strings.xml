@@ -50,5 +50,6 @@ Perform basic bookkeeping and data entry duties
 Provide administrative support when required
 Filling &amp; other administrative duties as assigned</string>
     <string name="loginstatus">Already have an account?<font fgcolor='#3C82FF'><u>  Login</u></font></string>
+    <string name="chat_status">enable chating</string>
 
 </resources>
