@@ -171,7 +171,8 @@ public class UserFragment extends Fragment {
                         lastName.setText(applicant.getLastName());
                         gender.setText(applicant.getGender());
                         contact.setText(applicant.getContactNumber());
-                        if(applicant.getChatstatus() == "Enabled"){
+
+                        if(applicant.getChatstatus().equals("Enabled")){
                             chatStatus.setChecked(true);
                         } else {
                             chatStatus.setChecked(false);
