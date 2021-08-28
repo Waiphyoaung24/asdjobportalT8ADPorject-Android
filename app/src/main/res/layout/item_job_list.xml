@@ -153,6 +153,7 @@
                         <TextView
                             android:id="@+id/tv_short_desc"
                             android:layout_width="wrap_content"
+                            android:maxLines="1"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="Photoshop, Adobe XD, Invision Studio,"

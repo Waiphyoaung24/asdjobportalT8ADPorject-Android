@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -65,11 +66,16 @@ public class ListViewedJobsFragment extends Fragment {
     }
 
     private void startloadingViewedJobs() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
         //Retrofit api call ListViewed Jobs
         Call<List<ViewedJobsDTO>> call = RetrofitClient.getInstance().getResponse().ListViewedJobs(authorization);
         call.enqueue(new Callback<List<ViewedJobsDTO>>() {
             @Override
             public void onResponse(Call<List<ViewedJobsDTO>> call, Response<List<ViewedJobsDTO>> response) {
+                progressDialog.dismiss();
                 mData = response.body();
                 mAdapter.setData(mData);
                 bindAndShowAllJobs();

@@ -45,7 +45,7 @@ public class JobListItemViewHolder extends RecyclerView.ViewHolder {
     public void bind(JobDTO mData){
         data = mData;
     tvJobPosition.setText(mData.getJobTitle());
-    tvJobLocation.setText(mData.getJobPositionURL());
+    tvJobLocation.setText("Singapore");
     tvCompanyName.setText(mData.getJobIndustry());
     tvJobDesc.setText(mData.getJobDescription());
     ratingJob.setRating(mData.getJobStarRating());

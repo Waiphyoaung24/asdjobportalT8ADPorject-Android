@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -77,6 +78,10 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
         return root;
     }
     private void fetchData() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
 
         Call<List<CompaniesReviewDTO>> call = RetrofitClient.getInstance().getResponse().getAllCompanyReviews();
         call.enqueue(new Callback<List<CompaniesReviewDTO>>() {
@@ -84,6 +89,7 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
 
             @Override
             public void onResponse(Call<List<CompaniesReviewDTO>> call, Response<List<CompaniesReviewDTO>> response) {
+                progressDialog.dismiss();
                 List<CompaniesReviewDTO> eList = response.body();
 
 
@@ -145,12 +151,17 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     private void sendData(){
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
 
         Call<ReviewDTO> call1 =  RetrofitClient.getInstance().getResponse().createReview(userReview,authorization);
         call1.enqueue(new Callback<ReviewDTO>() {
             @Override
             public void onResponse(Call<ReviewDTO> call1, Response<ReviewDTO> response) {
                 if(response.isSuccessful()){
+                    progressDialog.dismiss();
                     //Log.i(TAG, "post submitted to API." + response.body().toString());
                     CompanyReviewFragment companyReviewFragment = new CompanyReviewFragment();
                     FragmentManager fm = getActivity().getSupportFragmentManager();

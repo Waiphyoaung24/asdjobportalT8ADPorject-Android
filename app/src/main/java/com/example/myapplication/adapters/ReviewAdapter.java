@@ -1,6 +1,7 @@
 package com.example.myapplication.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,10 @@ public class ReviewAdapter extends
         holder.reviewStar.setRating((float) reviewListResponseData.get(position).getReviewstars());
         holder.reviewUser.setText( String.valueOf(reviewListResponseData.get(position).getApplicantName()));
         holder.reviewDate.setText( String.valueOf(reviewListResponseData.get(position).getReviewDate()));
+
+
+
+
         holder.btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -143,6 +144,8 @@ public class JobDetailActivity extends BaseActivity {
     }
 
     private void saveBookmark() {
+
+
         Call<BookmarkedJobsDTO> call = RetrofitClient.getInstance().getResponse().saveBookmark(id,authorization);
         call.enqueue(new Callback<BookmarkedJobsDTO>() {
             @Override
@@ -247,10 +250,17 @@ public class JobDetailActivity extends BaseActivity {
     }
 
     private void getJob() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(JobDetailActivity.this);
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
+
         Call<JobAdminDTO> call = RetrofitClient.getInstance().getResponse().getJob(id);
         call.enqueue(new Callback<JobAdminDTO>() {
             @Override
             public void onResponse(Call<JobAdminDTO> call, Response<JobAdminDTO> response) {
+                progressDialog.dismiss();
                 jobadminDTO = response.body();
 
 

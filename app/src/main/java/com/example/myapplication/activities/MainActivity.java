@@ -112,6 +112,7 @@ public class MainActivity extends BaseActivity {
         isUserLogin();
 
 
+
         String intentMsg = getIntent().getStringExtra("tag");
         if (intentMsg != null) {
 
@@ -193,7 +194,7 @@ public class MainActivity extends BaseActivity {
                         replaceFragment(userFragment, "userProfile");
                         break;
                     case R.id.chat:
-                        Intent i = new Intent(getApplication().getBaseContext(),
+                        Intent i = new Intent(MainActivity.this,
                                 ChatMainActivity.class);
                         startActivity(i);
                         break;

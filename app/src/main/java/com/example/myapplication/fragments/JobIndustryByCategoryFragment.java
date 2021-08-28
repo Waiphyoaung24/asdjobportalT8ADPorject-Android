@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -58,10 +59,16 @@ public class JobIndustryByCategoryFragment extends Fragment implements CategoryB
     }
 
     private void startLoadingCategory() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
         Call<List<String>> call = RetrofitClient.getInstance().getResponse().getCateoryList();
         call.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                progressDialog.dismiss();
                 category = response.body();
                 mAdapter.setData(category);
                 bindAndshowCategory();

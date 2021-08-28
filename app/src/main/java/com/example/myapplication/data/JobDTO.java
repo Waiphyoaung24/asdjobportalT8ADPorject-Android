@@ -46,8 +46,8 @@ public class JobDTO {
         this.jobDescription = jobDescription;
     }
 
-    public JobDTO(long id, String jobTitle, String jobIndustry) {
-        this.id = id;
+    public JobDTO(long jobid, String jobTitle, String jobIndustry) {
+        this.id = jobid;
         this.jobTitle = jobTitle;
         this.jobIndustry = jobIndustry;
     }
@@ -56,8 +56,8 @@ public class JobDTO {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long jobid) {
+        this.id = jobid;
     }
 
     public String getJobTitle() {

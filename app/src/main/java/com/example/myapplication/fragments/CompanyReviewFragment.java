@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -74,6 +75,10 @@ public class CompanyReviewFragment extends Fragment implements ListAllReviewAdap
     }
 
     private void fetchData() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
 
         Call<List<CompaniesReviewDTO>> call = RetrofitClient.getInstance().getResponse().getAllCompanyReviews();
         call.enqueue(new Callback<List<CompaniesReviewDTO>>() {
@@ -81,6 +86,7 @@ public class CompanyReviewFragment extends Fragment implements ListAllReviewAdap
 
             @Override
             public void onResponse(Call<List<CompaniesReviewDTO>> call, Response<List<CompaniesReviewDTO>> response) {
+                progressDialog.dismiss();
                 List<CompaniesReviewDTO> eList = response.body();
 
 

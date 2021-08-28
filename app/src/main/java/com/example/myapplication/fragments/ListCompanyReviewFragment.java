@@ -1,9 +1,13 @@
 package com.example.myapplication.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,10 +20,17 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.ChatDetailActivity;
+import com.example.myapplication.data.ChatUsers;
 import com.example.myapplication.data.ReviewDTO;
 import com.example.myapplication.adapters.ReviewAdapter;
 import com.example.myapplication.delegates.ReviewItemDelegate;
 import com.example.myapplication.network.RetrofitClient;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -33,12 +44,15 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
     RecyclerView recyclerView;
     List<ReviewDTO> reviewListResponseData;
     String CompanyName;
+    FirebaseAuth auth;
+    FirebaseDatabase database;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
     }
 
     @Override
@@ -98,28 +112,82 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
 
     @Override
     public void onTapSendMessage(String userId, String userName) {
-        Intent intent = new Intent(getActivity(), ChatDetailActivity.class);
-        intent.putExtra("userId",userId);
-        intent.putExtra("userName",userName);
-        startActivity(intent);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+        String name = sharedPreferences.getString("username","");
+        if(name  != userName){
+
+            database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if(auth.getCurrentUser()!=null){
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                            ChatUsers users = dataSnapshot.getValue(ChatUsers.class);
+
+                            if(users.getUserName().toString().equals(userName) ){
+                                String userNameFromFirebase = users.getUserName().toString();
+                                String userIdFromFirebase = dataSnapshot.getKey().toString();
+                                Intent intent = new Intent(getActivity(), ChatDetailActivity.class);
+                                intent.putExtra("userId",userIdFromFirebase);
+                                intent.putExtra("userName",userNameFromFirebase);
+                                startActivity(intent);
+                            }
+
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            }); 
+        }
+        else {
+            Toast.makeText(getContext(), "You cannot send message to yourself", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
     public void onTapReport(Long reviewId) {
+        showAlertDialog(reviewId);
 
-        Log.e("reviewId",String.valueOf(reviewId));
-        Call<Void>call1 = RetrofitClient.getInstance().getResponse().updateReview(reviewId,"Reported");
-        call1.enqueue(new Callback<Void>() {
+
+    }
+    private void showAlertDialog(Long reviewId){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle("Report");
+        builder.setMessage("Are you sure you really want to report this user?");
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getContext(), "cancel", Toast.LENGTH_SHORT).show();
             }
-
+        });
+        builder.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onClick(DialogInterface dialog, int which) {
+                Call<Void>call1 = RetrofitClient.getInstance().getResponse().updateReview(reviewId,"Reported");
+                call1.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                        Toast.makeText(getContext(), "Sure", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
 
             }
         });
+        builder.show();
+
     }
 
 }

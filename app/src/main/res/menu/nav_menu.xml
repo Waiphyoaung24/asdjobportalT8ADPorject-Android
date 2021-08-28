@@ -24,7 +24,7 @@
         android:title="Write Review">
     </item>
     <item android:id="@+id/chat"
-        android:title="Our Community">
+        android:title="Chat List">
     </item>
 
     <item android:id="@+id/menu_item_login"

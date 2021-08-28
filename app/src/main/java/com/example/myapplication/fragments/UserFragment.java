@@ -2,6 +2,7 @@ package com.example.myapplication.fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -113,9 +114,7 @@ public class UserFragment extends Fragment {
             SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
             username_ = storeToken.getString("username",null);
             access_token = storeToken.getString("access_token",null);
-            if(username_!=null)
-                Toast.makeText(getActivity(),"you have already Signed in",Toast.LENGTH_SHORT).show();
-            else
+            if(username_ ==null)
                 Toast.makeText(getActivity(),"there is no user signed in, please lpgin first",Toast.LENGTH_SHORT).show();
         } catch(NullPointerException e){
             Log.i("there is no user signed in","");
@@ -152,6 +151,10 @@ public class UserFragment extends Fragment {
     }
 
     public void loadUserProfile(){
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
         //check token
         if(username_ != null&&access_token!=null){
             String authorization = "Bearer "+access_token;
@@ -163,6 +166,7 @@ public class UserFragment extends Fragment {
                 public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
                     Log.i("status", String.valueOf(response.code()));
                     if(response.isSuccessful()){
+                        progressDialog.dismiss();
                         Log.i("get user profile success","success");
                         ApplicantDTO applicant = (ApplicantDTO)response.body();
                         Log.i("applicant",applicant.toString());

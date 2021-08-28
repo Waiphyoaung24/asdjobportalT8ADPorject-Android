@@ -129,6 +129,7 @@ public class RegistrationActivity extends BaseActivity {
                     String id = task.getResult().getUser().getUid();
                     database.getReference().child("Users").child(id).setValue(user);
 
+
                 }else {
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -137,7 +138,7 @@ public class RegistrationActivity extends BaseActivity {
     }
 
     private void signUp(String username1, String password1,String firstName,String lastName){
-        ApplicantDTO applicant_ = new ApplicantDTO(username1, password1,firstName,lastName);
+        ApplicantDTO applicant_ = new ApplicantDTO(username1, password1,firstName,lastName,"Enabled");
         Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().saveApplicant(applicant_);
         call.enqueue(new Callback<ApplicantDTO>() {
             @Override

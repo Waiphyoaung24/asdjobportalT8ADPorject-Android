@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,11 +69,17 @@ public class ListBookmarkFragment extends Fragment implements BookmarkItemDelega
     }
 
     private void startloadingBookmarks() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
         Call<List<BookmarkedJobsDTO>> call = RetrofitClient.getInstance().getResponse().listBookmarkJobs(authorization);
         call.enqueue(new Callback<List<BookmarkedJobsDTO>>() {
             @Override
             public void onResponse(Call<List<BookmarkedJobsDTO>> call, Response<List<BookmarkedJobsDTO>> response) {
 
+                progressDialog.dismiss();
                 mData = response.body();
                 mAdapter.setData(mData);
                 bindAndShowAllJobs();

@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -79,10 +80,16 @@ public class JobIndustryByListFragment extends Fragment implements JobListDelega
 
     private void startLoadingCategoryList(){
 
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
+
         Call<List<JobDTO>> call = RetrofitClient.getInstance().getResponse().getCateogryByIndustry(jodIndustry);
         call.enqueue(new Callback<List<JobDTO>>() {
             @Override
             public void onResponse(Call<List<JobDTO>> call, Response<List<JobDTO>> response) {
+                progressDialog.dismiss();
                 mData = response.body();
                 mAdapter.setData(mData);
                 bindAndShowAllJobs();

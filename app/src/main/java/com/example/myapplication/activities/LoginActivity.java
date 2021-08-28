@@ -84,6 +84,8 @@ public class LoginActivity extends BaseActivity {
     }
     private void login(String username, String password){
 
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -100,9 +102,12 @@ public class LoginActivity extends BaseActivity {
                                 }
                             }
                         });
+
             }
         }).start();
-       
+
+
+
 
         Call<Token> call = RetrofitClient.getInstance().getResponse().login(username, password);
         call.enqueue(new Callback<Token>() {
@@ -117,16 +122,18 @@ public class LoginActivity extends BaseActivity {
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
+
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     intent.putExtra("tag", "list");
                     startActivity(intent);
                     indicator.setVisibility(View.GONE);
-                   // Toast.makeText(getApplicationContext(),"Login successfully",Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getApplicationContext(),"Login successfully",Toast.LENGTH_SHORT).show();
 
 
                     //TODO return back to main activity;
-                } else {
+                } else {indicator.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(),"Login unsuccessful",Toast.LENGTH_SHORT).show();
+
                 }
             }
             @Override
