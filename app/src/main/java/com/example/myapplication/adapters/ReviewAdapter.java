@@ -61,7 +61,7 @@ public class ReviewAdapter extends
         holder.btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               mDelegate.onTapReport(reviewListResponseData.get(position).getReviewId());
+               mDelegate.onTapReport(reviewListResponseData.get(position).getReviewId(),reviewListResponseData.get(position).getApplicantName());
             }
         });
         holder.btnSendMessage.setOnClickListener(new View.OnClickListener() {

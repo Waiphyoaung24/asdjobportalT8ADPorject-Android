@@ -72,7 +72,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 login(usernameText.getText().toString(), passwordText.getText().toString());
-                indicator.setVisibility(View.VISIBLE);
+
 
             }
         });
@@ -144,6 +144,7 @@ public class LoginActivity extends BaseActivity {
                     //TODO return back to main activity;
                 } else {
                     progressDialog.dismiss();
+
                     Toast.makeText(getApplicationContext(),"Login unsuccessful",Toast.LENGTH_SHORT).show();
 
                 }

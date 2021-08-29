@@ -1,8 +1,10 @@
 package com.example.myapplication.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.activities.ChatDetailActivity;
 import com.example.myapplication.adapters.ReviewAdapter;
+import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.data.ChatUsers;
 import com.example.myapplication.data.ReviewDTO;
 import com.example.myapplication.delegates.ReviewItemDelegate;
@@ -70,7 +73,7 @@ public class ListJobReviewFragment extends Fragment implements  ReviewItemDelega
         View root = inflater.inflate(R.layout.fragment_list_company_review, container, false);
         recyclerView = (RecyclerView) root.findViewById(R.id.rvReviews);
         getReviewListData(); // call a method in which we have implement our GET type web API
-
+        loadUserProfile();
         return root;
     }
 
@@ -113,34 +116,43 @@ public class ListJobReviewFragment extends Fragment implements  ReviewItemDelega
 
     @Override
     public void onTapSendMessage(String userId,String userName) {
-        database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(auth.getCurrentUser()!=null){
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        ChatUsers users = dataSnapshot.getValue(ChatUsers.class);
+        if(!senderName.equals(userName)) {
 
-                        if(users.getUserName().toString().equals(userName) ){
-                             userNameFromFirebase = users.getUserName().toString();
-                             userIdFromFirebase = dataSnapshot.getKey().toString();
-                            Intent intent = new Intent(getActivity(), ChatDetailActivity.class);
-                            intent.putExtra("userId",userIdFromFirebase);
-                            intent.putExtra("userName",userNameFromFirebase);
-                            startActivity(intent);
-                            SendChatRequest(userIdFromFirebase);
+
+            database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                    if (auth.getCurrentUser() != null) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            ChatUsers users = dataSnapshot.getValue(ChatUsers.class);
+
+                            if (users.getUserName().toString().equals(userName)) {
+                                userNameFromFirebase = users.getUserName().toString();
+                                userIdFromFirebase = dataSnapshot.getKey().toString();
+                                Intent intent = new Intent(getActivity(), ChatDetailActivity.class);
+                                intent.putExtra("userId", userIdFromFirebase);
+                                intent.putExtra("userName", userNameFromFirebase);
+                                startActivity(intent);
+                                SendChatRequest(userIdFromFirebase);
+                            }
+
+
                         }
-
-
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }else {
+            Toast.makeText(getContext(), "You cannot send message to yourself", Toast.LENGTH_SHORT).show();
+
+        }
 
     }
     private void SendChatRequest(String id) {
@@ -152,8 +164,13 @@ public class ListJobReviewFragment extends Fragment implements  ReviewItemDelega
     }
 
     @Override
-    public void onTapReport(Long reviewId) {
-        showAlertDialog(reviewId);
+    public void onTapReport(Long reviewId,String userName) {
+        if(!senderName.equals(userName)) {
+            showAlertDialog(reviewId);
+        }
+        else {
+            Toast.makeText(getContext(), "You cannot report to yourself", Toast.LENGTH_SHORT).show();
+        }
 
     }
     private void showAlertDialog(Long reviewId){
@@ -186,5 +203,36 @@ public class ListJobReviewFragment extends Fragment implements  ReviewItemDelega
         });
         builder.show();
 
+    }
+    public void loadUserProfile(){
+        SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+        String username_ = storeToken.getString("username",null);
+        String access_token = storeToken.getString("access_token",null);
+
+        if(username_ != null&&access_token!=null){
+            String authorization = "Bearer "+access_token;
+            Log.i("request input", username_);
+            Log.i("authorization", authorization);
+            Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().getApplicant(authorization, username_);
+            call.enqueue(new Callback<ApplicantDTO>() {
+                @Override
+                public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
+                    Log.i("status", String.valueOf(response.code()));
+                    if (response.isSuccessful()) {
+                        ApplicantDTO applicant = (ApplicantDTO)response.body();
+                        senderName = applicant.getFirstName() + " " + applicant.getLastName();
+
+                    }
+                }
+                @Override
+                public void onFailure(Call<ApplicantDTO> call, Throwable t) {
+                    Log.i("on failure error: ", t.getMessage());
+                }
+            });
+        } else {
+            Log.i("need to go back to login", "");
+
+            Toast.makeText(getActivity(),"please login first",Toast.LENGTH_SHORT).show();
+        }
     }
 }

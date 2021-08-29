@@ -20,11 +20,14 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.ChatDetailActivity;
+import com.example.myapplication.data.ApplicantDTO;
 import com.example.myapplication.data.ChatUsers;
 import com.example.myapplication.data.ReviewDTO;
 import com.example.myapplication.adapters.ReviewAdapter;
 import com.example.myapplication.delegates.ReviewItemDelegate;
 import com.example.myapplication.network.RetrofitClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +35,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -49,7 +54,6 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
     FirebaseDatabase database;
     DatabaseReference ChatRequestRef;
     String userNameFromFirebase, userIdFromFirebase, Current_State, senderUserID, senderName;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +78,7 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
         View root = inflater.inflate(R.layout.fragment_list_company_review, container, false);
         recyclerView = (RecyclerView) root.findViewById(R.id.rvReviews);
         getReviewListData(); // call a method in which we have implement our GET type web API
-
+        loadUserProfile();
         return root;
     }
 
@@ -119,9 +123,8 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
     @Override
     public void onTapSendMessage(String userId, String userName) {
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
-        String name = sharedPreferences.getString("username","");
-        if(name  != userName){
+
+        if(!senderName.equals(userName)){
 
             database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
                 @Override
@@ -165,12 +168,16 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
         ChatRequestRef.child(senderUserID).child(receiverUserID).child("request_type").setValue("pending");
         ChatRequestRef.child(senderUserID).child(receiverUserID).child("sent_by").setValue(senderUserID);
         ChatRequestRef.child(senderUserID).child(receiverUserID).child("received_by").setValue(receiverUserID);
-
     }
 
     @Override
-    public void onTapReport(Long reviewId) {
-        showAlertDialog(reviewId);
+    public void onTapReport(Long reviewId,String userName) {
+        if(!senderName.equals(userName)) {
+            showAlertDialog(reviewId);
+        }
+        else {
+            Toast.makeText(getContext(), "You cannot report to yourself", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
@@ -206,5 +213,37 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
         builder.show();
 
     }
+
+    public void loadUserProfile(){
+            SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
+           String username_ = storeToken.getString("username",null);
+            String access_token = storeToken.getString("access_token",null);
+
+            if(username_ != null&&access_token!=null){
+                String authorization = "Bearer "+access_token;
+                Log.i("request input", username_);
+                Log.i("authorization", authorization);
+                Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().getApplicant(authorization, username_);
+                call.enqueue(new Callback<ApplicantDTO>() {
+                    @Override
+                    public void onResponse(Call<ApplicantDTO> call, Response<ApplicantDTO> response) {
+                        Log.i("status", String.valueOf(response.code()));
+                        if (response.isSuccessful()) {
+                            ApplicantDTO applicant = (ApplicantDTO)response.body();
+                            senderName = applicant.getFirstName() + " " + applicant.getLastName();
+
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ApplicantDTO> call, Throwable t) {
+                        Log.i("on failure error: ", t.getMessage());
+                    }
+                });
+            } else {
+                Log.i("need to go back to login", "");
+
+                Toast.makeText(getActivity(),"please login first",Toast.LENGTH_SHORT).show();
+            }
+        }
 
 }

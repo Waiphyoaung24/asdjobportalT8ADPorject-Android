@@ -100,13 +100,12 @@ public class UserFragment extends Fragment {
         password =view.findViewById(R.id.et_password);
         firsName = view.findViewById(R.id.et_firstName);
         lastName = view.findViewById(R.id.et_lastName);
-        gender = view.findViewById(R.id.et_gender);
         contact=view.findViewById(R.id.et_contactNumber);
         avatar = view.findViewById(R.id.img_avatar);
         delete = view.findViewById(R.id.btn_delete);
         update = view.findViewById(R.id.btn_updateUserProfile);
 
-/*        selectAvatar = view.findViewById(R.id.btn_selectAvatar);*/
+        /*        selectAvatar = view.findViewById(R.id.btn_selectAvatar);*/
 
         try{
             SharedPreferences storeToken = getActivity().getSharedPreferences("storeToken", Context.MODE_PRIVATE);
@@ -171,7 +170,6 @@ public class UserFragment extends Fragment {
                         username.setText(applicant.getUsername());
                         firsName.setText(applicant.getFirstName());
                         lastName.setText(applicant.getLastName());
-                        gender.setText(applicant.getGender());
                         contact.setText(applicant.getContactNumber());
 
                      /*   if(applicant.getChatstatus().equals("Enabled")){
@@ -201,7 +199,6 @@ public class UserFragment extends Fragment {
             applicant.setUsername(username_);
             applicant.setPassword(password.getText().toString());
             applicant.setContactNumber(contact.getText().toString());
-            applicant.setGender(gender.getText().toString());
             applicant.setFirstName(firsName.getText().toString());
             applicant.setLastName(lastName.getText().toString());
            /* if(chatStatus.isChecked()){
@@ -217,7 +214,7 @@ public class UserFragment extends Fragment {
                         Log.i("update success", response.toString());
                         Toast.makeText(getActivity(), "Update success", Toast.LENGTH_SHORT).show();
                         //loadUserProfile();
-                        updateAvatar(applicant.getUsername(),authorization);
+                        //updateAvatar(applicant.getUsername(),authorization);
 
                         RootRef.child("Users").child(auth.getCurrentUser().getUid()).child("userName").setValue(firsName.getText().toString()+lastName.getText().toString());
                         RootRef.child("Users").child(auth.getCurrentUser().getUid()).child("password").setValue("123456");
@@ -229,7 +226,7 @@ public class UserFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<ApplicantDTO> call, Throwable t) {
-                    Log.i("update on failure", t.getMessage());
+                    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -327,7 +324,7 @@ public class UserFragment extends Fragment {
     //check permission
     //select a photo from folder
     //take a photo and save in the folder
- }
+}
 
 
 

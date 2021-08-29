@@ -118,7 +118,7 @@ public class GroupsFragment extends Fragment {
 
         });
 
-        list_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+       /* list_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String name = (String) adapterView.getItemAtPosition(i);
@@ -151,7 +151,7 @@ public class GroupsFragment extends Fragment {
 
                 return true;
             }
-        });
+        });*/
 
 
         return groupFragmentView;

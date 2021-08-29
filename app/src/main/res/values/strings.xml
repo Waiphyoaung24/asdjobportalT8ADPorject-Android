@@ -16,11 +16,8 @@
 
          \n\n=========Applicant Information=========\n
          Name: <b>%3$s</b> <b>%4$s</b>\n
-         Gender: <b>%5$s</b>\n
          Email: <b>%6$s</b>\n
          Contact No: <b>%7$s</b>\n
-         Resume URL: <b>%8$s</b>\n
-         Introduction: <b>%9$s</b>\n
          \n\n Thank you !\n
          Kind Regards,\n
          ASD Job Portal On Behalf of  <b>%10$s</b> <b>%11$s</b>\n  </string>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -82,19 +83,14 @@ public class RegistrationActivity extends BaseActivity {
             public void onClick(View v) {
                 if(!userLogined){
                     //do sign-up
-                    indicator.setVisibility(View.VISIBLE);
+
                     signUp(signUpUsernameText.getText().toString(), signUpPasswordText.getText().toString(),firstUserText.getText().toString(),lastUserText.getText().toString());
 
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             createAccountInFirebase();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(RegistrationActivity.this, "finish firebase", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+
                         }
                     }).start();
 
@@ -144,6 +140,11 @@ public class RegistrationActivity extends BaseActivity {
     }
 
     private void signUp(String username1, String password1,String firstName,String lastName){
+        final ProgressDialog progressDialog = new ProgressDialog(RegistrationActivity.this);
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
+
         ApplicantDTO applicant_ = new ApplicantDTO(username1, password1,firstName,lastName);
         Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().saveApplicant(applicant_);
         call.enqueue(new Callback<ApplicantDTO>() {
@@ -153,17 +154,20 @@ public class RegistrationActivity extends BaseActivity {
                     Log.i("register success","register success");
 
                     Toast.makeText(getApplicationContext(), "register success, automatic login and back to home page", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                     login(applicant_.getUsername(), applicant_.getPassword());
                 }
             }
             @Override
             public void onFailure(Call<ApplicantDTO> call, Throwable t) {
-                Log.i("register request failure: ", t.getMessage());
+                progressDialog.dismiss();
+                Toast.makeText(RegistrationActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void login(String username, String password){
+
         Call<Token> call = RetrofitClient.getInstance().getResponse().login(username, password);
         call.enqueue(new Callback<Token>() {
             @Override
@@ -177,7 +181,7 @@ public class RegistrationActivity extends BaseActivity {
                     editor.putString("refresh_token",token.getRefresh_token());
                     editor.putString("username",token.getUsername());
                     editor.apply();
-                    indicator.setVisibility(View.GONE);
+
                     Toast.makeText(getApplicationContext(), "Register success", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegistrationActivity.this,MainActivity.class);
                     intent.putExtra("tag", "list");
