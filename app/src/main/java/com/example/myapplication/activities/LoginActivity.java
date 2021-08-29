@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -86,29 +87,14 @@ public class LoginActivity extends BaseActivity {
 
 
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                auth.signInWithEmailAndPassword(username, "123456")
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                if(task.isSuccessful()){
-
-
-                                }else {
-
-                                }
-                            }
-                        });
-
-            }
-        }).start();
 
 
 
 
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setCancelable(false); // set cancelable to false
+        progressDialog.setMessage("Please Wait"); // set message
+        progressDialog.show(); // show progress dialog
         Call<Token> call = RetrofitClient.getInstance().getResponse().login(username, password);
         call.enqueue(new Callback<Token>() {
             @Override
@@ -123,15 +109,41 @@ public class LoginActivity extends BaseActivity {
                     editor.putString("username",token.getUsername());
                     editor.apply();
 
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    intent.putExtra("tag", "list");
-                    startActivity(intent);
-                    indicator.setVisibility(View.GONE);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            auth.signInWithEmailAndPassword(username, "123456")
+                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                            if(task.isSuccessful()){
+                                                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                                intent.putExtra("tag", "list");
+                                                startActivity(intent);
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+
+
+                                            }else {
+
+                                            }
+                                        }
+                                    });
+
+                        }
+                    }).start();
+
                     // Toast.makeText(getApplicationContext(),"Login successfully",Toast.LENGTH_SHORT).show();
 
 
                     //TODO return back to main activity;
-                } else {indicator.setVisibility(View.GONE);
+                } else {
+                    progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),"Login unsuccessful",Toast.LENGTH_SHORT).show();
 
                 }

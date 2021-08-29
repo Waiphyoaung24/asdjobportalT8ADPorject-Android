@@ -29,6 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -46,6 +47,8 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
     String CompanyName;
     FirebaseAuth auth;
     FirebaseDatabase database;
+    DatabaseReference ChatRequestRef;
+    String userNameFromFirebase, userIdFromFirebase, Current_State, senderUserID, senderName;
 
 
     @Override
@@ -53,6 +56,9 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        Current_State = "new";
+        senderUserID = auth.getCurrentUser().getUid();
+        ChatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
     }
 
     @Override
@@ -126,12 +132,14 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
                             ChatUsers users = dataSnapshot.getValue(ChatUsers.class);
 
                             if(users.getUserName().toString().equals(userName) ){
-                                String userNameFromFirebase = users.getUserName().toString();
-                                String userIdFromFirebase = dataSnapshot.getKey().toString();
+                                userNameFromFirebase = users.getUserName().toString();
+                                userIdFromFirebase = dataSnapshot.getKey().toString();
+
                                 Intent intent = new Intent(getActivity(), ChatDetailActivity.class);
                                 intent.putExtra("userId",userIdFromFirebase);
                                 intent.putExtra("userName",userNameFromFirebase);
                                 startActivity(intent);
+                                SendChatRequest(userIdFromFirebase);
                             }
 
 
@@ -148,6 +156,15 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
         else {
             Toast.makeText(getContext(), "You cannot send message to yourself", Toast.LENGTH_SHORT).show();
         }
+
+    }
+    private void SendChatRequest(String id){
+
+        String receiverUserID = id;
+        Log.d("TAG", "SendChatRequest: "+receiverUserID);
+        ChatRequestRef.child(senderUserID).child(receiverUserID).child("request_type").setValue("pending");
+        ChatRequestRef.child(senderUserID).child(receiverUserID).child("sent_by").setValue(senderUserID);
+        ChatRequestRef.child(senderUserID).child(receiverUserID).child("received_by").setValue(receiverUserID);
 
     }
 

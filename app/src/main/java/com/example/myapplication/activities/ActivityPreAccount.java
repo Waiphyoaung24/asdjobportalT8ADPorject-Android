@@ -87,13 +87,13 @@ public class ActivityPreAccount extends BaseActivity {
                 }
             });
 
-            //fetchData();
+            fetchData();
 
         }
 
     }
 
-    /*private void fetchData() {
+    private void fetchData() {
         Call<List<ApplicantDTO>> users = RetrofitClient.getInstance().getResponse().getAllApplicant();
         users.enqueue(new Callback<List<ApplicantDTO>>() {
             @Override
@@ -145,6 +145,6 @@ public class ActivityPreAccount extends BaseActivity {
             public void onFailure(Call<List<ApplicantDTO>> call, Throwable t) {
 
             }
-        });*/
-    //}
+        });
+    }
 }

@@ -31,7 +31,6 @@ public class ReviewAdapter extends
 
 
 
-
     public ReviewAdapter(List<ReviewDTO> reviewListResponseData,ReviewItemDelegate mDelegate) {
         this.reviewListResponseData = reviewListResponseData;
         //this.context = context;
@@ -48,6 +47,7 @@ public class ReviewAdapter extends
     @Override
     public void onBindViewHolder(ReviewViewHolder holder, final int position) {
         // set the data
+
         holder.reviewDescription.setText( reviewListResponseData.get(position).getReviewDescription());
        // holder.reviewCompany.setText(reviewListResponseData.get(position).getCompanyName());
         holder.reviewJob.setText( reviewListResponseData.get(position).getJobTitle());
@@ -75,8 +75,14 @@ public class ReviewAdapter extends
 
     @Override
     public int getItemCount() {
+        if(reviewListResponseData!= null){
+            return reviewListResponseData.size();
+        }
+        else {
+            return  0;
+        }
 
-        return reviewListResponseData.size(); // size of the list items
+     // size of the list items
     }
 
     class ReviewViewHolder extends RecyclerView.ViewHolder {

@@ -89,6 +89,12 @@ public class RegistrationActivity extends BaseActivity {
                         @Override
                         public void run() {
                             createAccountInFirebase();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(RegistrationActivity.this, "finish firebase", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     }).start();
 
@@ -138,7 +144,7 @@ public class RegistrationActivity extends BaseActivity {
     }
 
     private void signUp(String username1, String password1,String firstName,String lastName){
-        ApplicantDTO applicant_ = new ApplicantDTO(username1, password1,firstName,lastName,"Enabled");
+        ApplicantDTO applicant_ = new ApplicantDTO(username1, password1,firstName,lastName);
         Call<ApplicantDTO> call = RetrofitClient.getInstance().getResponse().saveApplicant(applicant_);
         call.enqueue(new Callback<ApplicantDTO>() {
             @Override

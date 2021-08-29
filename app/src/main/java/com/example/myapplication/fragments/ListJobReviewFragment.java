@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -42,13 +44,16 @@ public class ListJobReviewFragment extends Fragment implements  ReviewItemDelega
     String JobName;
     FirebaseAuth auth;
     FirebaseDatabase database;
-
+    DatabaseReference ChatRequestRef;
+    String userNameFromFirebase, userIdFromFirebase, Current_State, senderUserID, senderName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        senderUserID = auth.getCurrentUser().getUid();
+        ChatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
 
     }
 
@@ -117,12 +122,13 @@ public class ListJobReviewFragment extends Fragment implements  ReviewItemDelega
                         ChatUsers users = dataSnapshot.getValue(ChatUsers.class);
 
                         if(users.getUserName().toString().equals(userName) ){
-                            String userNameFromFirebase = users.getUserName().toString();
-                            String userIdFromFirebase = dataSnapshot.getKey().toString();
+                             userNameFromFirebase = users.getUserName().toString();
+                             userIdFromFirebase = dataSnapshot.getKey().toString();
                             Intent intent = new Intent(getActivity(), ChatDetailActivity.class);
                             intent.putExtra("userId",userIdFromFirebase);
                             intent.putExtra("userName",userNameFromFirebase);
                             startActivity(intent);
+                            SendChatRequest(userIdFromFirebase);
                         }
 
 
@@ -136,6 +142,13 @@ public class ListJobReviewFragment extends Fragment implements  ReviewItemDelega
             }
         });
 
+    }
+    private void SendChatRequest(String id) {
+        String receiverUserID = id;
+        Log.d("TAG", "SendChatRequest: "+receiverUserID);
+        ChatRequestRef.child(senderUserID).child(receiverUserID).child("request_type").setValue("pending");
+        ChatRequestRef.child(senderUserID).child(receiverUserID).child("sent_by").setValue(senderUserID);
+        ChatRequestRef.child(senderUserID).child(receiverUserID).child("received_by").setValue(receiverUserID);
     }
 
     @Override
