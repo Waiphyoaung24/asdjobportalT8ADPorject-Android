@@ -31,7 +31,7 @@ import retrofit2.http.Streaming;
 
 public interface Response {
 
-    String BASE_URL = "http://10.0.2.2:8080/api/";
+    String BASE_URL = "http://54.81.148.245:8080/webapp/api/";
 
 
     // job

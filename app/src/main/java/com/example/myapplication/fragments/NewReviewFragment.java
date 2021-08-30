@@ -95,7 +95,9 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
 
                 for (int i = 0; i < eList.size(); i++) {
                     //Log.e("name", eList.get(i).getCompanyName());
-                    mDataset.add(eList.get(i).getCompanyName());
+
+                        mDataset.add(eList.get(i).getCompanyName());
+
                     //set the spinner
                     ArrayAdapter aa = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,mDataset);
                     aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -190,9 +192,12 @@ public class NewReviewFragment extends Fragment implements AdapterView.OnItemSel
 
                 reviewListResponseData = response.body();
                 //Display Company review info
-                Company_Name.setText(reviewListResponseData.get(0).getCompanyName());
-                Company_Rating.setRating((float)reviewListResponseData.stream().mapToDouble(x->x.getReviewstars()).average().getAsDouble());
-                // This user name data will have to change. Will be the login user name
+                if(!reviewListResponseData.isEmpty()) {
+
+                    Company_Name.setText(reviewListResponseData.get(0).getCompanyName());
+                    Company_Rating.setRating((float) reviewListResponseData.stream().mapToDouble(x -> x.getReviewstars()).average().getAsDouble());
+                    // This user name data will have to change. Will be the login user name
+                }
             }
 
             @Override

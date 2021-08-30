@@ -83,12 +83,9 @@ public class LoginActivity extends BaseActivity {
     private void initcomponents() {
         auth = FirebaseAuth.getInstance();
     }
+
+
     private void login(String username, String password){
-
-
-
-
-
 
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);

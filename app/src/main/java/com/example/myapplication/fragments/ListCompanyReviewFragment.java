@@ -199,7 +199,7 @@ public class ListCompanyReviewFragment extends Fragment implements ReviewItemDel
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
 
-                        Toast.makeText(getContext(), "Sure", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "You've reported this user", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

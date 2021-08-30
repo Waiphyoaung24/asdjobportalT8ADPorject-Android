@@ -263,23 +263,24 @@ public class JobDetailActivity extends BaseActivity {
                 progressDialog.dismiss();
                 jobadminDTO = response.body();
 
+                if(jobadminDTO !=null) {
 
-                if (asd_level != null) {
-                    asd_level.setText("Autism Level - " + Integer.toString(jobadminDTO.getAutismLevel()));
+                    if (asd_level != null) {
+                        asd_level.setText("Autism Level - " + Integer.toString(jobadminDTO.getAutismLevel()));
+                    }
+                    if (job_title != null) {
+                        job_title.setText(jobadminDTO.getJobTitle());
+                    }
+
+
+                    if (job_qualification != null) {
+                     //   job_qualification.setText(jobadminDTO.getJobqualification());
+                    }
+
+                    if (job_description != null) {
+                        job_description.setText(jobadminDTO.getJobDescription());
+                    }
                 }
-                if (job_title != null) {
-                    job_title.setText(jobadminDTO.getJobTitle());
-                }
-
-
-                if (job_qualification != null) {
-                    job_qualification.setText(jobadminDTO.getJobqualification());
-                }
-
-                if (job_description != null) {
-                    job_description.setText(jobadminDTO.getJobDescription());
-                }
-
 
             }
 
